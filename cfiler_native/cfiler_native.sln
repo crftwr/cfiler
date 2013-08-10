@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cfiler_native", "cfiler_native.vcxproj", "{5303AB53-AD02-4568-823E-E2F30C05A042}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5303AB53-AD02-4568-823E-E2F30C05A042}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5303AB53-AD02-4568-823E-E2F30C05A042}.Debug|Win32.Build.0 = Debug|Win32
+		{5303AB53-AD02-4568-823E-E2F30C05A042}.Release|Win32.ActiveCfg = Release|Win32
+		{5303AB53-AD02-4568-823E-E2F30C05A042}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
