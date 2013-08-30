@@ -41,6 +41,7 @@ for option in option_list:
 if __name__ == "__main__":
 
     ckit.registerWindowClass( "Cfiler" )
+    ckit.registerCommandInfoConstructor( ckit.CommandInfo )
 
     sys.path[0:0] = [
         os.path.join( ckit.getAppExePath(), 'extension' ),

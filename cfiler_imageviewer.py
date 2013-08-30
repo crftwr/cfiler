@@ -51,6 +51,8 @@ class ImageViewer( ckit.Window ):
 
         self.ini = ini
 
+        self.command = ckit.CommandMap(self)
+
         client_rect = self.getClientRect()
         offset_x, offset_y = self.charToClient( 0, 0 )
         char_w, char_h = self.getCharSize()
@@ -88,24 +90,24 @@ class ImageViewer( ckit.Window ):
         
         self.keymap = ckit.Keymap()
 
-        self.keymap[ "Return" ] = self.command_Close
-        self.keymap[ "Escape" ] = self.command_Close
-        self.keymap[ "A-Return" ] = self.command_ToggleMaximize
-        self.keymap[ "F" ] = self.command_ToggleMaximize
-        self.keymap[ "Space" ] = self.command_SelectDown
-        self.keymap[ "S-Space" ] = self.command_SelectUp
-        self.keymap[ "S-Left" ] = self.command_ScrollLeft
-        self.keymap[ "S-Right" ] = self.command_ScrollRight
-        self.keymap[ "S-Up" ] = self.command_ScrollUp
-        self.keymap[ "S-Down" ] = self.command_ScrollDown
-        self.keymap[ "Up" ] = self.command_CursorUp
-        self.keymap[ "Down" ] = self.command_CursorDown
-        self.keymap[ "PageUp" ] = self.command_CursorPageUp
-        self.keymap[ "PageDown" ] = self.command_CursorPageDown
-        self.keymap[ "Delete" ] = self.command_ZoomIn
-        self.keymap[ "Insert" ] = self.command_ZoomOut
-        self.keymap[ "End" ] = self.command_ZoomPolicyFit
-        self.keymap[ "Home" ] = self.command_ZoomPolicyOriginal
+        self.keymap[ "Return" ] = self.command.Close
+        self.keymap[ "Escape" ] = self.command.Close
+        self.keymap[ "A-Return" ] = self.command.ToggleMaximize
+        self.keymap[ "F" ] = self.command.ToggleMaximize
+        self.keymap[ "Space" ] = self.command.SelectDown
+        self.keymap[ "S-Space" ] = self.command.SelectUp
+        self.keymap[ "S-Left" ] = self.command.ScrollLeft
+        self.keymap[ "S-Right" ] = self.command.ScrollRight
+        self.keymap[ "S-Up" ] = self.command.ScrollUp
+        self.keymap[ "S-Down" ] = self.command.ScrollDown
+        self.keymap[ "Up" ] = self.command.CursorUp
+        self.keymap[ "Down" ] = self.command.CursorDown
+        self.keymap[ "PageUp" ] = self.command.CursorPageUp
+        self.keymap[ "PageDown" ] = self.command.CursorPageDown
+        self.keymap[ "Delete" ] = self.command.ZoomIn
+        self.keymap[ "Insert" ] = self.command.ZoomOut
+        self.keymap[ "End" ] = self.command.ZoomPolicyFit
+        self.keymap[ "Home" ] = self.command.ZoomPolicyOriginal
 
         ckit.callConfigFunc("configure_ImageViewer",self)
 
@@ -126,7 +128,7 @@ class ImageViewer( ckit.Window ):
         except KeyError:
             return
 
-        func()
+        func( ckit.CommandInfo() )
 
         return True
 
@@ -267,17 +269,33 @@ class ImageViewer( ckit.Window ):
         self.status_bar_layer.setMessage( status_message_left + status_message_right, error )
         self.status_bar.paint( self, 0, height-1, width, 1 )
 
+    #--------------------------------------------------------------------------
+
+    def executeCommand( self, name, info ):
+        try:
+            command = getattr( self, "command_" + name )
+        except AttributeError:
+            return False
+
+        command(info)
+        return True
+
+    def enumCommand(self):
+        for attr in dir(self):
+            if attr.startswith("command_"):
+                yield attr[ len("command_") : ]
+
     #--------------------------------------------------------
     # ここから下のメソッドはキーに割り当てることができる
     #--------------------------------------------------------
 
     ## メインウインドウで、閲覧中のファイルを選択する
-    def command_Select(self):
+    def command_Select( self, info ):
         if self.select_handler:
             self.select_handler(self.items[self.cursor])
 
     ## プレイリスト中の１つ次の画像を表示する
-    def command_CursorDown(self):
+    def command_CursorDown( self, info ):
         if self.job_queue.numItems()>0 : return
         if self.cursor+1>len(self.items)-1 : return
         self.cursor += 1
@@ -285,7 +303,7 @@ class ImageViewer( ckit.Window ):
         self.decode()
 
     ## プレイリスト中の１つ前の画像を表示する
-    def command_CursorUp(self):
+    def command_CursorUp( self, info ):
         if self.job_queue.numItems()>0 : return
         if self.cursor-1<0 : return
         self.cursor -= 1
@@ -293,7 +311,7 @@ class ImageViewer( ckit.Window ):
         self.decode()
 
     ## プレイリスト中の10個次の画像を表示する
-    def command_CursorPageUp(self):
+    def command_CursorPageUp( self, info ):
         if self.job_queue.numItems()>0 : return
         if self.cursor-1<0 : return
         self.cursor -= 10
@@ -302,7 +320,7 @@ class ImageViewer( ckit.Window ):
         self.decode()
 
     ## プレイリスト中の10個前の画像を表示する
-    def command_CursorPageDown(self):
+    def command_CursorPageDown( self, info ):
         if self.job_queue.numItems()>0 : return
         if self.cursor+1>len(self.items)-1 : return
         self.cursor += 10
@@ -311,43 +329,43 @@ class ImageViewer( ckit.Window ):
         self.decode()
 
     ## ファイルを選択して、１つ次の画像を表示する
-    def command_SelectDown(self):
-        self.command_Select()
-        self.command_CursorDown()
+    def command_SelectDown( self, info ):
+        self.command.Select()
+        self.command.CursorDown()
 
     ## ファイルを選択して、１つ前の画像を表示する
-    def command_SelectUp(self):
-        self.command_Select()
-        self.command_CursorUp()
+    def command_SelectUp( self, info ):
+        self.command.Select()
+        self.command.CursorUp()
 
     ## 左方向にスクロールする
-    def command_ScrollLeft(self):
+    def command_ScrollLeft( self, info ):
         self.move( ImageViewer.move_speed, 0 )
         self.paint()
 
     ## 右方向にスクロールする
-    def command_ScrollRight(self):
+    def command_ScrollRight( self, info ):
         self.move( -ImageViewer.move_speed, 0 )
         self.paint()
 
     ## 上方向にスクロールする
-    def command_ScrollUp(self):
+    def command_ScrollUp( self, info ):
         self.move( 0, ImageViewer.move_speed )
         self.paint()
 
     ## 下方向にスクロールする
-    def command_ScrollDown(self):
+    def command_ScrollDown( self, info ):
         self.move( 0, -ImageViewer.move_speed )
         self.paint()
 
     ## ズームインする
-    def command_ZoomIn(self):
+    def command_ZoomIn( self, info ):
         self.zoom(ImageViewer.zoom_speed)
         self.move(0,0)
         self.paint()
 
     ## ズームアウトする
-    def command_ZoomOut(self):
+    def command_ZoomOut( self, info ):
         self.zoom(1/ImageViewer.zoom_speed)
         self.move(0,0)
         self.paint()
@@ -356,7 +374,7 @@ class ImageViewer( ckit.Window ):
     #
     #  [original]モードでは、画像を拡大縮小せずに、元々のサイズで表示します。
     #
-    def command_ZoomPolicyOriginal(self):
+    def command_ZoomPolicyOriginal( self, info ):
         self.zoom_policy = "original"
         self.saveini()
         self.reset()
@@ -366,21 +384,21 @@ class ImageViewer( ckit.Window ):
     #
     #  [fit]モードでは、ウインドウに収まるように、画像を拡大縮小して表示します。
     #
-    def command_ZoomPolicyFit(self):
+    def command_ZoomPolicyFit( self, info ):
         self.zoom_policy = "fit"
         self.saveini()
         self.reset()
         self.paint()
 
     ## 画像ビューアウインドウの最大化状態を切り替える
-    def command_ToggleMaximize(self):
+    def command_ToggleMaximize( self, info ):
         if self.isMaximized():
             self.restore()
         else:
             self.maximize()
 
     ## 画像ビューアを閉じる
-    def command_Close(self):
+    def command_Close( self, info ):
         self.destroy()
 
 ## @} imageviewer

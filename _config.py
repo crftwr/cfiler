@@ -14,7 +14,7 @@ def configure(window):
     # --------------------------------------------------------------------
     # F1 キーでヘルプファイルを表示する
 
-    def command_Help():
+    def command_Help(info):
         print( "Helpを起動 :" )
         help_path = os.path.join( getAppExePath(), 'doc\\index.html' )
         shellExecute( None, help_path, "", "" )
@@ -25,7 +25,7 @@ def configure(window):
     # --------------------------------------------------------------------
     # F5 キーであふを起動する
 
-    def command_LaunchAFX():
+    def command_LaunchAFX(info):
         print( "あふを起動 :" )
         left_location = os.path.join( window.leftFileList().getLocation(), "" )
         right_location = os.path.join( window.rightFileList().getLocation(), "" )
@@ -39,7 +39,7 @@ def configure(window):
     # --------------------------------------------------------------------
     # Shift-X キーでプログラム起動メニューを表示する
 
-    def command_ProgramMenu():
+    def command_ProgramMenu(info):
 
         def launch_InternetExplorer():
             shellExecute( None, r"C:\Program Files\Internet Explorer\iexplore.exe", "", "" )

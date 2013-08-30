@@ -265,6 +265,8 @@ class MainWindow( ckit.Window ):
         self.left_window_width = self.ini.getint( "GEOMETRY", "left_window_width" )
         self.log_window_height = self.ini.getint( "GEOMETRY", "log_window_height" )
 
+        self.command = ckit.CommandMap(self)
+
         self.show_hidden = False
 
         self.status_bar = cfiler_statusbar.StatusBar()
@@ -840,9 +842,9 @@ class MainWindow( ckit.Window ):
         if not self.acquireUserInputOwnership(False) : return
         try:
             if self.profile:
-                cProfile.runctx( "func()", globals(), locals() )
+                cProfile.runctx( "func( ckit.CommandInfo() )", globals(), locals() )
             else:
-                func()
+                func( ckit.CommandInfo() )
         finally:
             self.releaseUserInputOwnership()
 
@@ -944,7 +946,7 @@ class MainWindow( ckit.Window ):
 
         if left_pane_rect[0]<=char_x<left_pane_rect[2] and left_pane_rect[1]<=char_y<left_pane_rect[3]:
 
-            if focus : self.command_FocusLeft()
+            if focus : self.command.FocusLeft()
 
             if left_pane_rect[1]==char_y:
                 region = PAINT_LEFT_LOCATION
@@ -957,7 +959,7 @@ class MainWindow( ckit.Window ):
 
         elif right_pane_rect[0]<=char_x<right_pane_rect[2] and right_pane_rect[1]<=char_y<right_pane_rect[3]:
 
-            if focus : self.command_FocusRight()
+            if focus : self.command.FocusRight()
 
             if left_pane_rect[1]==char_y:
                 region = PAINT_RIGHT_LOCATION
@@ -1122,12 +1124,12 @@ class MainWindow( ckit.Window ):
                 item_index = char_y-pane_rect[1]+pane.scroll_info.pos
                 if item_index<pane.file_list.numItems():
                     pane.cursor = item_index
-                    self.command_Enter()
+                    self.command.Enter()
 
         elif region==PAINT_LEFT_LOCATION or region==PAINT_RIGHT_LOCATION:
 
             if self.ini.getint( "MISC", "mouse_operation" ):
-                self.command_GotoParentDir()
+                self.command.GotoParentDir()
         
         elif region==PAINT_LOG:
             
@@ -1213,10 +1215,10 @@ class MainWindow( ckit.Window ):
 
         if region==PAINT_LEFT_ITEMS or region==PAINT_RIGHT_ITEMS:
             if self.ini.getint( "MISC", "mouse_operation" ):
-                self.command_ContextMenu()
+                self.command.ContextMenu()
         elif region==PAINT_LEFT_LOCATION or region==PAINT_RIGHT_LOCATION:
             if self.ini.getint( "MISC", "mouse_operation" ):
-                self.command_ContextMenuDir()
+                self.command.ContextMenuDir()
 
     def _onMouseMove( self, x, y, mod ):
         #print( "_onMouseMove", x, y )
@@ -1237,9 +1239,9 @@ class MainWindow( ckit.Window ):
             
             log_pane_rect = list( self.logPaneRect() )
             if char_y < log_pane_rect[1]:
-                self.command_LogUp()
+                self.command.LogUp()
             elif char_y >= log_pane_rect[3]:
-                self.command_LogDown()
+                self.command.LogDown()
 
             lineno, char_index = self._charPosToLogPos( char_x, char_y )
                 
@@ -1275,26 +1277,26 @@ class MainWindow( ckit.Window ):
             self.mouse_click_info=None
         
             while wheel>0:
-                self.command_ScrollUp()
-                self.command_ScrollUp()
-                self.command_ScrollUp()
+                self.command.ScrollUp()
+                self.command.ScrollUp()
+                self.command.ScrollUp()
                 wheel-=1
             while wheel<0:
-                self.command_ScrollDown()
-                self.command_ScrollDown()
-                self.command_ScrollDown()
+                self.command.ScrollDown()
+                self.command.ScrollDown()
+                self.command.ScrollDown()
                 wheel+=1
 
         elif region==PAINT_LOG:
             while wheel>0:
-                self.command_LogUp()
-                self.command_LogUp()
-                self.command_LogUp()
+                self.command.LogUp()
+                self.command.LogUp()
+                self.command.LogUp()
                 wheel-=1
             while wheel<0:
-                self.command_LogDown()
-                self.command_LogDown()
-                self.command_LogDown()
+                self.command.LogDown()
+                self.command.LogDown()
+                self.command.LogDown()
                 wheel+=1
 
 
@@ -2109,108 +2111,108 @@ class MainWindow( ckit.Window ):
 
         ckit.Keymap.init()
         self.keymap = ckit.Keymap()
-        self.keymap[ "Up" ] = self.command_CursorUp
-        self.keymap[ "Down" ] = self.command_CursorDown
-        self.keymap[ "C-Up" ] = self.command_CursorUpSelectedOrBookmark
-        self.keymap[ "C-Down" ] = self.command_CursorDownSelectedOrBookmark
-        self.keymap[ "PageUp" ] = self.command_CursorPageUp
-        self.keymap[ "PageDown" ] = self.command_CursorPageDown
-        self.keymap[ "C-PageUp" ] = self.command_CursorTop
-        self.keymap[ "C-PageDown" ] = self.command_CursorBottom
-        self.keymap[ "Tab" ] = self.command_FocusOther
-        self.keymap[ "C-Tab" ] = self.command_ActivateCfilerNext
-        self.keymap[ "Left" ] = self.command_FocusLeftOrGotoParentDir
-        self.keymap[ "Right" ] = self.command_FocusRightOrGotoParentDir
-        self.keymap[ "Back" ] = self.command_GotoParentDir
-        self.keymap[ "A-Left" ] = self.command_MoveSeparatorLeft
-        self.keymap[ "A-Right" ] = self.command_MoveSeparatorRight
-        self.keymap[ "A-Up" ] = self.command_MoveSeparatorUp
-        self.keymap[ "A-Down" ] = self.command_MoveSeparatorDown
-        self.keymap[ "C-A-Left" ] = self.command_MoveSeparatorLeftQuick
-        self.keymap[ "C-A-Right" ] = self.command_MoveSeparatorRightQuick
-        self.keymap[ "C-A-Up" ] = self.command_MoveSeparatorUpQuick
-        self.keymap[ "C-A-Down" ] = self.command_MoveSeparatorDownQuick
-        self.keymap[ "Return" ] = self.command_Enter
-        self.keymap[ "C-Return" ] = self.command_Execute
-        self.keymap[ "Escape" ] = self.command_Escape
-        self.keymap[ "S-Escape" ] = self.command_CancelTask
-        self.keymap[ "End" ] = self.command_DeselectAll
-        self.keymap[ "S-End" ] = self.command_Refresh
-        self.keymap[ "S-Up" ] = self.command_LogUp
-        self.keymap[ "S-Down" ] = self.command_LogDown
-        self.keymap[ "S-Left" ] = self.command_LogPageUp
-        self.keymap[ "S-Right" ] = self.command_LogPageDown
-        self.keymap[ "Minus" ] = self.command_MoveSeparatorCenter
-        self.keymap[ "S-Minus" ] = self.command_MoveSeparatorMaximizeH
-        self.keymap[ "Space" ] = self.command_SelectDown
-        self.keymap[ "S-Space" ] = self.command_SelectUp
-        self.keymap[ "C-Space" ] = self.command_SelectRegion
-        self.keymap[ "A" ] = self.command_SelectAllFiles
-        self.keymap[ "Home" ] = self.command_SelectAllFiles
-        self.keymap[ "S-A" ] = self.command_SelectAll
-        self.keymap[ "S-Home" ] = self.command_SelectAll
-        self.keymap[ "C" ] = self.command_Copy
-        self.keymap[ "S-C" ] = self.command_CopyInput
-        self.keymap[ "E" ] = self.command_Edit
-        self.keymap[ "S-E" ] = self.command_EditInput
-        self.keymap[ "F" ] = self.command_IncrementalSearch
-        self.keymap[ "S-F" ] = self.command_Search
-        self.keymap[ "S-G" ] = self.command_Grep
-        self.keymap[ "I" ] = self.command_Info
-        self.keymap[ "H" ] = self.command_JumpHistory
-        self.keymap[ "J" ] = self.command_JumpList
-        self.keymap[ "S-J" ] = self.command_JumpInput
-        self.keymap[ "C-J" ] = self.command_JumpFound
-        self.keymap[ "Q" ] = self.command_Quit
-        self.keymap[ ckit.KeyEvent( ord('M'), 0, extra=1 ) ] = self.command_Move
-        self.keymap[ ckit.KeyEvent( ord('M'), MODKEY_SHIFT, extra=1 ) ] = self.command_MoveInput
-        self.keymap[ "O" ] = self.command_ChdirActivePaneToOther
-        self.keymap[ "S-O" ] = self.command_ChdirInactivePaneToOther
-        self.keymap[ "S" ] = self.command_SetSorter
-        self.keymap[ "W" ] = self.command_SelectCompare
-        self.keymap[ "S-W" ] = self.command_CompareTools
-        self.keymap[ "R" ] = self.command_Rename
-        self.keymap[ "S-R" ] = self.command_BatchRename
-        self.keymap[ "C-C" ] = self.command_SetClipboard_LogSelectedOrFilename
-        self.keymap[ "C-S-C" ] = self.command_SetClipboard_Fullpath
-        self.keymap[ "A-C" ] = self.command_SetClipboard_LogAll
-        self.keymap[ "P" ] = self.command_CreateArchive
-        self.keymap[ "U" ] = self.command_ExtractArchive
-        self.keymap[ "S-U" ] = self.command_InfoArchive
-        self.keymap[ "B" ] = self.command_BookmarkListLocal
-        self.keymap[ "S-B" ] = self.command_BookmarkList
-        self.keymap[ "C-B" ] = self.command_Bookmark
-        self.keymap[ "X" ] = self.command_CommandLine
-        self.keymap[ "Period" ] = self.command_MusicList
-        self.keymap[ "S-Period" ] = self.command_MusicStop
-        self.keymap[ "Z" ] = self.command_ConfigMenu
-        self.keymap[ "S-Z" ] = self.command_ConfigMenu2
-        self.keymap[ "A-Z" ] = self.command_DuplicateCfiler
-        self.keymap[ "S-Colon" ] = self.command_SetFilter
-        self.keymap[ "Colon" ] = self.command_SetFilterList
-        self.keymap[ "BackSlash" ] = self.command_GotoRootDir
+        self.keymap[ "Up" ] = self.command.CursorUp
+        self.keymap[ "Down" ] = self.command.CursorDown
+        self.keymap[ "C-Up" ] = self.command.CursorUpSelectedOrBookmark
+        self.keymap[ "C-Down" ] = self.command.CursorDownSelectedOrBookmark
+        self.keymap[ "PageUp" ] = self.command.CursorPageUp
+        self.keymap[ "PageDown" ] = self.command.CursorPageDown
+        self.keymap[ "C-PageUp" ] = self.command.CursorTop
+        self.keymap[ "C-PageDown" ] = self.command.CursorBottom
+        self.keymap[ "Tab" ] = self.command.FocusOther
+        self.keymap[ "C-Tab" ] = self.command.ActivateCfilerNext
+        self.keymap[ "Left" ] = self.command.FocusLeftOrGotoParentDir
+        self.keymap[ "Right" ] = self.command.FocusRightOrGotoParentDir
+        self.keymap[ "Back" ] = self.command.GotoParentDir
+        self.keymap[ "A-Left" ] = self.command.MoveSeparatorLeft
+        self.keymap[ "A-Right" ] = self.command.MoveSeparatorRight
+        self.keymap[ "A-Up" ] = self.command.MoveSeparatorUp
+        self.keymap[ "A-Down" ] = self.command.MoveSeparatorDown
+        self.keymap[ "C-A-Left" ] = self.command.MoveSeparatorLeftQuick
+        self.keymap[ "C-A-Right" ] = self.command.MoveSeparatorRightQuick
+        self.keymap[ "C-A-Up" ] = self.command.MoveSeparatorUpQuick
+        self.keymap[ "C-A-Down" ] = self.command.MoveSeparatorDownQuick
+        self.keymap[ "Return" ] = self.command.Enter
+        self.keymap[ "C-Return" ] = self.command.Execute
+        self.keymap[ "Escape" ] = self.command.Escape
+        self.keymap[ "S-Escape" ] = self.command.CancelTask
+        self.keymap[ "End" ] = self.command.DeselectAll
+        self.keymap[ "S-End" ] = self.command.Refresh
+        self.keymap[ "S-Up" ] = self.command.LogUp
+        self.keymap[ "S-Down" ] = self.command.LogDown
+        self.keymap[ "S-Left" ] = self.command.LogPageUp
+        self.keymap[ "S-Right" ] = self.command.LogPageDown
+        self.keymap[ "Minus" ] = self.command.MoveSeparatorCenter
+        self.keymap[ "S-Minus" ] = self.command.MoveSeparatorMaximizeH
+        self.keymap[ "Space" ] = self.command.SelectDown
+        self.keymap[ "S-Space" ] = self.command.SelectUp
+        self.keymap[ "C-Space" ] = self.command.SelectRegion
+        self.keymap[ "A" ] = self.command.SelectAllFiles
+        self.keymap[ "Home" ] = self.command.SelectAllFiles
+        self.keymap[ "S-A" ] = self.command.SelectAll
+        self.keymap[ "S-Home" ] = self.command.SelectAll
+        self.keymap[ "C" ] = self.command.Copy
+        self.keymap[ "S-C" ] = self.command.CopyInput
+        self.keymap[ "E" ] = self.command.Edit
+        self.keymap[ "S-E" ] = self.command.EditInput
+        self.keymap[ "F" ] = self.command.IncrementalSearch
+        self.keymap[ "S-F" ] = self.command.Search
+        self.keymap[ "S-G" ] = self.command.Grep
+        self.keymap[ "I" ] = self.command.Info
+        self.keymap[ "H" ] = self.command.JumpHistory
+        self.keymap[ "J" ] = self.command.JumpList
+        self.keymap[ "S-J" ] = self.command.JumpInput
+        self.keymap[ "C-J" ] = self.command.JumpFound
+        self.keymap[ "Q" ] = self.command.Quit
+        self.keymap[ ckit.KeyEvent( ord('M'), 0, extra=1 ) ] = self.command.Move
+        self.keymap[ ckit.KeyEvent( ord('M'), MODKEY_SHIFT, extra=1 ) ] = self.command.MoveInput
+        self.keymap[ "O" ] = self.command.ChdirActivePaneToOther
+        self.keymap[ "S-O" ] = self.command.ChdirInactivePaneToOther
+        self.keymap[ "S" ] = self.command.SetSorter
+        self.keymap[ "W" ] = self.command.SelectCompare
+        self.keymap[ "S-W" ] = self.command.CompareTools
+        self.keymap[ "R" ] = self.command.Rename
+        self.keymap[ "S-R" ] = self.command.BatchRename
+        self.keymap[ "C-C" ] = self.command.SetClipboard_LogSelectedOrFilename
+        self.keymap[ "C-S-C" ] = self.command.SetClipboard_Fullpath
+        self.keymap[ "A-C" ] = self.command.SetClipboard_LogAll
+        self.keymap[ "P" ] = self.command.CreateArchive
+        self.keymap[ "U" ] = self.command.ExtractArchive
+        self.keymap[ "S-U" ] = self.command.InfoArchive
+        self.keymap[ "B" ] = self.command.BookmarkListLocal
+        self.keymap[ "S-B" ] = self.command.BookmarkList
+        self.keymap[ "C-B" ] = self.command.Bookmark
+        self.keymap[ "X" ] = self.command.CommandLine
+        self.keymap[ "Period" ] = self.command.MusicList
+        self.keymap[ "S-Period" ] = self.command.MusicStop
+        self.keymap[ "Z" ] = self.command.ConfigMenu
+        self.keymap[ "S-Z" ] = self.command.ConfigMenu2
+        self.keymap[ "A-Z" ] = self.command.DuplicateCfiler
+        self.keymap[ "S-Colon" ] = self.command.SetFilter
+        self.keymap[ "Colon" ] = self.command.SetFilterList
+        self.keymap[ "BackSlash" ] = self.command.GotoRootDir
         if default_keymap in ("101","106"):
-            self.keymap[ "D" ] = self.command_SelectDrive
-            self.keymap[ "K" ] = self.command_Delete
-            self.keymap[ "S-K" ] = self.command_Delete2
-            self.keymap[ "L" ] = self.command_View
-            self.keymap[ ckit.KeyEvent( ord('M'), 0, extra=0 ) ] = self.command_Mkdir
+            self.keymap[ "D" ] = self.command.SelectDrive
+            self.keymap[ "K" ] = self.command.Delete
+            self.keymap[ "S-K" ] = self.command.Delete2
+            self.keymap[ "L" ] = self.command.View
+            self.keymap[ ckit.KeyEvent( ord('M'), 0, extra=0 ) ] = self.command.Mkdir
         elif default_keymap in ("101afx","106afx"):
-            self.keymap[ "D" ] = self.command_Delete
-            self.keymap[ "S-D" ] = self.command_Delete2
-            self.keymap[ "K" ] = self.command_Mkdir
-            self.keymap[ "L" ] = self.command_SelectDrive
-            self.keymap[ "V" ] = self.command_View
+            self.keymap[ "D" ] = self.command.Delete
+            self.keymap[ "S-D" ] = self.command.Delete2
+            self.keymap[ "K" ] = self.command.Mkdir
+            self.keymap[ "L" ] = self.command.SelectDrive
+            self.keymap[ "V" ] = self.command.View
         if default_keymap in ("101","101afx"):
-            self.keymap[ "Slash" ] = self.command_ContextMenu
-            self.keymap[ "S-Slash" ] = self.command_ContextMenuDir
-            self.keymap[ "Quote" ] = self.command_SelectUsingFilterList
-            self.keymap[ "S-Quote" ] = self.command_SelectUsingFilter
+            self.keymap[ "Slash" ] = self.command.ContextMenu
+            self.keymap[ "S-Slash" ] = self.command.ContextMenuDir
+            self.keymap[ "Quote" ] = self.command.SelectUsingFilterList
+            self.keymap[ "S-Quote" ] = self.command.SelectUsingFilter
         elif default_keymap in ("106","106afx"):
-            self.keymap[ "BackSlash" ] = self.command_ContextMenu
-            self.keymap[ "S-BackSlash" ] = self.command_ContextMenuDir
-            self.keymap[ "Atmark" ] = self.command_SelectUsingFilterList
-            self.keymap[ "S-Atmark" ] = self.command_SelectUsingFilter
+            self.keymap[ "BackSlash" ] = self.command.ContextMenu
+            self.keymap[ "S-BackSlash" ] = self.command.ContextMenuDir
+            self.keymap[ "Atmark" ] = self.command.SelectUsingFilterList
+            self.keymap[ "S-Atmark" ] = self.command.SelectUsingFilter
 
         self.jump_list = [
         ]
@@ -2230,8 +2232,8 @@ class MainWindow( ckit.Window ):
         ]
         
         self.compare_tool_list = [
-            ( "ファイル比較",      self.command_Diff ),
-            ( "ディレクトリ比較",  self.command_DirCompare ),
+            ( "ファイル比較",      self.command.Diff ),
+            ( "ディレクトリ比較",  self.command.DirCompare ),
         ]
 
         self.sorter_list = [
@@ -2268,14 +2270,14 @@ class MainWindow( ckit.Window ):
         ]
         
         self.launcher.command_list = [
-            ( "Reload",           self.command_Reload ),
-            ( "About",            self.command_About ),
-            ( "SplitFile",        self.command_SplitFile ),
-            ( "JoinFile",         self.command_JoinFile ),
-            ( "Wallpaper",        self.command_Wallpaper ),
-            ( "_MemoryStat",      self.command_MemoryStat ),
-            ( "_RefererTree",     self.command_RefererTree ),
-            ( "NetworkPlaceTest", self.command_NetworkPlaceTest ),
+            ( "Reload",           self.command.Reload ),
+            ( "About",            self.command.About ),
+            ( "SplitFile",        self.command.SplitFile ),
+            ( "JoinFile",         self.command.JoinFile ),
+            ( "Wallpaper",        self.command.Wallpaper ),
+            ( "_MemoryStat",      self.command.MemoryStat ),
+            ( "_RefererTree",     self.command.RefererTree ),
+            ( "NetworkPlaceTest", self.command.NetworkPlaceTest ),
         ]
         
         ckit.reloadConfigScript( self.config_filename )
@@ -2594,7 +2596,7 @@ class MainWindow( ckit.Window ):
             now = "%04d%02d%02d%02d%02d%02d" % now[0:6]
             if int(now) - int(last_checked_date) > check_frequency:
                 self.ini.set( "UPDATE", "last_checked_date", now )
-                self.command_NetworkUpdate()
+                self.command.NetworkUpdate()
 
         # 左ペインの初期位置
         if left_location:
@@ -2662,12 +2664,28 @@ class MainWindow( ckit.Window ):
         self.killHotKey( self.hotkey_Activate )
         self.setHotKey( activate_vk, activate_mod, self.hotkey_Activate )
 
+    #--------------------------------------------------------------------------
+
+    def executeCommand( self, name, info ):
+        try:
+            command = getattr( self, "command_" + name )
+        except AttributeError:
+            return False
+
+        command(info)
+        return True
+
+    def enumCommand(self):
+        for attr in dir(self):
+            if attr.startswith("command_"):
+                yield attr[ len("command_") : ]
+
     #--------------------------------------------------------
     # ここから下のメソッドはキーに割り当てることができる
     #--------------------------------------------------------
     
     ## カーソルを1つ上に移動させる
-    def command_CursorUp(self):
+    def command_CursorUp( self, info ):
         pane = self.activePane()
         pane.cursor -= 1
         if pane.cursor<0 : pane.cursor=0
@@ -2675,7 +2693,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## カーソルを1つ下に移動させる
-    def command_CursorDown(self):
+    def command_CursorDown( self, info ):
         pane = self.activePane()
         pane.cursor += 1
         if pane.cursor>pane.file_list.numItems()-1 : pane.cursor=pane.file_list.numItems()-1
@@ -2683,7 +2701,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 上方向の選択されているアイテムまでカーソルを移動させる
-    def command_CursorUpSelected(self):
+    def command_CursorUpSelected( self, info ):
         pane = self.activePane()
         cursor = pane.cursor
         while True:
@@ -2698,7 +2716,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 下方向の選択されているアイテムまでカーソルを移動させる
-    def command_CursorDownSelected(self):
+    def command_CursorDownSelected( self, info ):
         pane = self.activePane()
         cursor = pane.cursor
         while True:
@@ -2713,7 +2731,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 上方向のブックマークされているアイテムまでカーソルを移動させる
-    def command_CursorUpBookmark(self):
+    def command_CursorUpBookmark( self, info ):
         pane = self.activePane()
         cursor = pane.cursor
         while True:
@@ -2728,7 +2746,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 下方向のブックマークされているアイテムまでカーソルを移動させる
-    def command_CursorDownBookmark(self):
+    def command_CursorDownBookmark( self, info ):
         pane = self.activePane()
         cursor = pane.cursor
         while True:
@@ -2743,23 +2761,23 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 上方向の選択またはブックマークされているアイテムまでカーソルを移動させる
-    def command_CursorUpSelectedOrBookmark(self):
+    def command_CursorUpSelectedOrBookmark( self, info ):
         pane = self.activePane()
         if pane.file_list.selected():
-            self.command_CursorUpSelected()
+            self.command.CursorUpSelected()
         else:
-            self.command_CursorUpBookmark()
+            self.command.CursorUpBookmark()
 
     ## 下方向の選択またはブックマークされているアイテムまでカーソルを移動させる
-    def command_CursorDownSelectedOrBookmark(self):
+    def command_CursorDownSelectedOrBookmark( self, info ):
         pane = self.activePane()
         if pane.file_list.selected():
-            self.command_CursorDownSelected()
+            self.command.CursorDownSelected()
         else:
-            self.command_CursorDownBookmark()
+            self.command.CursorDownBookmark()
 
     ## 1ページ上方向にカーソルを移動させる
-    def command_CursorPageUp(self):
+    def command_CursorPageUp( self, info ):
         pane = self.activePane()
         if pane.cursor>pane.scroll_info.pos + 1 :
             pane.cursor = pane.scroll_info.pos + 1
@@ -2770,7 +2788,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 1ページ下方向にカーソルを移動させる
-    def command_CursorPageDown(self):
+    def command_CursorPageDown( self, info ):
         pane = self.activePane()
         if pane.cursor<pane.scroll_info.pos+self.fileListItemPaneHeight()-2:
             pane.cursor = pane.scroll_info.pos+self.fileListItemPaneHeight()-2
@@ -2781,21 +2799,21 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## リストの先頭にカーソルを移動させる
-    def command_CursorTop(self):
+    def command_CursorTop( self, info ):
         pane = self.activePane()
         pane.cursor=0
         pane.scroll_info.makeVisible( pane.cursor, self.fileListItemPaneHeight(), 1 )
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## リストの末尾にカーソルを移動させる
-    def command_CursorBottom(self):
+    def command_CursorBottom( self, info ):
         pane = self.activePane()
         pane.cursor=pane.file_list.numItems()-1
         pane.scroll_info.makeVisible( pane.cursor, self.fileListItemPaneHeight(), 1 )
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 一行上方向にスクロールする
-    def command_ScrollUp(self):
+    def command_ScrollUp( self, info ):
         pane = self.activePane()
         if pane.scroll_info.pos-1 >= 0:
             pane.scroll_info.pos -= 1
@@ -2803,7 +2821,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## 一行下方向にスクロールする
-    def command_ScrollDown(self):
+    def command_ScrollDown( self, info ):
         pane = self.activePane()
         if pane.scroll_info.pos+1 < pane.file_list.numItems()-self.fileListItemPaneHeight()+2:
             pane.cursor += 1
@@ -2811,7 +2829,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS)
 
     ## アクティブではないほうのペインにフォーカスする
-    def command_FocusOther(self):
+    def command_FocusOther( self, info ):
         if self.focus==MainWindow.FOCUS_LEFT:
             self.focus = MainWindow.FOCUS_RIGHT
         elif self.focus==MainWindow.FOCUS_RIGHT:
@@ -2819,7 +2837,7 @@ class MainWindow( ckit.Window ):
         self.paint( PAINT_LEFT | PAINT_RIGHT )
 
     ## 親ディレクトリに移動する
-    def command_GotoParentDir(self):
+    def command_GotoParentDir( self, info ):
         pane = self.activePane()
         name = pane.file_list.getItem(pane.cursor).name
         try:
@@ -2829,55 +2847,55 @@ class MainWindow( ckit.Window ):
         self.jumpLister( pane, new_lister, select_name )
 
     ## ルートディレクトリに移動する
-    def command_GotoRootDir(self):
+    def command_GotoRootDir( self, info ):
         pane = self.activePane()
         new_lister = pane.file_list.getLister().getRoot()
         self.jumpLister( pane, new_lister )
 
     ## 左ペインにフォーカスする
-    def command_FocusLeft(self):
+    def command_FocusLeft( self, info ):
         if self.focus==MainWindow.FOCUS_RIGHT:
             self.focus = MainWindow.FOCUS_LEFT
         self.paint( PAINT_LEFT | PAINT_RIGHT )
 
     ## 右ペインにフォーカスする
-    def command_FocusRight(self):
+    def command_FocusRight( self, info ):
         if self.focus==MainWindow.FOCUS_LEFT:
             self.focus = MainWindow.FOCUS_RIGHT
         self.paint( PAINT_LEFT | PAINT_RIGHT )
 
     ## 左ペインにフォーカスされていれば親ディレクトリに移動し、そうでなければ左ペインにフォーカスする
-    def command_FocusLeftOrGotoParentDir(self):
+    def command_FocusLeftOrGotoParentDir( self, info ):
         if self.focus==MainWindow.FOCUS_LEFT:
-            return self.command_GotoParentDir()
-        self.command_FocusLeft()
+            return self.command.GotoParentDir()
+        self.command.FocusLeft()
 
     ## 右ペインにフォーカスされていれば親ディレクトリに移動し、そうでなければ右ペインにフォーカスする
-    def command_FocusRightOrGotoParentDir(self):
+    def command_FocusRightOrGotoParentDir( self, info ):
         if self.focus==MainWindow.FOCUS_RIGHT:
-            return self.command_GotoParentDir()
-        self.command_FocusRight()
+            return self.command.GotoParentDir()
+        self.command.FocusRight()
 
     ## カーソル位置のアイテムの選択状態を切り替える
-    def command_Select(self):
+    def command_Select( self, info ):
         pane = self.activePane()
         pane.file_list.selectItem(pane.cursor)
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## カーソル位置のアイテムの選択状態を切り替えて、カーソルを1つ下に移動する
-    def command_SelectDown(self):
-        self.command_Select()
-        self.command_CursorDown()
+    def command_SelectDown( self, info ):
+        self.command.Select()
+        self.command.CursorDown()
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## カーソル位置のアイテムの選択状態を切り替えて、カーソルを1つ上に移動する
-    def command_SelectUp(self):
-        self.command_Select()
-        self.command_CursorUp()
+    def command_SelectUp( self, info ):
+        self.command.Select()
+        self.command.CursorUp()
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## 上方向の最も近い選択アイテムからカーソル位置までの全てのアイテムを選択する
-    def command_SelectRegion(self):
+    def command_SelectRegion( self, info ):
         pane = self.activePane()
         i = pane.cursor
         while i>=0:
@@ -2892,14 +2910,14 @@ class MainWindow( ckit.Window ):
             i-=1
 
     ## ファイルリスト中の全てのアイテムの選択状態を切り替える
-    def command_SelectAll(self):
+    def command_SelectAll( self, info ):
         pane = self.activePane()
         for i in range(pane.file_list.numItems()):
             pane.file_list.selectItem(i)
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## ファイルリスト中の全てのファイルアイテムの選択状態を切り替える
-    def command_SelectAllFiles(self):
+    def command_SelectAllFiles( self, info ):
         pane = self.activePane()
         for i in range(pane.file_list.numItems()):
             item = pane.file_list.getItem(i)
@@ -2908,28 +2926,28 @@ class MainWindow( ckit.Window ):
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## ファイルリスト中の全てのアイテムの選択を解除する
-    def command_DeselectAll(self):
+    def command_DeselectAll( self, info ):
         pane = self.activePane()
         for i in range(pane.file_list.numItems()):
             pane.file_list.selectItem( i, False )
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## 左右のペインを分離するセパレータを左方向に動かす
-    def command_MoveSeparatorLeft(self):
+    def command_MoveSeparatorLeft( self, info ):
         self.left_window_width -= 3
         if self.left_window_width<0 : self.left_window_width=0
         self.updateThemePosSize()
         self.paint( PAINT_UPPER )
 
     ## 左右のペインを分離するセパレータを右方向に動かす
-    def command_MoveSeparatorRight(self):
+    def command_MoveSeparatorRight( self, info ):
         self.left_window_width += 3
         if self.left_window_width>self.width()-1 : self.left_window_width=self.width()-1
         self.updateThemePosSize()
         self.paint( PAINT_UPPER )
 
     ## 上下のペインを分離するセパレータを上方向に動かす
-    def command_MoveSeparatorUp(self):
+    def command_MoveSeparatorUp( self, info ):
 
         log_window_height_old = self.log_window_height
         self.log_window_height += 3
@@ -2943,7 +2961,7 @@ class MainWindow( ckit.Window ):
         self.paint()
 
     ## 上下のペインを分離するセパレータを下方向に動かす
-    def command_MoveSeparatorDown(self):
+    def command_MoveSeparatorDown( self, info ):
 
         log_window_height_old = self.log_window_height
         self.log_window_height -= 3
@@ -2960,7 +2978,7 @@ class MainWindow( ckit.Window ):
     #
     #  中央か端に達するまで、セパレータを左方向に動かします。
     #
-    def command_MoveSeparatorLeftQuick(self):
+    def command_MoveSeparatorLeftQuick( self, info ):
         center = (self.width()-1) // 2
         if self.left_window_width > center :
             self.left_window_width = center
@@ -2973,7 +2991,7 @@ class MainWindow( ckit.Window ):
     #
     #  中央か端に達するまで、セパレータを右方向に動かします。
     #
-    def command_MoveSeparatorRightQuick(self):
+    def command_MoveSeparatorRightQuick( self, info ):
         center = (self.width()-1) // 2
         if self.left_window_width < center :
             self.left_window_width = center
@@ -2986,7 +3004,7 @@ class MainWindow( ckit.Window ):
     #
     #  縦3分割した位置に達するまで、セパレータを上方向に動かします。
     #
-    def command_MoveSeparatorUpQuick(self):
+    def command_MoveSeparatorUpQuick( self, info ):
         
         pos_list = [
             (self.height()-4) * 1 // 3,
@@ -3011,7 +3029,7 @@ class MainWindow( ckit.Window ):
     #
     #  縦3分割した位置に達するまで、セパレータを下方向に動かします。
     #
-    def command_MoveSeparatorDownQuick(self):
+    def command_MoveSeparatorDownQuick( self, info ):
 
         pos_list = [
             (self.height()-4) * 3 // 3,
@@ -3034,13 +3052,13 @@ class MainWindow( ckit.Window ):
         self.paint()
 
     ## 左右のペインを分離するセパレータを中央にリセットする
-    def command_MoveSeparatorCenter(self):
+    def command_MoveSeparatorCenter( self, info ):
         self.left_window_width = (self.width()-1) // 2
         self.updateThemePosSize()
         self.paint()
 
     ## 左右のペインを分離するセパレータを、アクティブなペインが最大化するように、片方に寄せる
-    def command_MoveSeparatorMaximizeH(self):
+    def command_MoveSeparatorMaximizeH( self, info ):
         if self.focus==MainWindow.FOCUS_LEFT:
             self.left_window_width=self.width()-1
         elif self.focus==MainWindow.FOCUS_RIGHT:
@@ -3061,7 +3079,7 @@ class MainWindow( ckit.Window ):
     #  -# 音楽ファイルであれば、内蔵ミュージックプレイヤで再生。
     #  -# それ以外のファイルは、テキストビューアまたはバイナリビューアで閲覧。
     #
-    def command_Enter(self):
+    def command_Enter( self, info ):
 
         if self.enter_hook:
             if self.enter_hook():
@@ -3161,7 +3179,7 @@ class MainWindow( ckit.Window ):
 
 
     ## カーソル位置のアイテムに対して、OSで関連付けられた処理を実行する
-    def command_Execute(self):
+    def command_Execute( self, info ):
         pane = self.activePane()
         item = pane.file_list.getItem(pane.cursor)
         fullpath = os.path.join( pane.file_list.getLocation(), item.name )
@@ -3172,42 +3190,42 @@ class MainWindow( ckit.Window ):
     #
     #  ESCキーの動作は、設定メニュー2で変更することが出来ます。
     #
-    def command_Escape(self):
+    def command_Escape( self, info ):
         esc_action = self.ini.get( "MISC", "esc_action" )
         if esc_action == "inactivate":
             self.inactivate()
 
     ## バックグラウンドタスクを全てキャンセルする
-    def command_CancelTask(self):
+    def command_CancelTask( self, info ):
         for task_queue in self.task_queue_stack:
             task_queue.cancel()
 
     ## アクティブペインのファイルリストを再読み込みする
-    def command_Refresh(self):
+    def command_Refresh( self, info ):
         self.refreshFileList( self.activePane(), True, False )
         self.paint(PAINT_FOCUSED)
 
     ## ログペインを1行上方向にスクロールする
-    def command_LogUp(self):
+    def command_LogUp( self, info ):
         self.log_pane.scroll_info.pos -= 1
         if self.log_pane.scroll_info.pos<0 : self.log_pane.scroll_info.pos=0
         self.paint( PAINT_LOG )
 
     ## ログペインを1行下方向にスクロールする
-    def command_LogDown(self):
+    def command_LogDown( self, info ):
         self.log_pane.scroll_info.pos += 1
         if self.log_pane.scroll_info.pos>self.log_pane.log.numLines()-self.logPaneHeight() : self.log_pane.scroll_info.pos=self.log_pane.log.numLines()-self.logPaneHeight()
         if self.log_pane.scroll_info.pos<0 : self.log_pane.scroll_info.pos=0
         self.paint( PAINT_LOG )
 
     ## ログペインを1ページ上方向にスクロールする
-    def command_LogPageUp(self):
+    def command_LogPageUp( self, info ):
         self.log_pane.scroll_info.pos -= self.logPaneHeight()
         if self.log_pane.scroll_info.pos<0 : self.log_pane.scroll_info.pos=0
         self.paint( PAINT_LOG )
 
     ## ログペインを1ページ下方向にスクロールする
-    def command_LogPageDown(self):
+    def command_LogPageDown( self, info ):
         self.log_pane.scroll_info.pos += self.logPaneHeight()
         if self.log_pane.scroll_info.pos>self.log_pane.log.numLines()-self.logPaneHeight() : self.log_pane.scroll_info.pos=self.log_pane.log.numLines()-self.logPaneHeight()
         if self.log_pane.scroll_info.pos<0 : self.log_pane.scroll_info.pos=0
@@ -3310,7 +3328,7 @@ class MainWindow( ckit.Window ):
     #  command_Delete ではデフォルトに設定された方法で削除を実行します。
     #  削除のデフォルト動作は、設定メニュー2で変更することが出来ます。
     #
-    def command_Delete(self):
+    def command_Delete( self, info ):
         delete_behavior = self.ini.get( "MISC", "delete_behavior" )
         if delete_behavior=="recycle_bin":
             use_builtin_delete = False
@@ -3324,7 +3342,7 @@ class MainWindow( ckit.Window ):
     #  command_Delete2 ではデフォルトではない方法で削除を実行します。
     #  削除のデフォルト動作は、設定メニュー2で変更することが出来ます。
     #
-    def command_Delete2(self):
+    def command_Delete2( self, info ):
         delete_behavior = self.ini.get( "MISC", "delete_behavior" )
         if delete_behavior=="recycle_bin":
             use_builtin_delete = False
@@ -3638,7 +3656,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, str_action.strip() )
 
     ## 選択されているアイテムを、もう片方のペインに対してコピーする
-    def command_Copy(self):
+    def command_Copy( self, info ):
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
 
@@ -3660,7 +3678,7 @@ class MainWindow( ckit.Window ):
         self._copyMoveCommon( active_pane, active_pane.file_list.getLister(), inactive_pane.file_list.getLister(), items, "c", active_pane.file_list.getFilter() )
 
     ## 選択されているアイテムを、入力したディレクトリパスにコピーする
-    def command_CopyInput(self):
+    def command_CopyInput( self, info ):
 
         pane = self.activePane()
 
@@ -3689,7 +3707,7 @@ class MainWindow( ckit.Window ):
         child_lister.destroy()
 
     ## 選択されているアイテムを、もう片方のペインに対して移動する
-    def command_Move(self):
+    def command_Move( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -3712,7 +3730,7 @@ class MainWindow( ckit.Window ):
         self._copyMoveCommon( active_pane, active_pane.file_list.getLister(), inactive_pane.file_list.getLister(), items, "m", active_pane.file_list.getFilter() )
 
     ## 選択されているアイテムを、入力したディレクトリパスに移動する
-    def command_MoveInput(self):
+    def command_MoveInput( self, info ):
         pane = self.activePane()
         items = []
         for i in range(pane.file_list.numItems()):
@@ -3745,7 +3763,7 @@ class MainWindow( ckit.Window ):
     #  その際、引数には ( ファイルアイテムオブジェクト, (行番号,カラム), カレントディレクトリ ) が渡ります。
     #  editor が呼び出し可能オブジェクトでなければ、テキストエディタのプログラムファイル名とみなし、shellExecute を使ってエディタを起動します。
     #
-    def command_Edit(self):
+    def command_Edit( self, info ):
         
         pane = self.activePane()
         items = []
@@ -3786,7 +3804,7 @@ class MainWindow( ckit.Window ):
     #  入力されたファイルが既存のファイルであれば、そのファイルを編集します。
     #  入力されたファイルが存在しないファイル名であれば、新規のテキストファイルを作成し、それを編集します。
     #
-    def command_EditInput(self):
+    def command_EditInput( self, info ):
         pane = self.activePane()
 
         if not hasattr(pane.file_list.getLister(),"touch"):
@@ -3823,7 +3841,7 @@ class MainWindow( ckit.Window ):
     #  jump_list に登録されたジャンプ先をリスト表示します。\n
     #  jump_list は、( 表示名, ジャンプ先のパス ) という形式のタプルが登録されているリストです。
     #
-    def command_JumpList(self):
+    def command_JumpList( self, info ):
 
         pane = self.activePane()
 
@@ -3843,7 +3861,7 @@ class MainWindow( ckit.Window ):
         self.jumpLister( pane, cfiler_filelist.lister_Default(self,newdirname) )
 
     ## 履歴リストを表示しジャンプする
-    def command_JumpHistory(self):
+    def command_JumpHistory( self, info ):
 
         left_pane = self.left_pane
         right_pane = self.right_pane
@@ -3923,7 +3941,7 @@ class MainWindow( ckit.Window ):
         self.jumpLister( pane, cfiler_filelist.lister_Default(self,newdirname) )
 
     ## パスを入力しジャンプする
-    def command_JumpInput(self):
+    def command_JumpInput( self, info ):
         pane = self.activePane()
 
         fixed_candidate_items = filter( lambda item : item[2], pane.history.items )
@@ -3949,7 +3967,7 @@ class MainWindow( ckit.Window ):
         self.jumpLister( pane, cfiler_filelist.lister_Default(self,dirname), filename )
 
     ## SearchやGrepの検索結果リストを表示しジャンプする
-    def command_JumpFound(self):
+    def command_JumpFound( self, info ):
 
         left_pane = self.left_pane
         right_pane = self.right_pane
@@ -4041,7 +4059,7 @@ class MainWindow( ckit.Window ):
     #  アクティブではないペインのカーソル位置のアイテムを調査し、
     #  そのアイテムが存在するディレクトリに移動した上で、同じアイテムにカーソルを合わせます。
     #
-    def command_ChdirActivePaneToOther(self):
+    def command_ChdirActivePaneToOther( self, info ):
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
         cursor_item = inactive_pane.file_list.getItem(inactive_pane.cursor)
@@ -4054,7 +4072,7 @@ class MainWindow( ckit.Window ):
     #  アクティブなペインのカーソル位置のアイテムを調査し、アクティブではないペインのカレントディレクトリを
     #  そのアイテムが存在するディレクトリに移動した上で、同じアイテムにカーソルを合わせます。
     #
-    def command_ChdirInactivePaneToOther(self):
+    def command_ChdirInactivePaneToOther( self, info ):
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
         cursor_item = active_pane.file_list.getItem(active_pane.cursor)
@@ -4067,7 +4085,7 @@ class MainWindow( ckit.Window ):
     #  "1/2/3" のように、深いパスを入力することも出来ます。
     #   Shiftを押しながらディレクトリ名を決定すると、ディレクトリを作った後その中に移動します。
     #
-    def command_Mkdir(self):
+    def command_Mkdir( self, info ):
         pane = self.activePane()
 
         if not hasattr(pane.file_list.getLister(),"mkdir"):
@@ -4094,7 +4112,7 @@ class MainWindow( ckit.Window ):
         print( "Done.\n" )
 
     ## ドライブを選択する
-    def command_SelectDrive(self):
+    def command_SelectDrive( self, info ):
         pane = self.activePane()
 
         show_detail = [False]
@@ -4199,7 +4217,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED)
 
     ## インクリメンタルサーチを行う
-    def command_IncrementalSearch(self):
+    def command_IncrementalSearch( self, info ):
 
         pane = self.activePane()
 
@@ -4249,10 +4267,10 @@ class MainWindow( ckit.Window ):
                 self.quit()
             elif vk==VK_SPACE:
                 if mod==0:
-                    self.command_Select()
+                    self.command.Select()
                     cursorDown()
                 elif mod==MODKEY_SHIFT:
-                    self.command_Select()
+                    self.command.Select()
                     cursorUp()
             elif vk==VK_UP:
                 cursorUp()
@@ -4356,7 +4374,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_FOOTER)
 
     ## ファイル名検索を行う
-    def command_Search(self):
+    def command_Search( self, info ):
 
         pane = self.activePane()
 
@@ -4482,7 +4500,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "Search" )
 
     ## GREPを行う
-    def command_Grep(self):
+    def command_Grep( self, info ):
 
         pane = self.activePane()
 
@@ -4661,7 +4679,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "Grep" )
 
     ## 選択アイテムの統計情報を出力する
-    def command_Info(self):
+    def command_Info( self, info ):
 
         pane = self.activePane()
         location = pane.file_list.getLocation()
@@ -4808,7 +4826,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "Info" )
 
     ## ワイルドカードを入力し、フィルタを設定する
-    def command_SetFilter(self):
+    def command_SetFilter( self, info ):
         pane = self.activePane()
 
         result = self.commandLine( "Filter", candidate_handler=self.pattern_history.candidateHandler, candidate_remove_handler=self.pattern_history.candidateRemoveHandler )
@@ -4824,7 +4842,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED)
 
     ## フィルタリストを表示し、フィルタを設定する
-    def command_SetFilterList(self):
+    def command_SetFilterList( self, info ):
         pane = self.activePane()
 
         pos = self.centerOfFocusedPaneInPixel()
@@ -4846,7 +4864,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED)
 
     ## ワイルドカードを入力し、合致するファイルを選択する
-    def command_SelectUsingFilter(self):
+    def command_SelectUsingFilter( self, info ):
         pane = self.activePane()
 
         result = self.commandLine( "Select", candidate_handler=self.pattern_history.candidateHandler, candidate_remove_handler=self.pattern_history.candidateRemoveHandler )
@@ -4863,7 +4881,7 @@ class MainWindow( ckit.Window ):
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## フィルタリストを表示し、合致するファイルを選択する
-    def command_SelectUsingFilterList(self):
+    def command_SelectUsingFilterList( self, info ):
         pane = self.activePane()
 
         pos = self.centerOfFocusedPaneInPixel()
@@ -4886,7 +4904,7 @@ class MainWindow( ckit.Window ):
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## 左右のペインで同じ名前のアイテムを選択する
-    def command_SelectCompare(self):
+    def command_SelectCompare( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -4918,13 +4936,13 @@ class MainWindow( ckit.Window ):
         self.paint( PAINT_FOCUSED_ITEMS | PAINT_FOCUSED_HEADER )
 
     ## 比較機能の選択リストを表示する
-    def command_CompareTools(self):
+    def command_CompareTools( self, info ):
         result = cfiler_listwindow.popMenu( self, "比較ツール", self.compare_tool_list, 0 )
         if result<0 : return
         self.compare_tool_list[result][1]()
 
     ## 選択された２つのファイルアイテムを比較する
-    def command_Diff(self):
+    def command_Diff( self, info ):
     
         import cfiler_diffviewer
     
@@ -5046,7 +5064,7 @@ class MainWindow( ckit.Window ):
             print( 'Done.\n' )
 
     ## 左右のディレクトリを比較する
-    def command_DirCompare(self):
+    def command_DirCompare( self, info ):
 
         left_pane = self.left_pane
         right_pane = self.right_pane
@@ -5253,7 +5271,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "Compare" )
 
     ## ソートポリシーを設定する
-    def command_SetSorter(self):
+    def command_SetSorter( self, info ):
         pane = self.activePane()
 
         initial_select = 0
@@ -5298,7 +5316,7 @@ class MainWindow( ckit.Window ):
     #  アイテムが選択されていないとき、カーソル位置のアイテムの、ファイル名、タイムスタンプ、ファイル属性を変更するダイアログがポップアップします。\n\n
     #  アイテムが選択されているとき、選択されているアイテムの、タイムスタンプ、ファイル属性を変更するダイアログがポップアップします。
     #
-    def command_Rename(self):
+    def command_Rename( self, info ):
 
         pane = self.activePane()
 
@@ -5512,7 +5530,7 @@ class MainWindow( ckit.Window ):
             self.taskEnqueue( job_item, "ファイル情報の変更" )
 
     ## 一括リネームする
-    def command_BatchRename(self):
+    def command_BatchRename( self, info ):
 
         pane = self.activePane()
 
@@ -5696,7 +5714,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "一括変名" )
 
     ## コンテキストメニューをポップアップする
-    def command_ContextMenu(self):
+    def command_ContextMenu( self, info ):
         pane = self.activePane()
 
         if not hasattr( pane.file_list.getLister(), "popupContextMenu" ):
@@ -5724,7 +5742,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED)
 
     ## カレントディレクトリに対してコンテキストメニューをポップアップする
-    def command_ContextMenuDir(self):
+    def command_ContextMenuDir( self, info ):
         pane = self.activePane()
 
         if not hasattr( pane.file_list.getLister(), "popupContextMenu" ):
@@ -5743,7 +5761,7 @@ class MainWindow( ckit.Window ):
         self.paint(PAINT_FOCUSED)
 
     ## ファイラを終了する
-    def command_Quit(self):
+    def command_Quit( self, info ):
 
         if self.ini.getint("MISC","confirm_quit"):
             result = cfiler_msgbox.popMessageBox( self, MessageBox.TYPE_YESNO, "終了確認", "%sを終了しますか？" % cfiler_resource.cfiler_appname )
@@ -5752,7 +5770,7 @@ class MainWindow( ckit.Window ):
         self.quit()
 
     ## 次の内骨格に切り替える
-    def command_ActivateCfilerNext(self):
+    def command_ActivateCfilerNext( self, info ):
     
         desktop = pyauto.Window.getDesktop()
         wnd = desktop.getFirstChild()
@@ -5785,7 +5803,7 @@ class MainWindow( ckit.Window ):
             viewer = cfiler_textviewer.TextViewer( pos[0], pos[1], self.width(), self.height(), self, self.ini, "text viewer", item, edit_handler=onEdit )
 
     ## テキストビューアまたはバイナリビューアでファイルを閲覧する
-    def command_View(self):
+    def command_View( self, info ):
         pane = self.activePane()
         location = pane.file_list.getLocation()
         item = pane.file_list.getItem(pane.cursor)
@@ -5796,19 +5814,19 @@ class MainWindow( ckit.Window ):
     #  ログペインのテキストが選択されている場合は、その選択範囲をクリップボードに格納します。
     #  ログペインのテキストが選択されていない場合は、アイテムのファイル名をクリップボードに格納します。
     #
-    def command_SetClipboard_LogSelectedOrFilename(self):
+    def command_SetClipboard_LogSelectedOrFilename( self, info ):
         selection_left, selection_right = self.log_pane.selection
         if selection_left != selection_right:
-            self.command_SetClipboard_LogSelected()
+            self.command.SetClipboard_LogSelected()
         else:
-            self.command_SetClipboard_Filename()
+            self.command.SetClipboard_Filename()
 
     ## アイテムのファイル名をクリップボードにコピーする
     #
     #  アイテムが選択されているときは、選択されている全てのアイテムのファイル名を、改行区切りで連結してクリップボードに格納します。
     #  アイテムが選択されていないときは、カーソル位置のファイル名をクリップボードに格納します。
     #
-    def command_SetClipboard_Filename(self):
+    def command_SetClipboard_Filename( self, info ):
         pane = self.activePane()
         filename_list = []
         for i in range(pane.file_list.numItems()):
@@ -5822,7 +5840,7 @@ class MainWindow( ckit.Window ):
 
         ckit.setClipboardText( '\r\n'.join(filename_list) )
 
-        self.command_DeselectAll()
+        self.command.DeselectAll()
 
         self.setStatusMessage( "ファイル名をクリップボードにコピーしました", 3000 )
 
@@ -5831,7 +5849,7 @@ class MainWindow( ckit.Window ):
     #  アイテムが選択されているときは、選択されている全てのアイテムのフルパスを、改行区切りで連結してクリップボードに格納します。
     #  アイテムが選択されていないときは、カーソル位置のファイルのフルパスをクリップボードに格納します。
     #
-    def command_SetClipboard_Fullpath(self):
+    def command_SetClipboard_Fullpath( self, info ):
         pane = self.activePane()
         filename_list = []
         for i in range(pane.file_list.numItems()):
@@ -5845,12 +5863,12 @@ class MainWindow( ckit.Window ):
 
         ckit.setClipboardText( '\r\n'.join(filename_list) )
 
-        self.command_DeselectAll()
+        self.command.DeselectAll()
 
         self.setStatusMessage( "フルパスをクリップボードにコピーしました", 3000 )
 
     ## ログペインの選択範囲をクリップボードにコピーする
-    def command_SetClipboard_LogSelected(self):
+    def command_SetClipboard_LogSelected( self, info ):
 
         joint_text = ""
         
@@ -5889,7 +5907,7 @@ class MainWindow( ckit.Window ):
         self.setStatusMessage( "ログをクリップボードにコピーしました", 3000 )
 
     ## ログペイン全域をクリップボードにコピーする
-    def command_SetClipboard_LogAll(self):
+    def command_SetClipboard_LogAll( self, info ):
         lines = []
         for i in range(self.log_pane.log.numLines()):
             lines.append( self.log_pane.log.getLine(i) )
@@ -5901,7 +5919,7 @@ class MainWindow( ckit.Window ):
         self.setStatusMessage( "全てのログをクリップボードにコピーしました", 3000 )
 
     ## アーカイブを作成する
-    def command_CreateArchive(self):
+    def command_CreateArchive( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -5980,7 +5998,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "アーカイブ作成" )
 
     ## アーカイブを展開する
-    def command_ExtractArchive(self):
+    def command_ExtractArchive( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -6049,7 +6067,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "アーカイブ展開" )
 
     ## アーカイブの情報を出力する
-    def command_InfoArchive(self):
+    def command_InfoArchive( self, info ):
 
         active_pane = self.activePane()
 
@@ -6108,7 +6126,7 @@ class MainWindow( ckit.Window ):
         self.subThreadCall( infoarchive.run, (), infoarchive.cancel )
 
     ## カーソル位置のアイテムをブックマークに登録するか解除する
-    def command_Bookmark(self):
+    def command_Bookmark( self, info ):
 
         pane = self.activePane()
 
@@ -6197,21 +6215,21 @@ class MainWindow( ckit.Window ):
     #
     #  登録されている全てのブックマークを一覧表示します。
     #
-    def command_BookmarkList(self):
+    def command_BookmarkList( self, info ):
         self._bookmarkListCommon(False)
 
     ## ブックマークの一覧を表示する(ローカル)
     #
     #  カレントディレクトリ以下のブックマークを一覧表示します。
     #
-    def command_BookmarkListLocal(self):
+    def command_BookmarkListLocal( self, info ):
         self._bookmarkListCommon(True)
 
     ## FTP/WebDAV機能を実行します (実験中)
     #
     #  引数 args には、( URL, ユーザ名, パスワード ) を渡します。
     #
-    def command_NetworkPlaceTest( self, args ):
+    def command_NetworkPlaceTest( self, info ):
 
         if len(args)==3:
 
@@ -6229,7 +6247,7 @@ class MainWindow( ckit.Window ):
             print( "" )
 
     ## ファイルを分割する
-    def command_SplitFile(self):
+    def command_SplitFile( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -6455,7 +6473,7 @@ class MainWindow( ckit.Window ):
             print( 'ERROR : 不正なサイズ : %s' % size_text )
 
     ## ファイルを連結する
-    def command_JoinFile(self):
+    def command_JoinFile( self, info ):
 
         active_pane = self.activePane()
         inactive_pane = self.inactivePane()
@@ -6572,7 +6590,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue( job_item, "ファイル結合" )
 
     ## Pythonインタプリタのメモリの統計情報を出力する(デバッグ目的)
-    def command_MemoryStat(self):
+    def command_MemoryStat( self, info ):
         
         print( 'メモリ統計情報 :' )
 
@@ -6614,7 +6632,7 @@ class MainWindow( ckit.Window ):
     #
     #  ex) RefererTree;ZipInfo;5
     #
-    def command_RefererTree( self, args ):
+    def command_RefererTree( self, info ):
     
         kwd = args[0]
     
@@ -6664,7 +6682,7 @@ class MainWindow( ckit.Window ):
         print( "-----------------------------" )
 
     ## コマンドラインにコマンドを入力する
-    def command_CommandLine(self):
+    def command_CommandLine( self, info ):
 
         def _getHint( update_info ):
 
@@ -6723,7 +6741,7 @@ class MainWindow( ckit.Window ):
         self.commandLine( "Command", auto_complete=False, autofix_list=["\\/",".",";"], candidate_handler=onCandidate, candidate_remove_handler=onCandidateRemove, status_handler=statusString, enter_handler=onEnter )
         
     ## ミュージックプレイヤに登録されているプレイリストを一覧する
-    def command_MusicList(self):
+    def command_MusicList( self, info ):
 
         if not self.musicplayer:
             self.setStatusMessage( "Musicがありません", 1000, error=True )
@@ -6747,7 +6765,7 @@ class MainWindow( ckit.Window ):
                 return True
 
             elif vk==VK_OEM_PERIOD and mod==MODKEY_SHIFT:
-                self.command_MusicStop()
+                self.command.MusicStop()
                 list_window.cancel()
                 return True
 
@@ -6774,14 +6792,14 @@ class MainWindow( ckit.Window ):
         self.musicplayer.select(result)
 
     ## ミュージックプレイヤを停止する
-    def command_MusicStop(self):
+    def command_MusicStop( self, info ):
         if self.musicplayer:
             self.musicplayer.destroy()
             self.musicplayer = None
             self.setStatusMessage( "Music : 停止", 3000 )
 
     ## ネットワークアップデートする
-    def command_NetworkUpdate(self):
+    def command_NetworkUpdate( self, info ):
 
         import urllib
         import urllib.request
@@ -6896,7 +6914,7 @@ class MainWindow( ckit.Window ):
         self.taskEnqueue(job_item)
 
     ## ファイラをもうひとつ起動する
-    def command_DuplicateCfiler(self):
+    def command_DuplicateCfiler( self, info ):
         argv0 = ckit.getArgv()[0]
         if argv0.endswith(".py"):
             program = sys.executable
@@ -6911,7 +6929,7 @@ class MainWindow( ckit.Window ):
         pyauto.shellExecute( None, program, '%s -L"%s" -R"%s"' % (script,left_location,right_location), "" )
 
     ## カーソル位置の画像ファイルを壁紙にする
-    def command_Wallpaper(self):
+    def command_Wallpaper( self, info ):
         item = self.activeCursorItem()
         if hasattr(item,"getFullpath"):
             fullpath = item.getFullpath()
@@ -6925,23 +6943,23 @@ class MainWindow( ckit.Window ):
     #
     #  設定メニュー1には、普段の使用で、頻繁に変更する可能性が高いものが入っています。
     #
-    def command_ConfigMenu(self):
+    def command_ConfigMenu( self, info ):
         cfiler_configmenu.doConfigMenu( self )
 
     ## 設定メニュー2をポップアップする
     #
     #  設定メニュー2には、普段の使用で、頻繁には変更しないものが入っています。
     #
-    def command_ConfigMenu2(self):
+    def command_ConfigMenu2( self, info ):
         cfiler_configmenu.doConfigMenu2( self )
 
     ## 設定スクリプトをリロードする
-    def command_Reload(self):
+    def command_Reload( self, info ):
         self.configure()
         print( "設定スクリプトをリロードしました.\n" )
 
     ## ファイラのバージョン情報を出力する
-    def command_About(self):
+    def command_About( self, info ):
         print( cfiler_resource.startupString() )
 
 #--------------------------------------------------------------------

@@ -54,6 +54,8 @@ class DiffViewer( ckit.Window ):
             keydown_handler = self.onKeyDown,
             )
 
+        self.command = ckit.CommandMap(self)
+
         class Pane:
             pass
 
@@ -199,17 +201,17 @@ class DiffViewer( ckit.Window ):
     def configure(self):
         
         self.keymap = ckit.Keymap()
-        self.keymap[ "Up" ] = self.command_ScrollUp
-        self.keymap[ "Down" ] = self.command_ScrollDown
-        self.keymap[ "PageUp" ] = self.command_PageUp
-        self.keymap[ "Left" ] = self.command_PageUp
-        self.keymap[ "PageDown" ] = self.command_PageDown
-        self.keymap[ "Right" ] = self.command_PageDown
-        self.keymap[ "C-Up" ] = self.command_DiffPrev
-        self.keymap[ "C-Down" ] = self.command_DiffNext
-        self.keymap[ "E" ] = self.command_Edit
-        self.keymap[ "Return" ] = self.command_Close
-        self.keymap[ "Escape" ] = self.command_Close
+        self.keymap[ "Up" ] = self.command.ScrollUp
+        self.keymap[ "Down" ] = self.command.ScrollDown
+        self.keymap[ "PageUp" ] = self.command.PageUp
+        self.keymap[ "Left" ] = self.command.PageUp
+        self.keymap[ "PageDown" ] = self.command.PageDown
+        self.keymap[ "Right" ] = self.command.PageDown
+        self.keymap[ "C-Up" ] = self.command.DiffPrev
+        self.keymap[ "C-Down" ] = self.command.DiffNext
+        self.keymap[ "E" ] = self.command.Edit
+        self.keymap[ "Return" ] = self.command.Close
+        self.keymap[ "Escape" ] = self.command.Close
 
         ckit.callConfigFunc("configure_DiffViewer",self)
 
@@ -285,7 +287,7 @@ class DiffViewer( ckit.Window ):
         except KeyError:
             return
 
-        func()
+        func( ckit.CommandInfo() )
 
         return True
 
@@ -371,28 +373,44 @@ class DiffViewer( ckit.Window ):
         self.status_bar_layer.setMessage(status_message)
         self.status_bar.paint( self, 0, height-1, width, 1 )
 
+    #--------------------------------------------------------------------------
+
+    def executeCommand( self, name, info ):
+        try:
+            command = getattr( self, "command_" + name )
+        except AttributeError:
+            return False
+
+        command(info)
+        return True
+
+    def enumCommand(self):
+        for attr in dir(self):
+            if attr.startswith("command_"):
+                yield attr[ len("command_") : ]
+
     #--------------------------------------------------------
     # ここから下のメソッドはキーに割り当てることができる
     #--------------------------------------------------------
 
     ## １行上方向にスクロールする
-    def command_ScrollUp(self):
+    def command_ScrollUp( self, info ):
         self.scroll(-1)
 
     ## １行下方向にスクロールする
-    def command_ScrollDown(self):
+    def command_ScrollDown( self, info ):
         self.scroll(1)
 
     ## １ページ上方向にスクロールする
-    def command_PageUp(self):
+    def command_PageUp( self, info ):
         self.scroll( -(self.height()-1) )
 
     ## １ページ下方向にスクロールする
-    def command_PageDown(self):
+    def command_PageDown( self, info ):
         self.scroll( self.height()-1 )
 
     ## 前の差分位置にジャンプする
-    def command_DiffPrev(self):
+    def command_DiffPrev( self, info ):
         for i in range( len(self.left.diff)-1, -1, -1 ):
             if self.left.diff[i][0]-1 < self.left.scroll_info.pos + self.height()//2:
                 self.left.scroll_info.pos = self.left.diff[i][0]-1 - self.height()//2
@@ -403,7 +421,7 @@ class DiffViewer( ckit.Window ):
                 break
 
     ## 次の差分位置にジャンプする
-    def command_DiffNext(self):
+    def command_DiffNext( self, info ):
         for i in range(len(self.left.diff)):
             if self.left.diff[i][0]-1 > self.left.scroll_info.pos + self.height()//2:
                 self.left.scroll_info.pos = self.left.diff[i][0]-1 - self.height()//2
@@ -414,11 +432,11 @@ class DiffViewer( ckit.Window ):
                 break
 
     ## テキスト差分ビューアを閉じる
-    def command_Close(self):
+    def command_Close( self, info ):
         self.destroy()
 
     ## 閲覧中のファイルをエディタで編集する
-    def command_Edit(self):
+    def command_Edit( self, info ):
         if self.edit_handler!=None:
             self.edit_handler()
 

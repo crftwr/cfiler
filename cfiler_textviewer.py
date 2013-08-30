@@ -53,6 +53,8 @@ class TextViewer( ckit.Window ):
         self.main_window = main_window
         self.ini = ini
 
+        self.command = ckit.CommandMap(self)
+
         self.setTitle( "%s - [ %s ]" % ( cfiler_resource.cfiler_appname, item.name ) )
 
         self.img = ckit.createThemeImage('lineno.png')
@@ -104,19 +106,19 @@ class TextViewer( ckit.Window ):
     def configure(self):
         
         self.keymap = ckit.Keymap()
-        self.keymap[ "Up" ] = self.command_ScrollUp
-        self.keymap[ "Down" ] = self.command_ScrollDown
-        self.keymap[ "PageUp" ] = self.command_PageUp
-        self.keymap[ "Left" ] = self.command_PageUp
-        self.keymap[ "PageDown" ] = self.command_PageDown
-        self.keymap[ "Right" ] = self.command_PageDown
-        self.keymap[ "E" ] = self.command_Edit
-        self.keymap[ "F" ] = self.command_Search
-        self.keymap[ "Space" ] = self.command_SearchNext
-        self.keymap[ "S-Space" ] = self.command_SearchPrev
-        self.keymap[ "Return" ] = self.command_Close
-        self.keymap[ "Escape" ] = self.command_Close
-        self.keymap[ "Z" ] = self.command_ConfigMenu
+        self.keymap[ "Up" ] = self.command.ScrollUp
+        self.keymap[ "Down" ] = self.command.ScrollDown
+        self.keymap[ "PageUp" ] = self.command.PageUp
+        self.keymap[ "Left" ] = self.command.PageUp
+        self.keymap[ "PageDown" ] = self.command.PageDown
+        self.keymap[ "Right" ] = self.command.PageDown
+        self.keymap[ "E" ] = self.command.Edit
+        self.keymap[ "F" ] = self.command.Search
+        self.keymap[ "Space" ] = self.command.SearchNext
+        self.keymap[ "S-Space" ] = self.command.SearchPrev
+        self.keymap[ "Return" ] = self.command.Close
+        self.keymap[ "Escape" ] = self.command.Close
+        self.keymap[ "Z" ] = self.command.ConfigMenu
 
         ckit.callConfigFunc("configure_TextViewer",self)
 
@@ -215,7 +217,7 @@ class TextViewer( ckit.Window ):
         except KeyError:
             return
 
-        func()
+        func( ckit.CommandInfo() )
 
         return True
 
@@ -335,41 +337,57 @@ class TextViewer( ckit.Window ):
             self.status_bar_layer.setMessage(status_message)
             self.status_bar.paint( self, 0, height-1, width, 1 )
 
+    #--------------------------------------------------------------------------
+
+    def executeCommand( self, name, info ):
+        try:
+            command = getattr( self, "command_" + name )
+        except AttributeError:
+            return False
+
+        command(info)
+        return True
+
+    def enumCommand(self):
+        for attr in dir(self):
+            if attr.startswith("command_"):
+                yield attr[ len("command_") : ]
+
     #--------------------------------------------------------
     # ここから下のメソッドはキーに割り当てることができる
     #--------------------------------------------------------
 
     ## １行上方向にスクロールする
-    def command_ScrollUp(self):
+    def command_ScrollUp( self, info ):
         self.scroll_info.pos -= 1
         if self.scroll_info.pos<0 : self.scroll_info.pos=0
         self.paint()
 
     ## １行下方向にスクロールする
-    def command_ScrollDown(self):
+    def command_ScrollDown( self, info ):
         self.scroll_info.pos += 1
         if self.scroll_info.pos>self._numLines()-1 : self.scroll_info.pos=self._numLines()-1
         self.paint()
 
     ## １ページ上方向にスクロールする
-    def command_PageUp(self):
+    def command_PageUp( self, info ):
         self.scroll_info.pos -= self.height()-1
         if self.scroll_info.pos<0 : self.scroll_info.pos=0
         self.paint()
 
     ## １ページ下方向にスクロールする
-    def command_PageDown(self):
+    def command_PageDown( self, info ):
         self.scroll_info.pos += self.height()-1
         if self.scroll_info.pos>self._numLines()-1 : self.scroll_info.pos=self._numLines()-1
         self.paint()
 
     ## 閲覧中のファイルをエディタで編集する
-    def command_Edit(self):
+    def command_Edit( self, info ):
         if self.edit_handler!=None:
             self.edit_handler()
 
     ## テキスト中から文字列を検索する
-    def command_Search(self):
+    def command_Search( self, info ):
     
         if self.binary : return
 
@@ -385,7 +403,7 @@ class TextViewer( ckit.Window ):
         if result==None : return
         self.search_pattern, self.search_regexp, self.search_ignorecase = result[0], result[1], result[2]
         
-        self.command_SearchNext()
+        self.command.SearchNext()
 
     def _searchNextPrev( self, direction ):
         
@@ -463,15 +481,15 @@ class TextViewer( ckit.Window ):
         self.paint()
 
     ## 前回検索した文字列を使って次の場所を検索する
-    def command_SearchNext(self):
+    def command_SearchNext( self, info ):
         self._searchNextPrev(1)
 
     ## 前回検索した文字列を使って前の場所を検索する
-    def command_SearchPrev(self):
+    def command_SearchPrev( self, info ):
         self._searchNextPrev(-1)
         
     ## 設定メニューをポップアップする
-    def command_ConfigMenu(self):
+    def command_ConfigMenu( self, info ):
 
         def loadAuto(item):
             self.load( auto=True )
@@ -498,7 +516,7 @@ class TextViewer( ckit.Window ):
         items[select][1]( items[select] )
 
     ## テキストビューアを閉じる
-    def command_Close(self):
+    def command_Close( self, info ):
         self.destroy()
 
 
