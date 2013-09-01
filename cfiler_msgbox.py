@@ -4,7 +4,7 @@ from ckit.ckit_const import *
 import cfiler_wallpaper
 import cfiler_error
 
-## @addtogroup msgbox メッセージボックス機能
+## @addtogroup msgbox
 ## @{
 
 #--------------------------------------------------------------------

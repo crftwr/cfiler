@@ -20,7 +20,7 @@ import cfiler_archiver
 import cfiler_error
 import cfiler_debug
 
-## @addtogroup filelist ファイルリスト機能
+## @addtogroup filelist
 ## @{
 
 #--------------------------------------------------------------------

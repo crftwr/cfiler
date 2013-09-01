@@ -9,7 +9,7 @@ import cfiler_statusbar
 import cfiler_misc
 import cfiler_wallpaper
 
-## @addtogroup listwindow リストウインドウ機能
+## @addtogroup listwindow
 ## @{
 
 #--------------------------------------------------------------------

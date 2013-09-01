@@ -18,7 +18,7 @@ import cfiler_debug
 
 MessageBox = cfiler_msgbox.MessageBox
 
-## @addtogroup diffviewer 差分ビューア機能
+## @addtogroup diffviewer
 ## @{
 
 #--------------------------------------------------------------------

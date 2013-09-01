@@ -11,7 +11,7 @@ import cfiler_statusbar
 import cfiler_resource
 import cfiler_debug
 
-## @addtogroup imageviewer 画像ビューア機能
+## @addtogroup imageviewer
 ## @{
 
 #--------------------------------------------------------------------

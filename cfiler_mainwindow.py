@@ -48,7 +48,7 @@ OverWriteWindow = cfiler_overwritewindow.OverWriteWindow
 
 os.stat_float_times(False)
 
-## @addtogroup mainwindow メインウインドウ機能
+## @addtogroup mainwindow
 ## @{
 
 #--------------------------------------------------------------------

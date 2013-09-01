@@ -13,7 +13,7 @@ import cfiler_native
 import cfiler_resource
 import cfiler_debug
 
-## @addtogroup misc その他雑多な機能
+## @addtogroup misc
 ## @{
 
 #--------------------------------------------------------------------

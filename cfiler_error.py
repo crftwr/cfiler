@@ -1,4 +1,4 @@
-﻿## @addtogroup error エラーの定義
+﻿## @addtogroup error
 ## @{
 
 ## 内骨格の独自定義のエラーのベースクラス
