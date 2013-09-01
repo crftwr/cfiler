@@ -345,7 +345,7 @@ def configure(window):
 
             if job_item.isCanceled(): return
 
-            result = popConsoleWindow( window, "検索完了", message[0] )
+            result = popResultWindow( window, "検索完了", message[0] )
             if not result: return
 
             window.jumpLister( pane, lister_Custom( window, "[empty] ", location, result_items ) )
@@ -491,7 +491,7 @@ def configure(window):
 
             if job_item.isCanceled(): return
 
-            result = popConsoleWindow( window, "検索完了", message[0] )
+            result = popResultWindow( window, "検索完了", message[0] )
             if not result: return
 
             window.leftJumpLister( lister_Custom( window, "[duplicate] ", left_location, list(result_left_items) ) )
@@ -578,7 +578,7 @@ def configure(window):
 
             if job_item.isCanceled(): return
 
-            result = popConsoleWindow( window, "検索完了", message[0] )
+            result = popResultWindow( window, "検索完了", message[0] )
             if not result: return
 
             window.leftJumpLister( lister_Custom( window, "[similar] ", left_location, list(result_left_items) ) )

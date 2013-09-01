@@ -6,12 +6,12 @@ from ckit.ckit_const import *
 
 import cfiler_wallpaper
 
-## @addtogroup consolewindow コンソールウインドウ機能
+## @addtogroup resultwindow コンソールウインドウ機能
 ## @{
 
 #--------------------------------------------------------------------
 
-class ConsoleWindow( ckit.Window ):
+class ResultWindow( ckit.Window ):
 
     def __init__( self, x, y, width, height, parent_window, ini, title, keydown_hook=None ):
 
@@ -151,7 +151,7 @@ class ConsoleWindow( ckit.Window ):
 #
 #  返値の結果値としては、Enter が押されたときは True、ESC が押されたときは False が返ります。
 #
-def popConsoleWindow( main_window, title, message, return_modkey=False ):
+def popResultWindow( main_window, title, message, return_modkey=False ):
 
     result = [True]
     result_mod = [0]
@@ -169,7 +169,7 @@ def popConsoleWindow( main_window, title, message, return_modkey=False ):
             return True
 
     pos = main_window.centerOfWindowInPixel()
-    console_window = ConsoleWindow( pos[0], pos[1], 60, 24, main_window, main_window.ini, title, onKeyDown )
+    console_window = ResultWindow( pos[0], pos[1], 60, 24, main_window, main_window.ini, title, onKeyDown )
     console_window.write(message)
     main_window.enable(False)
     console_window.messageLoop()
@@ -182,4 +182,4 @@ def popConsoleWindow( main_window, title, message, return_modkey=False ):
     else:
         return result[0]
         
-## @} consolewindow
+## @} resultwindow

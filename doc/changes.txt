@@ -2,6 +2,10 @@
 更新履歴
 =========
 
+    2.41
+
+        - ConsoleWindow を ResultWindow に変名。
+
     2.40
 
         - Python27 から Python33 に移行。
