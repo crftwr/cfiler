@@ -10,7 +10,7 @@ from ckit.ckit_const import *
 import cfiler_native
 import cfiler_wallpaper
 import cfiler_statusbar
-import cfiler_consolewindow
+import cfiler_resultwindow
 
 #--------------------------------------------------------------------
 

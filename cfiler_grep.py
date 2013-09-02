@@ -200,7 +200,7 @@ def command_Grep2(self):
                 return True
 
         pos = self.centerOfWindowInPixel()
-        console_window = cfiler_consolewindow.ConsoleWindow( pos[0], pos[1], 60, 24, self, self.ini, "Grep完了", onKeyDown )
+        console_window = cfiler_resultwindow.ResultWindow( pos[0], pos[1], 60, 24, self, self.ini, "Grep完了", onKeyDown )
         self.enable(False)
 
         console_window.write( 'Grep : %s\n' % pattern )

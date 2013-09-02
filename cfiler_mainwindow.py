@@ -24,7 +24,7 @@ import cfiler_archiver
 import cfiler_statusbar
 import cfiler_msgbox
 import cfiler_listwindow
-import cfiler_consolewindow
+import cfiler_resultwindow
 import cfiler_overwritewindow
 import cfiler_renamewindow
 import cfiler_grepwindow
@@ -48,7 +48,7 @@ OverWriteWindow = cfiler_overwritewindow.OverWriteWindow
 
 os.stat_float_times(False)
 
-## @addtogroup mainwindow メインウインドウ機能
+## @addtogroup mainwindow
 ## @{
 
 #--------------------------------------------------------------------
@@ -4468,7 +4468,7 @@ class MainWindow( ckit.Window ):
                     return True
 
             pos = self.centerOfWindowInPixel()
-            console_window = cfiler_consolewindow.ConsoleWindow( pos[0], pos[1], 60, 24, self, self.ini, "Search完了", onKeyDown )
+            console_window = cfiler_resultwindow.ResultWindow( pos[0], pos[1], 60, 24, self, self.ini, "Search完了", onKeyDown )
             self.enable(False)
 
             console_window.write( 'Search : %s\n' % pattern )
@@ -4645,7 +4645,7 @@ class MainWindow( ckit.Window ):
                     return True
 
             pos = self.centerOfWindowInPixel()
-            console_window = cfiler_consolewindow.ConsoleWindow( pos[0], pos[1], 60, 24, self, self.ini, "Grep完了", onKeyDown )
+            console_window = cfiler_resultwindow.ResultWindow( pos[0], pos[1], 60, 24, self, self.ini, "Grep完了", onKeyDown )
             self.enable(False)
 
             console_window.write( 'Grep : %s\n' % pattern )
@@ -5224,7 +5224,7 @@ class MainWindow( ckit.Window ):
                     return True
 
             pos = self.centerOfWindowInPixel()
-            console_window = cfiler_consolewindow.ConsoleWindow( pos[0], pos[1], 60, 24, self, self.ini, "Compare完了", onKeyDown )
+            console_window = cfiler_resultwindow.ResultWindow( pos[0], pos[1], 60, 24, self, self.ini, "Compare完了", onKeyDown )
             self.enable(False)
 
             console_window.write( 'Compare : %s\n\n' % compare_name )
@@ -5646,7 +5646,7 @@ class MainWindow( ckit.Window ):
             return    
 
         pos = self.centerOfWindowInPixel()
-        console_window = cfiler_consolewindow.ConsoleWindow( pos[0], pos[1], 60, 24, self, self.ini, "変名の確認", onKeyDown )
+        console_window = cfiler_resultwindow.ResultWindow( pos[0], pos[1], 60, 24, self, self.ini, "変名の確認", onKeyDown )
         self.enable(False)
 
         console_window.write( '一括変名:\n' )

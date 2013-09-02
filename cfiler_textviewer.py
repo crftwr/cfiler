@@ -15,7 +15,7 @@ import cfiler_listwindow
 import cfiler_resource
 import cfiler_debug
 
-## @addtogroup textviewer テキストビューア機能
+## @addtogroup textviewer
 ## @{
 
 #--------------------------------------------------------------------

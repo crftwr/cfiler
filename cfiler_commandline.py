@@ -9,6 +9,12 @@ import cfiler_native
 import cfiler_error
 import cfiler_debug
 
+## @addtogroup commandline
+## @{
+
+#--------------------------------------------------------------------
+
+## コマンドラインからのコマンド実行機能
 class commandline_Launcher:
 
     def __init__( self, main_window ):
@@ -120,6 +126,7 @@ class commandline_Launcher:
         return None
     
 
+## コマンドラインでの計算機能
 class commandline_Calculator:
 
     def __init__(self):
@@ -159,6 +166,7 @@ class commandline_Calculator:
         return None
 
 
+## コマンドラインでの 10進 <-> 16進 変換機能
 class commandline_Int32Hex:
 
     def __init__(self):
