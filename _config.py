@@ -1,8 +1,7 @@
 ﻿import os
 import sys
 import io
-import urllib
-import functools
+import urllib.parse
 import xml.etree.ElementTree
 
 from cfiler import *
@@ -212,7 +211,7 @@ def configure(window):
     def command_Google(args):
         if len(args)>=1:
             keyword = ' '.join(args)
-            keyword = urllib.quote_plus(keyword)
+            keyword = urllib.parse.quote_plus(keyword)
         else:
             keyword = ""
         url = "http://www.google.com/search?ie=utf8&q=%s" % keyword
@@ -225,7 +224,7 @@ def configure(window):
     def command_Eijiro(args):
         if len(args)>=1:
             keyword = ' '.join(args)
-            keyword = urllib.quote_plus(keyword)
+            keyword = urllib.parse.quote_plus(keyword)
         else:
             keyword = ""
         url = "http://eow.alc.co.jp/%s/UTF-8/" % keyword
