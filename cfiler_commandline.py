@@ -75,47 +75,41 @@ class commandline_Launcher:
             if item_lower.startswith(left_lower) and len(item_lower)!=len(left_lower):
                 candidate_list.append( item[0] )
 
+        for item in self.main_window.enumCommand():
+            item_lower = item.lower()
+            if item_lower.startswith(left_lower) and len(item_lower)!=len(left_lower):
+                candidate_list.append( item )
+
         return dirname_list + filename_list + candidate_list
 
     def onEnter( self, commandline, text, mod ):
         
         args = text.split(';')
         
+        for i in range(len(args)):
+            args[i] = args[i].strip()
+        
         command_name = args[0].lower()
         
+        def found(command):
+            
+            info = ckit.CommandInfo()
+            info.args = args[1:]
+            info.mod = mod
+
+            commandline.planCommand( command, info, text )
+            commandline.quit()
+
         for command in self.command_list:
             if command[0].lower() == command_name:
-
-                # 引数を受け取らない関数やメソッドを許容するためのトリック                
-                argspec = inspect.getargspec(command[1])
-                if type(command[1])==type(self.onEnter):
-                    num_args = len(argspec[0])-1
-                else:
-                    num_args = len(argspec[0])
-
-                try:
-                    if num_args==0:
-                        command[1]()
-                    elif num_args==1:
-                        command[1](args[1:])
-                    elif num_args==2:
-                        command[1](args[1:],mod)
-                    else:
-                        raise TypeError("arg spec is not acceptable.")
-                except Exception as e:
-                    cfiler_debug.printErrorInfo()
-                    print( e )
-                    return True
-
-                commandline.setText("")
-                commandline.selectAll()
-
-                commandline.appendHistory( text )
-
-                commandline.quit()
-
+                found(command[1])
                 return True
-        
+
+        for command in self.main_window.enumCommand():
+            if command.lower() == command_name:
+                found( getattr(self.main_window.command, command) )
+                return True
+
         return False
     
     def onStatusString( self, text ):

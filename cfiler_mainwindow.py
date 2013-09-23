@@ -660,6 +660,7 @@ class MainWindow( ckit.Window ):
 
             def __init__( self, main_window ):
                 self.main_window = main_window
+                self.planned_command_list = []
 
             def _onKeyDown( self, vk, mod ):
                 
@@ -737,6 +738,9 @@ class MainWindow( ckit.Window ):
             def closeList(self):
                 self.main_window.commandline_edit.closeList()
 
+            def planCommand( self, command, info, history ):
+                self.planned_command_list.append( ( command, info, history ) )
+
             def appendHistory(self,newentry):
                 self.main_window.commandline_history.append(newentry)
 
@@ -786,6 +790,15 @@ class MainWindow( ckit.Window ):
 
         self.paint(PAINT_STATUS_BAR)
         
+        for command, info, history in commandline.planned_command_list:
+            try:
+                command(info)
+                if history:
+                    self.commandline_history.append(history)
+            except Exception as e:
+                print( e )
+                cfiler_debug.printErrorInfo()
+
         if return_modkey:
             return result[0], result_mod[0]
         else:    
@@ -2268,18 +2281,10 @@ class MainWindow( ckit.Window ):
             cfiler_commandline.commandline_Int32Hex(),
             cfiler_commandline.commandline_Calculator(),
         ]
-        
+
         self.launcher.command_list = [
-            ( "Reload",           self.command.Reload ),
-            ( "About",            self.command.About ),
-            ( "SplitFile",        self.command.SplitFile ),
-            ( "JoinFile",         self.command.JoinFile ),
-            ( "Wallpaper",        self.command.Wallpaper ),
-            ( "_MemoryStat",      self.command.MemoryStat ),
-            ( "_RefererTree",     self.command.RefererTree ),
-            ( "NetworkPlaceTest", self.command.NetworkPlaceTest ),
         ]
-        
+
         ckit.reloadConfigScript( self.config_filename )
         ckit.callConfigFunc("configure",self)
 

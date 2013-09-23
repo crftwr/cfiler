@@ -209,9 +209,9 @@ def configure(window):
     # "Google" コマンド
     #   Google でキーワードを検索します
 
-    def command_Google(args):
-        if len(args)>=1:
-            keyword = ' '.join(args)
+    def command_Google(info):
+        if len(info.args)>=1:
+            keyword = ' '.join(info.args)
             keyword = urllib.quote_plus(keyword)
         else:
             keyword = ""
@@ -222,9 +222,9 @@ def configure(window):
     # "Eijiro" コマンド 
     #   英辞郎 on the WEB で日本語/英語を相互に検索します
 
-    def command_Eijiro(args):
+    def command_Eijiro(info):
         if len(args)>=1:
-            keyword = ' '.join(args)
+            keyword = ' '.join(info.args)
             keyword = urllib.quote_plus(keyword)
         else:
             keyword = ""
@@ -237,12 +237,12 @@ def configure(window):
     #    subst;H;C:\dirname  : C:\dirname を Hドライブに割り当てます
     #    subst;H             : Hドライブの割り当てを解除します
 
-    def command_Subst(args):
+    def command_Subst(info):
         
-        if len(args)>=1:
-            drive_letter = args[0]
-            if len(args)>=2:
-                path = args[1]
+        if len(info.args)>=1:
+            drive_letter = info.args[0]
+            if len(info.args)>=2:
+                path = info.args[1]
                 if window.subProcessCall( [ "subst", drive_letter+":", os.path.normpath(path) ], cwd=None, env=None, enable_cancel=False )==0:
                     print( "%s に %sドライブを割り当てました。" % ( path, drive_letter ) )
             else:
@@ -259,12 +259,12 @@ def configure(window):
     #    NetDrive;L;\\server\share : \\machine\public を Lドライブに割り当てます
     #    NetDrive;L                : Lドライブの割り当てを解除します
 
-    def command_NetDrive(args):
+    def command_NetDrive(info):
         
-        if len(args)>=1:
-            drive_letter = args[0]
-            if len(args)>=2:
-                path = args[1]
+        if len(info.args)>=1:
+            drive_letter = info.args[0]
+            if len(info.args)>=2:
+                path = info.args[1]
                 checkNetConnection(path)
                 if window.subProcessCall( [ "net", "use", drive_letter+":", os.path.normpath(path), "/yes" ], cwd=None, env=None, enable_cancel=False )==0:
                     print( "%s に %sドライブを割り当てました。" % ( path, drive_letter ) )
@@ -282,7 +282,7 @@ def configure(window):
     #   ファイルが入っていない空のディレクトリを検索します。
     #   ディレクトリが入っていても、ファイルが入っていない場合は空とみなします。
 
-    def command_CheckEmpty(args):
+    def command_CheckEmpty(info):
         
         pane = window.activePane()
         location = window.activeFileList().getLocation()
@@ -359,7 +359,7 @@ def configure(window):
     #   左右のペイン両方のアイテムを通して、内容が重複するファイルを検索します。
     #   ファイルのサイズが一致するものについて、より詳細に比較を行います。
 
-    def command_CheckDuplicate(args):
+    def command_CheckDuplicate(info):
         
         left_pane = window.leftPane()
         right_pane = window.rightPane()
@@ -505,7 +505,7 @@ def configure(window):
     # "CheckSimilar" コマンド 
     #   左右のペイン両方のアイテムを通して、名前が似ているファイルを検索します。
 
-    def command_CheckSimilar(args):
+    def command_CheckSimilar(info):
 
         left_location = window.leftFileList().getLocation()
         right_location = window.rightFileList().getLocation()
