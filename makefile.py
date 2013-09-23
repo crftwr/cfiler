@@ -12,13 +12,11 @@ sys.path[0:0] = [
 import cfiler_resource
 
 DIST_DIR = "dist/cfiler"
-DIST_SRC_DIR = "dist/src"
 VERSION = cfiler_resource.cfiler_version.replace(".","").replace(" ","")
 INSTALLER_NAME = "cfiler_%s.exe" % VERSION
 
 PYTHON_DIR = "c:/python33"
 PYTHON = PYTHON_DIR + "/python.exe"
-SVN_DIR = "c:/Program Files/TortoiseSVN/bin"
 DOXYGEN_DIR = "c:/Program Files/doxygen"
 NSIS_DIR = "c:/Program Files (x86)/NSIS"
 
@@ -77,7 +75,6 @@ DIST_FILES = [
     "cfiler/theme/white",
     "cfiler/license",
     "cfiler/doc",
-    "cfiler/src.zip",
     "cfiler/dict/.keepme",
     "cfiler/extension/.keepme",
     ]
@@ -90,15 +87,6 @@ def all():
 
 def exe():
     subprocess.call( [ PYTHON, "setup.py", "build" ] )
-    rmtree( DIST_SRC_DIR )
-    makedirs( DIST_SRC_DIR )
-    os.chdir(DIST_SRC_DIR)
-    subprocess.call( [ SVN_DIR + "/svn.exe", "export", "--force", "../../../ckit" ] )
-    subprocess.call( [ SVN_DIR + "/svn.exe", "export", "--force", "../../../pyauto" ] )
-    subprocess.call( [ SVN_DIR + "/svn.exe", "export", "--force", "../../../cfiler" ] )
-    os.chdir("..")
-    createZip( "cfiler/src.zip", [ "src" ] )
-    os.chdir("..")
 
 def clean():
     rmtree("dist")
