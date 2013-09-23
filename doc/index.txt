@@ -219,9 +219,6 @@
     C/Migemo
         http://www.kaoriya.net/
 
-    PyMigemo
-        http://www.atzm.org/etc/pymigemo.html
-
     7-zip32.dll
         http://akky.xrea.jp/
 
