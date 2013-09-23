@@ -6806,7 +6806,6 @@ class MainWindow( ckit.Window ):
     ## ネットワークアップデートする
     def command_NetworkUpdate( self, info ):
 
-        import urllib
         import urllib.request
         import hashlib
 
@@ -6881,7 +6880,7 @@ class MainWindow( ckit.Window ):
                 md5 = hashlib.md5()
 
                 if url.startswith("http:"):
-                    fd_src = urllib.urlopen(url)
+                    fd_src = urllib.request.urlopen(url)
                 else:
                     fd_src = open(url,"rb")
 
@@ -6898,6 +6897,7 @@ class MainWindow( ckit.Window ):
                 
                 if md5.hexdigest()!=md5sum:
                     print( "Error : アップデータが正常にダウンロードできませんでした." )
+                    print( "[%s] != [%s]" % ( md5.hexdigest(), md5sum ) )
                     return None
 
                 return installer_filename

@@ -16,6 +16,8 @@
 
         - config.py の Google, Eijiro コマンドが Python3 に移行したあと動かなくなっていたのを修正。
 
+        - ネットワークアップデートが Python3 に移行したあと動かなくなっていたのを修正。
+
     2.40
 
         - Python27 から Python33 に移行。
