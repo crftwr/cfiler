@@ -13,14 +13,14 @@ class IncrementalSearch:
 
     def __init__( self, ini ):
         self.isearch_value = ''
-        self.isearch_type = ini.get( "MISC", "isearch_type" ) 
+        self.isearch_type = ini.get( "MISC", "isearch_type" )
         self.migemo_pattern = None
         self.migemo_re_pattern = ""
         self.migemo_re_object = None
         self.migemo_re_result = None
 
     def fnmatch( self, name, pattern, isearch_type=None ):
-    
+
         global migemo_object
 
         if isearch_type==None:
@@ -45,16 +45,19 @@ class IncrementalSearch:
 
         elif isearch_type=="migemo":
 
-            # 初めて migemo が必要になったときに遅延ロードする                    
+            # 初めて migemo が必要になったときに遅延ロードする
             if migemo_object==None:
-                dict_path = os.path.join( ckit.getAppExePath(), 'dict/migemo-dict' )
-                migemo_object = ckit.Migemo(dict_path)
-            
+                dict_path = os.path.join( ckit.getAppExePath(), 'dict' )
+                try:
+                    migemo_object = ckit.Migemo(dict_path)
+                except ValueError:
+                    return fnmatch.fnmatch( name, '*'+pattern+'*' )
+
             # 検索パターンが変更になったときだけクエリーをかける
             if self.migemo_pattern != pattern:
-                
+
                 re_pattern = migemo_object.query(pattern)
-                
+
                 try:
                     self.migemo_re_object = re.compile( re_pattern, re.IGNORECASE )
                 except Exception as e:
@@ -68,7 +71,7 @@ class IncrementalSearch:
 
                 self.migemo_pattern = pattern
                 self.migemo_re_pattern = re_pattern
-            
+
             re_result = self.migemo_re_object.search(name)
             if re_result:
                 self.migemo_re_result = re_result
@@ -106,7 +109,7 @@ class IncrementalSearch:
 
         if last_found==-1:
             return self.cursorUp( get_string, length, select, scroll_pos, visible_height, margin )
-        
+
         return last_found
 
     def cursorPageDown( self, get_string, length, select, scroll_pos, visible_height, margin=0 ):
