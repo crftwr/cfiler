@@ -6812,7 +6812,7 @@ class MainWindow( ckit.Window ):
 
         cfiler_dirname = ckit.getAppExePath()
         version_file_url_test = os.path.join(cfiler_dirname,"version.txt")
-        version_file_url = "http://dl.dropbox.com/u/16245545/cfiler/version.txt"
+        version_file_url = "http://crftwr.github.io/cfiler/version.txt"
 
         class Status : pass
         status = Status()
