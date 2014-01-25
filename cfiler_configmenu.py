@@ -267,7 +267,7 @@ def _configAppName( main_window ):
 
     cfiler_resource.cfiler_appname = result[0]
     main_window.setTitle(cfiler_resource.cfiler_appname)
-    main_window.command_About()
+    main_window.command.About()
 
 
 def _configKeymap( main_window ):
@@ -723,7 +723,7 @@ def _editConfigFile( main_window ):
     return False
 
 def _reloadConfigFile( main_window ):
-    main_window.command_Reload()
+    main_window.command.Reload()
     return False
 
 def _configAppearance( main_window ):
