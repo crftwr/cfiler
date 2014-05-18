@@ -6,6 +6,8 @@
 
         - Python33 から Python34 に移行
 
+        - 設定メニュー２の、アプリケーション名の変更と、config のリロードで、エラーが発生していたのを修正
+
         - WindowsXP の 描画問題 (http://support.microsoft.com/kb/436093/ja) の対処を廃止
 
     2.42
