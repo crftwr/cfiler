@@ -20,6 +20,7 @@ from ckit.ckit_const import *
 
 import cfiler_filelist
 import cfiler_isearch
+import cfiler_fastcopy
 import cfiler_archiver
 import cfiler_statusbar
 import cfiler_msgbox
@@ -3488,14 +3489,35 @@ class MainWindow( ckit.Window ):
                             
                             src_file = src_item.open()
                             dst_file = dst_lister.getCopyDst( dst_name )
-                            progress = [ 0, src_item.size() ]
+                            size = src_item.size()
+                            progress = [ 0, size ]
+                            unit = 1024 * 1024 * 16
+
+                            read_thread = None
+                            if 1 and size >= 1024 * 1024 * 100:
+                                # Read/Writeの並列化をして高速化
+                                # FIXME : 思ったより効果が出ないので、master に入れるのは保留
+                                print("using multi-thread")
+                                read_thread = cfiler_fastcopy.FastCopyReadThread( src_file, unit )
+                                read_thread.start()
+                            else:
+                                print("using single-thread")
 
                             while 1:
-                                if job_item.isCanceled(): break
 
-                                buf = src_file.read( 1024 * 1024 )
+                                if job_item.isCanceled():
+                                    if read_thread:
+                                        read_thread.cancel()
+                                    break
+
+                                if read_thread:
+                                    buf = read_thread.getData()
+                                else:
+                                    buf = src_file.read(unit)
+
                                 if not buf:
                                     break
+
                                 dst_file.write(buf)
 
                                 # プログレスバー
@@ -3514,9 +3536,10 @@ class MainWindow( ckit.Window ):
                                     printCopyInfo(dst_name)
 
                         finally:
-                            if src_lock!=None : src_lock.unlock()
-                            if src_file!=None : src_file.close()
-                            if dst_file!=None : dst_file.close()
+                            if read_thread : read_thread.join()
+                            if dst_file : dst_file.close()
+                            if src_file : src_file.close()
+                            if src_lock : src_lock.unlock()
                         
                         # タイムスタンプと属性をコピー
                         dst_item = dst_lister.exists(dst_name)
@@ -3600,7 +3623,10 @@ class MainWindow( ckit.Window ):
                             for file in files:
                                 if job_item.isCanceled(): break
                                 if item_filter==None or item_filter(file):
+                                    t1 = time.time()
                                     self.copy_file( job_item, file, dst_lister, self.getDestName(file.getName()) )
+                                    t2 = time.time()
+                                    print( "time: ", t2-t1 )
                             
                             for dir in dirs:
                                 if job_item.isCanceled(): break
@@ -3633,7 +3659,10 @@ class MainWindow( ckit.Window ):
                             self.deselectItem(item)
 
                     else:
+                        t1 = time.time()
                         self.copy_file( job_item, item, dst_lister, self.getDestName(item.getName()) )
+                        t2 = time.time()
+                        print( "time: ", t2-t1 )
                         if not job_item.isCanceled():
                             self.deselectItem(item)
 
