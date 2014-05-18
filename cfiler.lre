@@ -6,7 +6,6 @@ cfiler_checkdir.py
 cfiler_commandline.py
 cfiler_configmenu.py
 cfiler_consistency.py
-cfiler_consolewindow.py
 cfiler_debug.py
 cfiler_diffviewer.py
 cfiler_error.py
