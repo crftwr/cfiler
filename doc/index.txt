@@ -125,7 +125,7 @@
 
     内骨格の実行には以下の環境が必要です。
 
-    Windows 2000/XP/Vista/7
+    Windows XP/Vista/7/8
 
 
 配布 / 保障について
@@ -210,11 +210,8 @@
     Python Programming Language
         http://www.python.org/
 
-    Python Imaging Library
-        http://www.pythonware.com/products/pil/
-
-    comtypes
-        http://pypi.python.org/pypi/comtypes/
+    Pillow
+        https://github.com/python-imaging/Pillow
 
     C/Migemo
         http://www.kaoriya.net/
