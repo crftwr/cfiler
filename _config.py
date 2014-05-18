@@ -79,8 +79,8 @@ def configure(window):
         window.editor = "notepad.exe"
 
     if 0: # 呼び出し可能オブジェクトを設定 (高度な使用方法)
-        def editor( item, region, location ):
-            shellExecute( None, "notepad.exe", '"%s"'% item.getFullpath(), location )
+        def editor( item, point, location ):
+            shellExecute( None, "lredit.exe", '--text "%s" %d:%d' % ( item.getFullpath(), point[0], point[1] ), location )
         window.editor = editor
 
     # --------------------------------------------------------------------

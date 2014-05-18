@@ -205,7 +205,7 @@ class TextViewer( ckit.Window ):
     #
     def getVisibleRegion(self):
         try:
-            return ( self.scroll_info.pos+1, min( self.scroll_info.pos+self.height(), len(self.lines) )+1 )
+            return ( self.scroll_info.pos+1, min( self.scroll_info.pos+self.height()-1, len(self.lines) )+1 )
         except Exception:
             cfiler_debug.printErrorInfo()
             return ( 0, 0 )

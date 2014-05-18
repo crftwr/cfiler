@@ -103,6 +103,15 @@ class item_Base:
     def bookmark(self):
         return False
 
+    def setTextPoint( self, text_point ):
+        self.text_point = text_point
+
+    def getTextPoint( self ):
+        try:
+            return self.text_point
+        except AttributeError:
+            return (1,1)
+
     def paint( self, window, x, y, width, cursor, itemformat, userdata ):
         pass
 

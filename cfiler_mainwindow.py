@@ -3792,7 +3792,7 @@ class MainWindow( ckit.Window ):
                 if item.isdir() : continue
                 if not hasattr(item,"getFullpath") : continue
                 if callable(self.editor):
-                    self.editor( item, (1,1), pane.file_list.getLocation() )
+                    self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
                 else:
                     pyauto.shellExecute( None, self.editor, '"%s"'% os.path.normpath(item.getFullpath()), pane.file_list.getLocation() )
 
@@ -3827,7 +3827,7 @@ class MainWindow( ckit.Window ):
 
         def editItem():
             if callable(self.editor):
-                self.editor( item, (1,1), pane.file_list.getLocation() )
+                self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
             else:
                 pyauto.shellExecute( None, self.editor, '"%s"'%item.getFullpath(), pane.file_list.getLocation() )
 
@@ -4549,7 +4549,7 @@ class MainWindow( ckit.Window ):
             # ビジーインジケータ On
             self.setProgressValue(None)
 
-            filename_list = []
+            hit_list = []
 
             def isGrepSubject(location,name):
                 item = cfiler_filelist.item_Default(location,name)
@@ -4603,23 +4603,27 @@ class MainWindow( ckit.Window ):
 
                             if hit:
                                 path_from_here = ckit.normPath(fullpath[len(os.path.join(location,"")):])
-                                filename_list.append(path_from_here)
+                                hit_list.append( ( path_from_here, lineno ) )
                                 print( "  ", path_from_here )
                                 break
 
                     except IOError as e:
                         print( "  %s" % str(e) )
 
-            def packListItem( filename ):
-
+            def packListItem( hit ):
+                
+                filename, lineno = hit
+                
                 item = cfiler_filelist.item_Default(
                     location,
                     filename
                     )
 
+                item.setTextPoint( ( lineno, 1 ) )
+
                 return item
 
-            items[:] = map( packListItem, filename_list )
+            items[:] = map( packListItem, hit_list )
 
         def jobGrepFinished( job_item ):
 
@@ -5793,10 +5797,14 @@ class MainWindow( ckit.Window ):
 
             def onEdit():
                 if not hasattr(item,"getFullpath") : return
-                scroll_pos = viewer.getVisibleRegion()
+                visible_region = viewer.getVisibleRegion()
+                if visible_region[0]==1:
+                    visible_center = 1
+                else:
+                    visible_center = (visible_region[0] + visible_region[1]) // 2
                 viewer.destroy()
                 if callable(self.editor):
-                    self.subThreadCall( self.editor, ( item, ( scroll_pos[0], scroll_pos[1] ), location ) )
+                    self.subThreadCall( self.editor, ( item, ( visible_center, 1 ), location ) )
                 else:
                     self.subThreadCall( pyauto.shellExecute, ( None, self.editor, '"%s"'%item.getFullpath(), location ) )
 
