@@ -2511,8 +2511,6 @@ class MainWindow( ckit.Window ):
             self.ini.set( "MISC", "confirm_extract", "1" )
         if not self.ini.has_option( "MISC", "confirm_quit" ):
             self.ini.set( "MISC", "confirm_quit", "1" )
-        if not self.ini.has_option( "MISC", "walkaround_kb436093" ):
-            self.ini.set( "MISC", "walkaround_kb436093", "0" )
 
         if not self.ini.has_option( "DEBUG", "detect_block" ):
             self.ini.set( "DEBUG", "detect_block", "0" )
@@ -2530,8 +2528,6 @@ class MainWindow( ckit.Window ):
             ckit.setPathDriveUpper(False)
         else:    
             ckit.setPathDriveUpper(None)
-
-        ckit.setGlobalOption( GLOBAL_OPTION_WALKAROUND_KB436093, int(self.ini.get( "MISC", "walkaround_kb436093" )) )
 
         cfiler_resource.cfiler_appname = self.ini.get( "MISC", "app_name" )
 

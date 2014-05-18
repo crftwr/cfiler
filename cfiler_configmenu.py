@@ -748,45 +748,6 @@ def _configAppearance( main_window ):
         items[select][1]( main_window )
 
 
-def _configWalkaroundKB436093( main_window ):
-
-    items = []
-
-    items.append( ( "しない (推奨)", "0" ) )
-    items.append( ( "する (再描画がすこし低速になります)", "1" ) )
-
-    walkaround_kb436093 = main_window.ini.get( "MISC", "walkaround_kb436093" )
-
-    initial_select = 0
-    for i in range(len(items)):
-        if items[i][1]==walkaround_kb436093:
-            initial_select = i
-            break
-
-    select = cfiler_listwindow.popMenu( main_window, "WindowsXPの描画問題を回避", items, initial_select )
-    if select<0 : return
-
-    main_window.ini.set( "MISC", "walkaround_kb436093", items[select][1] )
-    
-    ckit.setGlobalOption( GLOBAL_OPTION_WALKAROUND_KB436093, int(items[select][1]) )
-
-
-def _configOthers( main_window ):
-
-    select = 0
-    
-    while True:
-
-        items = []
-
-        items.append( ( "WindowsXPの描画問題を回避", _configWalkaroundKB436093 ) )
-
-        select = cfiler_listwindow.popMenu( main_window, "その他のオプション", items, select )
-        if select<0 : return
-
-        items[select][1]( main_window )
-
-
 def doConfigMenu( main_window ):
 
     def _showHiddenFile( main_window, item ):
@@ -831,7 +792,6 @@ def doConfigMenu2( main_window ):
         items.append( ( "I-Search動作選択", _configISearch ) )
         items.append( ( "確認の有無", _configConfirm ) )
         items.append( ( "ネットワークアップデート", _configNetworkUpdate ) )
-        items.append( ( "その他のオプション", _configOthers ) )
         items.append( ( "config.py を編集", _editConfigFile ) )
         items.append( ( "config.py をリロード", _reloadConfigFile ) )
 
