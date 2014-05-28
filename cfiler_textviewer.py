@@ -8,7 +8,6 @@ import ckit
 from ckit.ckit_const import *
 
 import cfiler_misc
-import cfiler_wallpaper
 import cfiler_history
 import cfiler_statusbar
 import cfiler_listwindow
@@ -62,7 +61,7 @@ class TextViewer( ckit.TextWindow ):
         self.plane.setImage(self.img)
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( main_window )
             self.wallpaper.adjust()
         except AttributeError:
@@ -575,7 +574,7 @@ class TextSearchWindow( ckit.TextWindow ):
         self.ignorecase_checkbox = ckit.CheckBoxWidget( self, 2, 4, self.width()-4, 1, "大文字/小文字を無視", ignorecase )
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

@@ -7,7 +7,6 @@ from ckit.ckit_const import *
 import cfiler_isearch
 import cfiler_statusbar
 import cfiler_misc
-import cfiler_wallpaper
 
 ## @addtogroup listwindow
 ## @{
@@ -130,7 +129,7 @@ class ListWindow( ckit.TextWindow ):
             self.scroll_margin = 0
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

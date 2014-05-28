@@ -4,8 +4,6 @@ import sys
 import ckit
 from ckit.ckit_const import *
 
-import cfiler_wallpaper
-
 ## @addtogroup resultwindow コンソールウインドウ機能
 ## @{
 
@@ -45,7 +43,7 @@ class ResultWindow( ckit.TextWindow ):
         self.scroll_info.makeVisible( 0, self.height() )
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

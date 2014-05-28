@@ -9,7 +9,6 @@ from ckit.ckit_const import *
 import cfiler_filelist
 import cfiler_listwindow
 import cfiler_statusbar
-import cfiler_wallpaper
 import cfiler_misc
 import cfiler_resource
 import cfiler_error
@@ -200,7 +199,7 @@ def _configAppName( main_window ):
             self.edit = ckit.EditWidget( self, 22, 1, self.width()-24, 1, app_name, [0,len(app_name)] )
 
             try:
-                self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+                self.wallpaper = ckit.Wallpaper(self)
                 self.wallpaper.copy( parent_window )
                 self.wallpaper.adjust()
             except AttributeError:
@@ -549,7 +548,7 @@ def _configConfirm( main_window ):
             self.confirm_quit_checkbox    = ckit.CheckBoxWidget( self, 2, 4, self.width()-4, 1, "終了",           confirm_quit )
 
             try:
-                self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+                self.wallpaper = ckit.Wallpaper(self)
                 self.wallpaper.copy( parent_window )
                 self.wallpaper.adjust()
             except AttributeError:

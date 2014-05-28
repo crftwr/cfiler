@@ -11,7 +11,6 @@ from ckit.ckit_const import *
 
 import cfiler_msgbox
 import cfiler_misc
-import cfiler_wallpaper
 import cfiler_statusbar
 import cfiler_resource
 import cfiler_debug
@@ -119,7 +118,7 @@ class DiffViewer( ckit.TextWindow ):
         initializePane( self.right, right_item )
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

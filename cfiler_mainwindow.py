@@ -35,7 +35,6 @@ import cfiler_configmenu
 import cfiler_bookmark
 import cfiler_commandline
 import cfiler_history
-import cfiler_wallpaper
 import cfiler_misc
 import cfiler_filecmp
 import cfiler_native
@@ -1891,7 +1890,7 @@ class MainWindow( ckit.TextWindow ):
                 return
             
             destroyWallpaper()    
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             try:
                 self.wallpaper.load(filename,strength)
             except OSError:

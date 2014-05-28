@@ -1,7 +1,6 @@
 ﻿import ckit
 from ckit.ckit_const import *
 
-import cfiler_wallpaper
 import cfiler_error
 
 ## @addtogroup msgbox
@@ -77,7 +76,7 @@ class MessageBox( ckit.TextWindow ):
         self.result_mod = 0
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

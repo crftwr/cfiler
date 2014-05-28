@@ -8,7 +8,6 @@ import ckit
 from ckit.ckit_const import *
 
 import cfiler_native
-import cfiler_wallpaper
 import cfiler_statusbar
 import cfiler_resultwindow
 
@@ -74,7 +73,7 @@ class RenameWindow( ckit.TextWindow ):
         self.archive_checkbox = ckit.CheckBoxWidget(  self, 2, 8, self.width()-4, 1, "Archive  ", self.original_attribute & ckit.FILE_ATTRIBUTE_ARCHIVE )
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:
@@ -260,7 +259,7 @@ class MultiRenameWindow( ckit.TextWindow ):
         self.items = items
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:
@@ -466,7 +465,7 @@ class BatchRenameWindow( ckit.TextWindow ):
         self.updateStatusBar()
 
         try:
-            self.wallpaper = cfiler_wallpaper.Wallpaper(self)
+            self.wallpaper = ckit.Wallpaper(self)
             self.wallpaper.copy( parent_window )
             self.wallpaper.adjust()
         except AttributeError:

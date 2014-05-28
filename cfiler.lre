@@ -27,9 +27,9 @@ cfiler_networkplace.py
 cfiler_overwritewindow.py
 cfiler_renamewindow.py
 cfiler_resource.py
+cfiler_resultwindow.py
 cfiler_statusbar.py
 cfiler_textviewer.py
-cfiler_wallpaper.py
 
 ../ckit/__init__.py
 ../ckit/ckit_command.py
@@ -41,9 +41,11 @@ cfiler_wallpaper.py
 ../ckit/ckit_stdlib.py
 ../ckit/ckit_subprocess.py
 ../ckit/ckit_textwidget.py
+../ckit/ckit_textwindow.py
 ../ckit/ckit_theme.py
 ../ckit/ckit_threadutil.py
 ../ckit/ckit_userconfig.py
+../ckit/ckit_wallpaper.py
 ../ckit/ckit_widget.py
 ../ckit/ckitcore/ckitcore.cpp
 ../ckit/ckitcore/ckitcore.h
