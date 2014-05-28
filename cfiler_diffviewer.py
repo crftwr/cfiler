@@ -28,11 +28,11 @@ MessageBox = cfiler_msgbox.MessageBox
 #  テキスト差分ビューアを実現しているクラスです。\n\n
 #  設定ファイル config.py の configure_DiffViewer に渡される window 引数は、DiffViewer クラスのオブジェクトです。
 #
-class DiffViewer( ckit.Window ):
+class DiffViewer( ckit.TextWindow ):
 
     def __init__( self, x, y, width, height, parent_window, ini, title, left_item, right_item, edit_handler=None ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
@@ -192,7 +192,7 @@ class DiffViewer( ckit.Window ):
         self.job_queue.cancel()
         self.job_queue.join()
         self.job_queue.destroy()
-        ckit.Window.destroy(self)
+        ckit.TextWindow.destroy(self)
 
     ## 設定を読み込む
     #

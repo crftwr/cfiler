@@ -160,7 +160,7 @@ def _configWallpaper( main_window ):
 
 def _configAppName( main_window ):
 
-    class AppNameWindow( ckit.Window ):
+    class AppNameWindow( ckit.TextWindow ):
 
         RESULT_CANCEL = 0
         RESULT_OK     = 1
@@ -169,7 +169,7 @@ def _configAppName( main_window ):
 
         def __init__( self, x, y, parent_window, ini ):
 
-            ckit.Window.__init__(
+            ckit.TextWindow.__init__(
                 self,
                 x=x,
                 y=y,
@@ -296,14 +296,14 @@ def _configKeymap( main_window ):
 
 def _configHotKey( main_window ):
 
-    class HotKeyWindow( ckit.Window ):
+    class HotKeyWindow( ckit.TextWindow ):
 
         RESULT_CANCEL = 0
         RESULT_OK     = 1
 
         def __init__( self, x, y, parent_window, ini ):
 
-            ckit.Window.__init__(
+            ckit.TextWindow.__init__(
                 self,
                 x=x,
                 y=y,
@@ -501,7 +501,7 @@ def _configISearch( main_window ):
 
 def _configConfirm( main_window ):
 
-    class ConfigConfirmWindow( ckit.Window ):
+    class ConfigConfirmWindow( ckit.TextWindow ):
 
         RESULT_CANCEL = 0
         RESULT_OK     = 1
@@ -513,7 +513,7 @@ def _configConfirm( main_window ):
 
         def __init__( self, x, y, parent_window, ini ):
 
-            ckit.Window.__init__(
+            ckit.TextWindow.__init__(
                 self,
                 x=x,
                 y=y,

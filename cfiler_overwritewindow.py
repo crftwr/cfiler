@@ -9,7 +9,7 @@ import cfiler_wallpaper
 
 #--------------------------------------------------------------------
 
-class OverWriteWindow( ckit.Window ):
+class OverWriteWindow( ckit.TextWindow ):
 
     RESULT_CANCEL    = 0
     RESULT_FORCE     = 1
@@ -19,7 +19,7 @@ class OverWriteWindow( ckit.Window ):
 
     def __init__( self, x, y, parent_window, ini, src_item, dst_item, default_result=RESULT_TIMESTAMP, filename='' ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,

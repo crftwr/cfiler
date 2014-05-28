@@ -14,7 +14,7 @@ import cfiler_resultwindow
 
 #--------------------------------------------------------------------
 
-class RenameWindow( ckit.Window ):
+class RenameWindow( ckit.TextWindow ):
 
     RESULT_CANCEL = 0
     RESULT_OK     = 1
@@ -28,7 +28,7 @@ class RenameWindow( ckit.Window ):
 
     def __init__( self, x, y, parent_window, ini, item ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
@@ -200,7 +200,7 @@ class RenameWindow( ckit.Window ):
 
 #--------------------------------------------------------------------
 
-class MultiRenameWindow( ckit.Window ):
+class MultiRenameWindow( ckit.TextWindow ):
 
     RESULT_CANCEL = 0
     RESULT_OK     = 1
@@ -218,7 +218,7 @@ class MultiRenameWindow( ckit.Window ):
 
         self.ini = ini
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
@@ -403,7 +403,7 @@ class MultiRenameWindow( ckit.Window ):
             return None
 #--------------------------------------------------------------------
 
-class BatchRenameWindow( ckit.Window ):
+class BatchRenameWindow( ckit.TextWindow ):
 
     RESULT_CANCEL = 0
     RESULT_OK     = 1
@@ -417,7 +417,7 @@ class BatchRenameWindow( ckit.Window ):
 
         self.ini = ini
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,

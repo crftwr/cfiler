@@ -191,7 +191,7 @@ PAINT_ALL                = PAINT_LEFT | PAINT_RIGHT | PAINT_VERTICAL_SEPARATOR |
 #  ファイラの主な機能を実現しているクラスです。\n\n
 #  設定ファイル config.py の configure に渡される window 引数は、MainWindow クラスのオブジェクトです。
 #
-class MainWindow( ckit.Window ):
+class MainWindow( ckit.TextWindow ):
 
     FOCUS_LEFT  = 0
     FOCUS_RIGHT = 1
@@ -217,7 +217,7 @@ class MainWindow( ckit.Window ):
 
         self.loadTheme()
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=self.ini.getint( "GEOMETRY", "x" ),
             y=self.ini.getint( "GEOMETRY", "y" ),
@@ -375,7 +375,7 @@ class MainWindow( ckit.Window ):
         self.left_pane.file_list.destroy()
         self.right_pane.file_list.destroy()
         cfiler_debug.disableBlockDetector()
-        ckit.Window.destroy(self)
+        ckit.TextWindow.destroy(self)
 
     def messageLoop( self, continue_cond_func=None ):
         if not continue_cond_func:
@@ -385,7 +385,7 @@ class MainWindow( ckit.Window ):
                     return False
                 return True
             continue_cond_func = defaultLoopCond
-        ckit.Window.messageLoop( self, continue_cond_func )
+        ckit.TextWindow.messageLoop( self, continue_cond_func )
 
     def topLevelMessageLoop(self):
         def isLoopContinue():

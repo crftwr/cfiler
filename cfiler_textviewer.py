@@ -25,11 +25,11 @@ import cfiler_debug
 #  テキストビューアとバイナリビューアを実現しているクラスです。\n\n
 #  設定ファイル config.py の configure_TextViewer に渡される window 引数は、TextViewer クラスのオブジェクトです。
 #
-class TextViewer( ckit.Window ):
+class TextViewer( ckit.TextWindow ):
 
     def __init__( self, x, y, width, height, main_window, ini, title, item, edit_handler=None ):
     
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
@@ -97,7 +97,7 @@ class TextViewer( ckit.Window ):
         self.job_queue.cancel()
         self.job_queue.join()
         self.job_queue.destroy()
-        ckit.Window.destroy(self)
+        ckit.TextWindow.destroy(self)
 
     ## 設定を読み込む
     #
@@ -522,7 +522,7 @@ class TextViewer( ckit.Window ):
 
 #--------------------------------------------------------------------
 
-class TextSearchWindow( ckit.Window ):
+class TextSearchWindow( ckit.TextWindow ):
 
     RESULT_CANCEL = 0
     RESULT_OK     = 1
@@ -533,7 +533,7 @@ class TextSearchWindow( ckit.Window ):
 
     def __init__( self, x, y, parent_window, ini ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,

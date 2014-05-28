@@ -9,7 +9,7 @@ import cfiler_history
 
 #--------------------------------------------------------------------
 
-class GrepWindow( ckit.Window ):
+class GrepWindow( ckit.TextWindow ):
 
     RESULT_CANCEL = 0
     RESULT_OK     = 1
@@ -21,7 +21,7 @@ class GrepWindow( ckit.Window ):
 
     def __init__( self, x, y, parent_window, ini ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,

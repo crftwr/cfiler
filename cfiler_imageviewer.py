@@ -21,14 +21,14 @@ import cfiler_debug
 #  画像ビューアを実現しているクラスです。\n\n
 #  設定ファイル config.py の configure_ImageViewer に渡される window 引数は、ImageViewer クラスのオブジェクトです。
 #
-class ImageViewer( ckit.Window ):
+class ImageViewer( ckit.TextWindow ):
 
     move_speed = 30
     zoom_speed = 1.2
 
     def __init__( self, x, y, width, height, parent_window, ini, title, items, selection, cursor_handler, select_handler ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
@@ -84,7 +84,7 @@ class ImageViewer( ckit.Window ):
         self.job_queue.cancel()
         self.job_queue.join()
         self.job_queue.destroy()
-        ckit.Window.destroy(self)
+        ckit.TextWindow.destroy(self)
 
     def configure(self):
         

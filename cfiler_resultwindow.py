@@ -11,11 +11,11 @@ import cfiler_wallpaper
 
 #--------------------------------------------------------------------
 
-class ResultWindow( ckit.Window ):
+class ResultWindow( ckit.TextWindow ):
 
     def __init__( self, x, y, width, height, parent_window, ini, title, keydown_hook=None ):
 
-        ckit.Window.__init__(
+        ckit.TextWindow.__init__(
             self,
             x=x,
             y=y,
