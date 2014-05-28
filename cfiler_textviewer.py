@@ -58,7 +58,7 @@ class TextViewer( ckit.TextWindow ):
         self.setTitle( "%s - [ %s ]" % ( cfiler_resource.cfiler_appname, item.name ) )
 
         self.img = ckit.createThemeImage('lineno.png')
-        self.plane = ckit.Plane( self, (0,0), (10,10), 1 )
+        self.plane = ckit.ImagePlane( self, (0,0), (10,10), 1 )
         self.plane.setImage(self.img)
 
         try:

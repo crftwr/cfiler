@@ -247,7 +247,7 @@ class ImageViewer( ckit.TextWindow ):
         if self.plane:
             self.plane.destroy()
 
-        self.plane = ckit.Plane( self, plane_topleft, plane_size, 4 )
+        self.plane = ckit.ImagePlane( self, plane_topleft, plane_size, 4 )
         self.plane.setImage(self.img)
 
         self.setTitle( "%s - [ %s ]" % ( cfiler_resource.cfiler_appname, self.items[self.cursor].name ) )

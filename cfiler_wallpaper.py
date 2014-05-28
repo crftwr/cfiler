@@ -8,7 +8,7 @@ class Wallpaper:
 
     def __init__( self, window ):
         self.window = window
-        self.plane = ckit.Plane( window, (0,0), (1,1), 4 )
+        self.plane = ckit.ImagePlane( window, (0,0), (1,1), 4 )
         self.filename = ""
         self.pil_image = None
         self.crop_rect = (0,0,1,1)

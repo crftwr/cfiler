@@ -77,7 +77,7 @@ class DiffViewer( ckit.TextWindow ):
         
         def initializePane( pane, item ):
         
-            pane.plane = ckit.Plane( self, (0,0), (10,10), 1 )
+            pane.plane = ckit.ImagePlane( self, (0,0), (10,10), 1 )
             pane.plane.setImage(self.img)
 
             pane.item = item
@@ -308,10 +308,10 @@ class DiffViewer( ckit.TextWindow ):
         
         left_width = width//2
 
-        self.left.plane.setPos( ( 0, 0 ) )
+        self.left.plane.setPosition( ( 0, 0 ) )
         self.left.plane.setSize( ( int((keta+1.6)*char_w), (self.height()-1)*char_h+offset_y ) )
 
-        self.right.plane.setPos( ( offset_x + left_width * char_w, 0 ) )
+        self.right.plane.setPosition( ( offset_x + left_width * char_w, 0 ) )
         self.right.plane.setSize( ( int((keta+1.6)*char_w), (self.height()-1)*char_h+offset_y ) )
 
         self.plane_statusbar.setPosSize( 0, (self.height()-1)*char_h+offset_y, client_rect[2], client_rect[3]-(self.height()-1)*char_h+offset_y )
