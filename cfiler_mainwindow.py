@@ -2225,6 +2225,7 @@ class MainWindow( ckit.TextWindow ):
             self.keymap[ "S-BackSlash" ] = self.command.ContextMenuDir
             self.keymap[ "Atmark" ] = self.command.SelectUsingFilterList
             self.keymap[ "S-Atmark" ] = self.command.SelectUsingFilter
+            self.keymap[ "Yen" ] = self.command.GotoRootDir
 
         self.jump_list = [
         ]
