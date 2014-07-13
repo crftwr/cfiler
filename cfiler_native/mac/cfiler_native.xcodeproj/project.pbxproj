@@ -1,0 +1,317 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		33FAF1241972931B0076C2D6 /* cfiler_native.cp in Sources */ = {isa = PBXBuildFile; fileRef = 33FAF1231972931B0076C2D6 /* cfiler_native.cp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		33FAF11A1972931A0076C2D6 /* cfiler_native.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cfiler_native.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		33FAF11E1972931A0076C2D6 /* cfiler_native-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cfiler_native-Prefix.pch"; sourceTree = "<group>"; };
+		33FAF11F1972931B0076C2D6 /* cfiler_nativeProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = cfiler_nativeProj.xcconfig; sourceTree = "<group>"; };
+		33FAF1201972931B0076C2D6 /* cfiler_nativeTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = cfiler_nativeTarget.xcconfig; sourceTree = "<group>"; };
+		33FAF1211972931B0076C2D6 /* cfiler_native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cfiler_native.h; sourceTree = "<group>"; };
+		33FAF1221972931B0076C2D6 /* cfiler_nativePriv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cfiler_nativePriv.h; sourceTree = "<group>"; };
+		33FAF1231972931B0076C2D6 /* cfiler_native.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cfiler_native.cp; sourceTree = "<group>"; };
+		33FAF12B197294CD0076C2D6 /* cfiler_archiver.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_archiver.py; path = ../../cfiler_archiver.py; sourceTree = "<group>"; };
+		33FAF12C197294CD0076C2D6 /* cfiler_bookmark.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_bookmark.py; path = ../../cfiler_bookmark.py; sourceTree = "<group>"; };
+		33FAF12D197294CD0076C2D6 /* cfiler_checkdir.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_checkdir.py; path = ../../cfiler_checkdir.py; sourceTree = "<group>"; };
+		33FAF12E197294CD0076C2D6 /* cfiler_commandline.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_commandline.py; path = ../../cfiler_commandline.py; sourceTree = "<group>"; };
+		33FAF12F197294CD0076C2D6 /* cfiler_configmenu.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_configmenu.py; path = ../../cfiler_configmenu.py; sourceTree = "<group>"; };
+		33FAF130197294CD0076C2D6 /* cfiler_consistency.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_consistency.py; path = ../../cfiler_consistency.py; sourceTree = "<group>"; };
+		33FAF131197294CD0076C2D6 /* cfiler_debug.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_debug.py; path = ../../cfiler_debug.py; sourceTree = "<group>"; };
+		33FAF132197294CD0076C2D6 /* cfiler_diffviewer.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_diffviewer.py; path = ../../cfiler_diffviewer.py; sourceTree = "<group>"; };
+		33FAF133197294CD0076C2D6 /* cfiler_error.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_error.py; path = ../../cfiler_error.py; sourceTree = "<group>"; };
+		33FAF134197294CD0076C2D6 /* cfiler_filecmp.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_filecmp.py; path = ../../cfiler_filecmp.py; sourceTree = "<group>"; };
+		33FAF135197294CD0076C2D6 /* cfiler_filelist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_filelist.py; path = ../../cfiler_filelist.py; sourceTree = "<group>"; };
+		33FAF136197294CD0076C2D6 /* cfiler_fileoplock.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_fileoplock.py; path = ../../cfiler_fileoplock.py; sourceTree = "<group>"; };
+		33FAF137197294CD0076C2D6 /* cfiler_grep.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_grep.py; path = ../../cfiler_grep.py; sourceTree = "<group>"; };
+		33FAF138197294CD0076C2D6 /* cfiler_grepwindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_grepwindow.py; path = ../../cfiler_grepwindow.py; sourceTree = "<group>"; };
+		33FAF139197294CD0076C2D6 /* cfiler_history.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_history.py; path = ../../cfiler_history.py; sourceTree = "<group>"; };
+		33FAF13A197294CD0076C2D6 /* cfiler_imageviewer.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_imageviewer.py; path = ../../cfiler_imageviewer.py; sourceTree = "<group>"; };
+		33FAF13B197294CD0076C2D6 /* cfiler_isearch.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_isearch.py; path = ../../cfiler_isearch.py; sourceTree = "<group>"; };
+		33FAF13C197294CD0076C2D6 /* cfiler_listwindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_listwindow.py; path = ../../cfiler_listwindow.py; sourceTree = "<group>"; };
+		33FAF13D197294CD0076C2D6 /* cfiler_main.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_main.py; path = ../../cfiler_main.py; sourceTree = "<group>"; };
+		33FAF13E197294CD0076C2D6 /* cfiler_mainwindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_mainwindow.py; path = ../../cfiler_mainwindow.py; sourceTree = "<group>"; };
+		33FAF13F197294CD0076C2D6 /* cfiler_misc.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_misc.py; path = ../../cfiler_misc.py; sourceTree = "<group>"; };
+		33FAF140197294CD0076C2D6 /* cfiler_msgbox.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_msgbox.py; path = ../../cfiler_msgbox.py; sourceTree = "<group>"; };
+		33FAF141197294CD0076C2D6 /* cfiler_musicplayer.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_musicplayer.py; path = ../../cfiler_musicplayer.py; sourceTree = "<group>"; };
+		33FAF142197294CD0076C2D6 /* cfiler_networkplace.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_networkplace.py; path = ../../cfiler_networkplace.py; sourceTree = "<group>"; };
+		33FAF143197294CD0076C2D6 /* cfiler_overwritewindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_overwritewindow.py; path = ../../cfiler_overwritewindow.py; sourceTree = "<group>"; };
+		33FAF144197294CD0076C2D6 /* cfiler_renamewindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_renamewindow.py; path = ../../cfiler_renamewindow.py; sourceTree = "<group>"; };
+		33FAF145197294CD0076C2D6 /* cfiler_resource.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_resource.py; path = ../../cfiler_resource.py; sourceTree = "<group>"; };
+		33FAF146197294CD0076C2D6 /* cfiler_resultwindow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_resultwindow.py; path = ../../cfiler_resultwindow.py; sourceTree = "<group>"; };
+		33FAF147197294CD0076C2D6 /* cfiler_statusbar.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_statusbar.py; path = ../../cfiler_statusbar.py; sourceTree = "<group>"; };
+		33FAF148197294CD0076C2D6 /* cfiler_textviewer.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler_textviewer.py; path = ../../cfiler_textviewer.py; sourceTree = "<group>"; };
+		33FAF149197294CD0076C2D6 /* cfiler.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = cfiler.py; path = ../../cfiler.py; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		33FAF1171972931A0076C2D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		33FAF1111972931A0076C2D6 = {
+			isa = PBXGroup;
+			children = (
+				33FAF12A197294660076C2D6 /* cfiler - python */,
+				33FAF11C1972931A0076C2D6 /* cfiler_native */,
+				33FAF11B1972931A0076C2D6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		33FAF11B1972931A0076C2D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				33FAF11A1972931A0076C2D6 /* cfiler_native.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		33FAF11C1972931A0076C2D6 /* cfiler_native */ = {
+			isa = PBXGroup;
+			children = (
+				33FAF11F1972931B0076C2D6 /* cfiler_nativeProj.xcconfig */,
+				33FAF1201972931B0076C2D6 /* cfiler_nativeTarget.xcconfig */,
+				33FAF1211972931B0076C2D6 /* cfiler_native.h */,
+				33FAF1221972931B0076C2D6 /* cfiler_nativePriv.h */,
+				33FAF1231972931B0076C2D6 /* cfiler_native.cp */,
+				33FAF11D1972931A0076C2D6 /* Supporting Files */,
+			);
+			path = cfiler_native;
+			sourceTree = "<group>";
+		};
+		33FAF11D1972931A0076C2D6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				33FAF11E1972931A0076C2D6 /* cfiler_native-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		33FAF12A197294660076C2D6 /* cfiler - python */ = {
+			isa = PBXGroup;
+			children = (
+				33FAF12B197294CD0076C2D6 /* cfiler_archiver.py */,
+				33FAF12C197294CD0076C2D6 /* cfiler_bookmark.py */,
+				33FAF12D197294CD0076C2D6 /* cfiler_checkdir.py */,
+				33FAF12E197294CD0076C2D6 /* cfiler_commandline.py */,
+				33FAF12F197294CD0076C2D6 /* cfiler_configmenu.py */,
+				33FAF130197294CD0076C2D6 /* cfiler_consistency.py */,
+				33FAF131197294CD0076C2D6 /* cfiler_debug.py */,
+				33FAF132197294CD0076C2D6 /* cfiler_diffviewer.py */,
+				33FAF133197294CD0076C2D6 /* cfiler_error.py */,
+				33FAF134197294CD0076C2D6 /* cfiler_filecmp.py */,
+				33FAF135197294CD0076C2D6 /* cfiler_filelist.py */,
+				33FAF136197294CD0076C2D6 /* cfiler_fileoplock.py */,
+				33FAF137197294CD0076C2D6 /* cfiler_grep.py */,
+				33FAF138197294CD0076C2D6 /* cfiler_grepwindow.py */,
+				33FAF139197294CD0076C2D6 /* cfiler_history.py */,
+				33FAF13A197294CD0076C2D6 /* cfiler_imageviewer.py */,
+				33FAF13B197294CD0076C2D6 /* cfiler_isearch.py */,
+				33FAF13C197294CD0076C2D6 /* cfiler_listwindow.py */,
+				33FAF13D197294CD0076C2D6 /* cfiler_main.py */,
+				33FAF13E197294CD0076C2D6 /* cfiler_mainwindow.py */,
+				33FAF13F197294CD0076C2D6 /* cfiler_misc.py */,
+				33FAF140197294CD0076C2D6 /* cfiler_msgbox.py */,
+				33FAF141197294CD0076C2D6 /* cfiler_musicplayer.py */,
+				33FAF142197294CD0076C2D6 /* cfiler_networkplace.py */,
+				33FAF143197294CD0076C2D6 /* cfiler_overwritewindow.py */,
+				33FAF144197294CD0076C2D6 /* cfiler_renamewindow.py */,
+				33FAF145197294CD0076C2D6 /* cfiler_resource.py */,
+				33FAF146197294CD0076C2D6 /* cfiler_resultwindow.py */,
+				33FAF147197294CD0076C2D6 /* cfiler_statusbar.py */,
+				33FAF148197294CD0076C2D6 /* cfiler_textviewer.py */,
+				33FAF149197294CD0076C2D6 /* cfiler.py */,
+			);
+			name = "cfiler - python";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		33FAF1181972931A0076C2D6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		33FAF1191972931A0076C2D6 /* cfiler_native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33FAF1271972931B0076C2D6 /* Build configuration list for PBXNativeTarget "cfiler_native" */;
+			buildPhases = (
+				33FAF1161972931A0076C2D6 /* Sources */,
+				33FAF1171972931A0076C2D6 /* Frameworks */,
+				33FAF1181972931A0076C2D6 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cfiler_native;
+			productName = cfiler_native;
+			productReference = 33FAF11A1972931A0076C2D6 /* cfiler_native.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		33FAF1121972931A0076C2D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = craftware;
+			};
+			buildConfigurationList = 33FAF1151972931A0076C2D6 /* Build configuration list for PBXProject "cfiler_native" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 33FAF1111972931A0076C2D6;
+			productRefGroup = 33FAF11B1972931A0076C2D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				33FAF1191972931A0076C2D6 /* cfiler_native */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		33FAF1161972931A0076C2D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33FAF1241972931B0076C2D6 /* cfiler_native.cp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		33FAF1251972931B0076C2D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		33FAF1261972931B0076C2D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		33FAF1281972931B0076C2D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		33FAF1291972931B0076C2D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		33FAF1151972931A0076C2D6 /* Build configuration list for PBXProject "cfiler_native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33FAF1251972931B0076C2D6 /* Debug */,
+				33FAF1261972931B0076C2D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33FAF1271972931B0076C2D6 /* Build configuration list for PBXNativeTarget "cfiler_native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33FAF1281972931B0076C2D6 /* Debug */,
+				33FAF1291972931B0076C2D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 33FAF1121972931A0076C2D6 /* Project object */;
+}
