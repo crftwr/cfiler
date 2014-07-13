@@ -1,9 +1,12 @@
-﻿import time
+﻿import os
+import time
 import threading
 
 import ckit
 
-import cfiler_native
+# FIXME : 実装
+if os.name=="nt":
+    import cfiler_native
 
 class CheckDirThread( threading.Thread ):
 
@@ -18,6 +21,9 @@ class CheckDirThread( threading.Thread ):
         self.check_dir = None
 
     def run(self):
+        
+        if os.name!="nt":
+            return
 
         ckit.setBlockDetector()
 

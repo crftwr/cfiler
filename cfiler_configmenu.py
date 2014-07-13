@@ -1,7 +1,8 @@
 ﻿import os
 import sys
 
-import pyauto
+if os.name=="nt":
+    import pyauto
 
 import ckit
 from ckit.ckit_const import *

@@ -4,8 +4,6 @@ import shutil
 import datetime
 import ctypes
 
-import pyauto
-
 import ckit
 from ckit.ckit_const import *
 
@@ -109,6 +107,10 @@ def registerNetConnectionHandler(handler):
     _net_connection_handler = handler
 
 def checkNetConnection(path):
+
+    # FIXME : 実装
+    if os.name!="nt": return
+
     unc = os.path.splitunc(path)
     if unc[0]:
         remote_resource_name = unc[0].replace('/','\\').rstrip('\\')

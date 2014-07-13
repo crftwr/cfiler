@@ -1,6 +1,9 @@
 ﻿from ckit import *
 
-from pyauto import shellExecute
+import os
+if os.name=="nt":
+    from pyauto import shellExecute
+del os
 
 from cfiler_mainwindow import *
 from cfiler_filelist import *

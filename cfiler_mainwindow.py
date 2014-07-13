@@ -11,9 +11,11 @@ import threading
 import configparser
 import traceback
 import ctypes
-import msvcrt
+if os.name=="nt":
+    import msvcrt
 
-import pyauto
+if os.name=="nt":
+    import pyauto
 
 import ckit
 from ckit.ckit_const import *
@@ -2436,7 +2438,7 @@ class MainWindow( ckit.TextWindow ):
         if not self.ini.has_option( "FONT", "name" ):
             self.ini.set( "FONT", "name", "" )
         if not self.ini.has_option( "FONT", "size" ):
-            self.ini.set( "FONT", "size", "12" )
+            self.ini.set( "FONT", "size", "16" )
 
         if not self.ini.has_option( "THEME", "name" ):
             self.ini.set( "THEME", "name", "black" )
