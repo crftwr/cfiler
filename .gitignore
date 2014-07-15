@@ -5,3 +5,5 @@ cfiler_native/mac/cfiler_native.xcodeproj/xcuserdata/craftware.xcuserdatad/xcsch
 cfiler_native/mac/cfiler_native.xcodeproj/xcuserdata/craftware.xcuserdatad/xcschemes/xcschememanagement.plist
 cfiler_native/mac/cfiler_native/cfiler_native-Prefix.pch
 config.py
+cfiler_native.xccheckout
+*.tmp

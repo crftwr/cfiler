@@ -466,7 +466,13 @@ class lister_Default(lister_LocalFS):
 
         cfiler_misc.checkNetConnection(self.location)
 
-        fileinfo_list = cfiler_native.findFile( os.path.join(self.location,"*") )
+
+        # FIXME : 実装
+        if os.name=="nt":
+            fileinfo_list = cfiler_native.findFile( os.path.join(self.location,"*") )
+        else:
+            fileinfo_list = []
+
         items = list(map( packListItem, fileinfo_list ))
 
         return items
