@@ -2436,9 +2436,9 @@ class MainWindow( ckit.TextWindow ):
             self.ini.set( "GEOMETRY", "left_window_width", str( (self.ini.getint( "GEOMETRY", "width" )-1)//2 ) )
 
         if not self.ini.has_option( "FONT", "name" ):
-            self.ini.set( "FONT", "name", "" )
+            self.ini.set( "FONT", "name", "Osaka-Mono" ) # FIXME : OSによって変える
         if not self.ini.has_option( "FONT", "size" ):
-            self.ini.set( "FONT", "size", "16" )
+            self.ini.set( "FONT", "size", "14" )
 
         if not self.ini.has_option( "THEME", "name" ):
             self.ini.set( "THEME", "name", "black" )
