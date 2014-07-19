@@ -2438,7 +2438,7 @@ class MainWindow( ckit.TextWindow ):
         if not self.ini.has_option( "FONT", "name" ):
             self.ini.set( "FONT", "name", "Osaka-Mono" ) # FIXME : OSによって変える
         if not self.ini.has_option( "FONT", "size" ):
-            self.ini.set( "FONT", "size", "14" )
+            self.ini.set( "FONT", "size", "16" )
 
         if not self.ini.has_option( "THEME", "name" ):
             self.ini.set( "THEME", "name", "black" )
