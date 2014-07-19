@@ -468,17 +468,16 @@ class lister_Default(lister_LocalFS):
         cfiler_misc.checkNetConnection(self.location)
 
 
-        # FIXME : 実装
         if os.name=="nt":
             fileinfo_list = cfiler_native.findFile( os.path.join(self.location,"*") )
         else:
-            # FIXME : 更新日時など、ちゃんとする
+            # FIXME : 属性をちゃんとする
             fileinfo_list = []
             for name in os.listdir(self.location):
                 s = os.stat( os.path.join(self.location,name) )
                 attr = 0
                 if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
-                fileinfo_list.append( (name,s.st_size,(2010,1,1,10,20,30),attr) )
+                fileinfo_list.append( (name,s.st_size,time.localtime(s.st_mtime)[:6],attr) )
 
         items = list(map( packListItem, fileinfo_list ))
 
