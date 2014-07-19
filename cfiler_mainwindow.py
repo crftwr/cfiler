@@ -2496,7 +2496,7 @@ class MainWindow( ckit.TextWindow ):
         if not self.ini.has_option( "MISC", "isearch_type" ):
             self.ini.set( "MISC", "isearch_type", "strict" )
         if not self.ini.has_option( "MISC", "directory_separator" ):
-            self.ini.set( "MISC", "directory_separator", "backslash" )
+            self.ini.set( "MISC", "directory_separator", "slash" ) # FIXME : OS判定
         if not self.ini.has_option( "MISC", "drive_case" ):
             self.ini.set( "MISC", "drive_case", "nocare" )
         if not self.ini.has_option( "MISC", "app_name" ):
