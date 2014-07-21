@@ -2295,7 +2295,8 @@ class MainWindow( ckit.TextWindow ):
         if os.path.exists(self.ini_filename):
             try:
                 fd = open( self.ini_filename, "r", encoding="utf-8" )
-                msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
+                if os.name=="nt":
+                    msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
                 self.ini.readfp(fd)
                 fd.close()
             except Exception as e:
@@ -2568,7 +2569,8 @@ class MainWindow( ckit.TextWindow ):
             tmp_ini_filename = self.ini_filename + ".tmp"
 
             fd = open( tmp_ini_filename, "w", encoding="utf-8" )
-            msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
+            if os.name=="nt": # FIXME : Mac対応
+                msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
             self.ini.write(fd)
             fd.close()
 

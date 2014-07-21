@@ -7,3 +7,4 @@ cfiler_native/mac/cfiler_native/cfiler_native-Prefix.pch
 config.py
 cfiler_native.xccheckout
 *.tmp
+cfiler.ini
