@@ -35,13 +35,13 @@ class IncrementalSearch:
             self.migemo_re_result = None
 
         if isearch_type=="partial":
-            return fnmatch.fnmatch( name, '*'+pattern+'*' )
+            return fnmatch.fnmatch( name.lower(), '*'+pattern.lower()+'*' )
 
         elif isearch_type=="inaccurate":
             new_pattern = "*"
             for ch in pattern:
                 new_pattern += ch + "*"
-            return fnmatch.fnmatch( name, new_pattern )
+            return fnmatch.fnmatch( name.lower(), new_pattern.lower() )
 
         elif isearch_type=="migemo":
 
@@ -51,7 +51,7 @@ class IncrementalSearch:
                 try:
                     migemo_object = ckit.Migemo(dict_path)
                 except ValueError:
-                    return fnmatch.fnmatch( name, '*'+pattern+'*' )
+                    return fnmatch.fnmatch( name.lower(), '*'+pattern.lower()+'*' )
 
             # 検索パターンが変更になったときだけクエリーをかける
             if self.migemo_pattern != pattern:
@@ -78,7 +78,7 @@ class IncrementalSearch:
             return re_result!=None
 
         else:
-            return fnmatch.fnmatch( name, pattern+'*' )
+            return fnmatch.fnmatch( name.lower(), pattern.lower()+'*' )
 
     def cursorUp( self, get_string, length, select, scroll_pos, visible_height, margin=0 ):
         for i in range( select-1, -1, -1 ):
