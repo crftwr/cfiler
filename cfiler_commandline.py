@@ -1,4 +1,5 @@
 ﻿import os
+import stat
 import inspect
 
 import ckit
@@ -43,7 +44,10 @@ class commandline_Launcher:
 
             try:
                 path = ckit.joinPath( basedir, directory )
-                unc = os.path.splitunc(path)
+                if os.name=="nt":
+                    unc = os.path.splitunc(path)
+                else:
+                    unc = [False]
                 if unc[0]:
                     cfiler_misc.checkNetConnection(path)
                 if unc[0] and not unc[1]:
@@ -57,7 +61,16 @@ class commandline_Launcher:
                                 else:
                                     dirname_list.append( info[0] + "\\" )
                 else:
-                    infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
+                    if os.name=="nt":
+                        infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
+                    else:
+                        infolist = []
+                        for name in os.listdir(path):
+                            s = os.stat( os.path.join(path,name) )
+                            attr = 0
+                            if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
+                            infolist.append( (name,None,None,attr) )
+                    
                     for info in infolist:
                         if info[0].lower().startswith(name_prefix):
                             if info[3] & ckit.FILE_ATTRIBUTE_DIRECTORY:

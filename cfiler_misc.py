@@ -1,5 +1,6 @@
 ﻿import sys
 import os
+import stat
 import shutil
 import datetime
 import ctypes
@@ -44,7 +45,10 @@ class candidate_Filename():
                     filename_list.append( item[ len(directory_lower) : ] )
 
         path = ckit.joinPath( self.basedir, directory )
-        unc = os.path.splitunc(path)
+        if os.name=="nt":
+            unc = os.path.splitunc(path)
+        else:
+            unc = [False]
         if unc[0]:
             checkNetConnection(path)
         if unc[0] and not unc[1]:
@@ -61,10 +65,19 @@ class candidate_Filename():
                         else:
                             dirname_list.append( info[0] + "\\" )
         else:
-            try:
-                infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
-            except WindowsError:
+            if os.name=="nt":
+                try:
+                    infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
+                except WindowsError:
+                    infolist = []
+            else:
                 infolist = []
+                for name in os.listdir(path):
+                    s = os.stat( os.path.join(path,name) )
+                    attr = 0
+                    if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
+                    infolist.append( (name,None,None,attr) )
+            
             for info in infolist:
                 if info[0].lower().startswith(name_prefix):
                     if info[3] & ckit.FILE_ATTRIBUTE_DIRECTORY:
