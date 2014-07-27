@@ -193,7 +193,7 @@ class ListWindow( ckit.TextWindow ):
         return False    
 
     def onClose(self):
-        self.quit()
+        self.cancel()
 
     def onKeyDown( self, vk, mod ):
 
