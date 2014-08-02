@@ -199,7 +199,18 @@ class item_Default(item_CommonPaint):
         self.name = name
 
         if info==None:
-            info_list = cfiler_native.findFile( os.path.join(self.location,self.name) )
+            
+            if os.name=="nt":
+                info_list = cfiler_native.findFile( os.path.join(self.location,self.name) )
+            else:
+                # FIXME : 属性をちゃんとする
+                info_list = []
+                # FIXME : try - catch して info_list を空のまま抜ける
+                s = os.stat( os.path.join(self.location,self.name) )
+                attr = 0
+                if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
+                info_list.append( (self.name,s.st_size,time.localtime(s.st_mtime)[:6],attr) )
+        
             if info_list:
                 info = info_list[0]
             else:
@@ -226,7 +237,12 @@ class item_Default(item_CommonPaint):
         return self._mtime
 
     def utime( self, time ):
-        cfiler_native.setFileTime( os.path.join(self.location,self.name), time )
+        if os.name=="nt":
+            cfiler_native.setFileTime( os.path.join(self.location,self.name), time )
+        else:
+            # FIXME : 実装
+            pass
+            #os.utime( os.path.join(self.location,self.name), (t,t) )
 
     def size(self):
         return self._size
@@ -235,8 +251,12 @@ class item_Default(item_CommonPaint):
         return self._attr
 
     def uattr( self, attr ):
-        ckit.setFileAttribute( os.path.join( self.location, self.name ), attr )
-        self._attr = attr
+        if os.name=="nt":
+            ckit.setFileAttribute( os.path.join( self.location, self.name ), attr )
+            self._attr = attr
+        else:
+            # FIXME : 実装
+            pass
 
     def isdir(self):
         return self._attr & ckit.FILE_ATTRIBUTE_DIRECTORY

@@ -3487,7 +3487,7 @@ class MainWindow( ckit.TextWindow ):
                         
                         try:
                             # コピー元のファイルをロックして、自分自身へのコピーを禁止する
-                            if hasattr(src_item,"getFullpath"):
+                            if os.name=="nt" and hasattr(src_item,"getFullpath"):
                                 src_lock = cfiler_native.LockFile( src_item.getFullpath() )
                             
                             src_file = src_item.open()
