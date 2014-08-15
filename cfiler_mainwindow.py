@@ -5,6 +5,7 @@ import re
 import io
 import math
 import time
+import subprocess
 import cProfile
 import fnmatch
 import threading
@@ -321,7 +322,13 @@ class MainWindow( ckit.TextWindow ):
         self.association_list = []
         self.itemformat_list = []
         self.itemformat = cfiler_filelist.itemformat_Name_Ext_Size_YYMMDD_HHMMSS
-        self.editor = "notepad.exe"
+
+        if os.name=="nt":
+            self.editor = "notepad.exe"
+        else:
+            # FIXME : OS付属のエディタにする
+            self.editor = "/Applications/Sublime Text 2.app/Contents/MacOS/Sublime Text 2"
+
         self.diff_editor = None
         self.commandline_list = []
         self.commandline_history = cfiler_history.History(1000)
@@ -3798,7 +3805,12 @@ class MainWindow( ckit.TextWindow ):
                 if callable(self.editor):
                     self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
                 else:
-                    pyauto.shellExecute( None, self.editor, '"%s"'% os.path.normpath(item.getFullpath()), pane.file_list.getLocation() )
+                    if os.name=="nt":
+                        pyauto.shellExecute( None, self.editor, '"%s"'% os.path.normpath(item.getFullpath()), pane.file_list.getLocation() )
+                    
+                    else:
+                        subprocess.Popen( [ self.editor, os.path.normpath(item.getFullpath()) ], cwd=pane.file_list.getLocation() )
+
 
         self.appendHistory( pane, True )
 
@@ -3833,7 +3845,10 @@ class MainWindow( ckit.TextWindow ):
             if callable(self.editor):
                 self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
             else:
-                pyauto.shellExecute( None, self.editor, '"%s"'%item.getFullpath(), pane.file_list.getLocation() )
+                if os.name=="nt":
+                    pyauto.shellExecute( None, self.editor, '"%s"'%item.getFullpath(), pane.file_list.getLocation() )
+                else:
+                    subprocess.Popen( [ self.editor, item.getFullpath() ], cwd=pane.file_list.getLocation() )
 
         self.appendHistory( pane, True )
 
