@@ -8,6 +8,7 @@ import time
 import io
 import threading
 import functools
+import unicodedata
 
 import ckit
 from ckit.ckit_const import *
@@ -222,6 +223,10 @@ class item_Default(item_CommonPaint):
 
         self._selected = False
         self._bookmark = bookmark
+
+        # Macの濁点変換
+        # FIXME : 変換の場所が適切か要検討。表示とキャレットの移動に関してのみ、変換をするべきかも。
+        self.name = unicodedata.normalize( "NFC", self.name )
 
     def __str__(self):
         return os.path.join( self.location, self.name )
