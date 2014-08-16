@@ -3196,7 +3196,11 @@ class MainWindow( ckit.TextWindow ):
         item = pane.file_list.getItem(pane.cursor)
         fullpath = os.path.join( pane.file_list.getLocation(), item.name )
         self.appendHistory( pane, True )
-        self.subThreadCall( pyauto.shellExecute, ( None, fullpath.replace('/','\\'), "", pane.file_list.getLocation().replace('/','\\') ) )
+        if os.name=="nt":
+            self.subThreadCall( pyauto.shellExecute, ( None, fullpath.replace('/','\\'), "", pane.file_list.getLocation().replace('/','\\') ) )
+        else:
+            # FIXME : サブスレッド化するべき？
+            subprocess.Popen( [ "open", fullpath ], cwd=pane.file_list.getLocation() )
 
     ## ESCキー相当の処理を実行する
     #
