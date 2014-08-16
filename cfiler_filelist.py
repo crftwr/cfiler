@@ -210,6 +210,7 @@ class item_Default(item_CommonPaint):
                 s = os.stat( os.path.join(self.location,self.name) )
                 attr = 0
                 if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
+                if self.name[0]=='.': attr |= ckit.FILE_ATTRIBUTE_HIDDEN
                 info_list.append( (self.name,s.st_size,time.localtime(s.st_mtime)[:6],attr) )
         
             if info_list:
@@ -502,6 +503,7 @@ class lister_Default(lister_LocalFS):
                 s = os.stat( os.path.join(self.location,name) )
                 attr = 0
                 if stat.S_ISDIR(s.st_mode): attr |= ckit.FILE_ATTRIBUTE_DIRECTORY
+                if name[0]=='.': attr |= ckit.FILE_ATTRIBUTE_HIDDEN
                 fileinfo_list.append( (name,s.st_size,time.localtime(s.st_mtime)[:6],attr) )
 
         items = list(map( packListItem, fileinfo_list ))
