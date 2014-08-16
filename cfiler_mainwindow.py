@@ -4137,7 +4137,11 @@ class MainWindow( ckit.TextWindow ):
 
     ## ドライブを選択する
     def command_SelectDrive( self, info ):
+
         pane = self.activePane()
+
+        # 現在位置をドライブ中の最後の位置の検索対象にする
+        self.appendHistory(pane)
 
         show_detail = [False]
         detail_mode = False
@@ -4150,23 +4154,65 @@ class MainWindow( ckit.TextWindow ):
 
         while True:
 
-            current_drive = os.path.splitdrive( pane.file_list.getLocation() )[0]
-            initial_select = 0
-
             items = []
-            items.append( "%s : %s" % ( "1", "Desktop" ) )
-            for drive_letter in ckit.getDrives():
+            if os.name=="nt":
+                initial_select = 0
+                current_drive = os.path.splitdrive( pane.file_list.getLocation() )[0]
                 
-                if detail_mode:
-                    drive_display_name = ckit.getDriveDisplayName( "%s:\\" % (drive_letter,) )
-                    drive_display_name = drive_display_name.replace(" (%s:)"%drive_letter,"")
-                    items.append( "%s : %s" % ( drive_letter, drive_display_name ) )
-                else:                        
-                    drive_display_type = ckit.getDriveType( "%s:\\" % (drive_letter,) )
-                    items.append( "%s : %s" % ( drive_letter, drive_display_type ) )
+                items.append( ( "%s : %s" % ( "1", "Desktop" ), None ) )
+                for drive_letter in ckit.getDrives():
+                    
+                    if detail_mode:
+                        drive_display_name = ckit.getDriveDisplayName( "%s:\\" % (drive_letter,) )
+                        drive_display_name = drive_display_name.replace(" (%s:)"%drive_letter,"")
+                        items.append( ( "%s : %s" % ( drive_letter, drive_display_name ), None ) )
+                    else:                        
+                        drive_display_type = ckit.getDriveType( "%s:\\" % (drive_letter,) )
+                        items.append( ( "%s : %s" % ( drive_letter, drive_display_type ), None ) )
+                    
+                    if current_drive and current_drive[0].upper()==drive_letter:
+                        initial_select = len(items)-1
+            else:
                 
-                if current_drive and current_drive[0].upper()==drive_letter:
+                initial_select = -1
+                current_location = pane.file_list.getLocation()
+                
+                # パスがドライブに所属しているかチェック
+                def isInsideOfDrive( path, drive_path ):
+                    if drive_path=="/":
+                        if path.startswith("/Volumes/"):
+                            return False
+                    return path.startswith(drive_path)
+                
+                # 履歴からドライブ中の最後の位置を検索する
+                def lastHistoryInsideOfDrive(drive_path):
+                    for item in pane.history.items:
+                        if isInsideOfDrive( item[0], drive_path ):
+                            return item[0]
+                    else:
+                        return drive_path
+
+                home = os.environ["HOME"]
+                
+                drive_path = home
+                items.append( ( "%s : %s" % ( "1", "Home" ), drive_path ) )
+                if current_location==drive_path:
                     initial_select = len(items)-1
+
+                drive_path = ckit.joinPath(home,"Desktop")
+                items.append( ( "%s : %s" % ( "2", "Desktop" ), drive_path ) )
+                if current_location==drive_path:
+                    initial_select = len(items)-1
+
+                for name in os.listdir("/Volumes"):
+                    
+                    drive_path = os.path.join( "/Volumes", name )
+                    if os.path.islink(drive_path):
+                        drive_path = os.readlink(drive_path)
+                    items.append( ( "%s" % ( name ), lastHistoryInsideOfDrive(drive_path) ) )
+                    
+                    if initial_select<0 and isInsideOfDrive( current_location, drive_path ):
+                        initial_select = len(items)-1
 
             if detail_mode:
                 keydown_hook=None
@@ -4189,20 +4235,24 @@ class MainWindow( ckit.TextWindow ):
 
         if result<0 : return
 
-        drive_letter = items[result][0]
+        if os.name=="nt":
+            drive_letter = items[result][0][0]
 
-        if drive_letter=='1':
-            newdirname = ckit.getDesktopPath()
-            lister = cfiler_filelist.lister_Default(self,newdirname)
+            if drive_letter=='1':
+                newdirname = ckit.getDesktopPath()
+                lister = cfiler_filelist.lister_Default(self,newdirname)
 
-        else:
-            history_item = pane.history.findStartWith( "%s:" % drive_letter )
-            if history_item==None :
-                newdirname = "%s:\\" % drive_letter
             else:
-                newdirname = history_item[0]
-            lister = cfiler_filelist.lister_Default(self,newdirname)
-            
+                # FIXME : Macと同じように上の方で処理したい
+                history_item = pane.history.findStartWith( "%s:" % drive_letter )
+                if history_item==None :
+                    newdirname = "%s:\\" % drive_letter
+                else:
+                    newdirname = history_item[0]
+                lister = cfiler_filelist.lister_Default(self,newdirname)
+        else:
+            lister = cfiler_filelist.lister_Default(self,items[result][1])
+        
         # 見つかるまで親ディレクトリを遡る
         def setListerAndGetParent(lister):
             while True:
