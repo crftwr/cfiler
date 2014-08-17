@@ -12,14 +12,13 @@ import threading
 import configparser
 import traceback
 import ctypes
-if os.name=="nt":
-    import msvcrt
-
-if os.name=="nt":
-    import pyauto
 
 import ckit
 from ckit.ckit_const import *
+
+if ckit.platform()=="win":
+    import msvcrt
+    import pyauto
 
 import cfiler_filelist
 import cfiler_isearch
@@ -323,7 +322,7 @@ class MainWindow( ckit.TextWindow ):
         self.itemformat_list = []
         self.itemformat = cfiler_filelist.itemformat_Name_Ext_Size_YYMMDD_HHMMSS
 
-        if os.name=="nt":
+        if ckit.platform()=="win":
             self.editor = "notepad.exe"
         else:
             # FIXME : OS付属のエディタにする
@@ -2302,7 +2301,7 @@ class MainWindow( ckit.TextWindow ):
         if os.path.exists(self.ini_filename):
             try:
                 fd = open( self.ini_filename, "r", encoding="utf-8" )
-                if os.name=="nt":
+                if ckit.platform()=="win":
                     msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
                 self.ini.readfp(fd)
                 fd.close()
@@ -2576,7 +2575,7 @@ class MainWindow( ckit.TextWindow ):
             tmp_ini_filename = self.ini_filename + ".tmp"
 
             fd = open( tmp_ini_filename, "w", encoding="utf-8" )
-            if os.name=="nt": # FIXME : Mac対応
+            if ckit.platform()=="win":
                 msvcrt.locking( fd.fileno(), msvcrt.LK_LOCK, 1 )
             self.ini.write(fd)
             fd.close()
@@ -3196,7 +3195,7 @@ class MainWindow( ckit.TextWindow ):
         item = pane.file_list.getItem(pane.cursor)
         fullpath = os.path.join( pane.file_list.getLocation(), item.name )
         self.appendHistory( pane, True )
-        if os.name=="nt":
+        if ckit.platform()=="win":
             self.subThreadCall( pyauto.shellExecute, ( None, fullpath.replace('/','\\'), "", pane.file_list.getLocation().replace('/','\\') ) )
         else:
             # FIXME : サブスレッド化するべき？
@@ -3498,7 +3497,7 @@ class MainWindow( ckit.TextWindow ):
                         
                         try:
                             # コピー元のファイルをロックして、自分自身へのコピーを禁止する
-                            if os.name=="nt" and hasattr(src_item,"getFullpath"):
+                            if ckit.platform()=="win" and hasattr(src_item,"getFullpath"):
                                 src_lock = cfiler_native.LockFile( src_item.getFullpath() )
                             
                             src_file = src_item.open()
@@ -3809,7 +3808,7 @@ class MainWindow( ckit.TextWindow ):
                 if callable(self.editor):
                     self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
                 else:
-                    if os.name=="nt":
+                    if ckit.platform()=="win":
                         pyauto.shellExecute( None, self.editor, '"%s"'% os.path.normpath(item.getFullpath()), pane.file_list.getLocation() )
                     
                     else:
@@ -3849,7 +3848,7 @@ class MainWindow( ckit.TextWindow ):
             if callable(self.editor):
                 self.editor( item, item.getTextPoint(), pane.file_list.getLocation() )
             else:
-                if os.name=="nt":
+                if ckit.platform()=="win":
                     pyauto.shellExecute( None, self.editor, '"%s"'%item.getFullpath(), pane.file_list.getLocation() )
                 else:
                     subprocess.Popen( [ self.editor, item.getFullpath() ], cwd=pane.file_list.getLocation() )
@@ -4155,7 +4154,7 @@ class MainWindow( ckit.TextWindow ):
         while True:
 
             items = []
-            if os.name=="nt":
+            if ckit.platform()=="win":
                 initial_select = 0
                 current_drive = os.path.splitdrive( pane.file_list.getLocation() )[0]
                 
@@ -4235,7 +4234,7 @@ class MainWindow( ckit.TextWindow ):
 
         if result<0 : return
 
-        if os.name=="nt":
+        if ckit.platform()=="win":
             drive_letter = items[result][0][0]
 
             if drive_letter=='1':

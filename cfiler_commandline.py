@@ -44,7 +44,7 @@ class commandline_Launcher:
 
             try:
                 path = ckit.joinPath( basedir, directory )
-                if os.name=="nt":
+                if ckit.platform()=="win":
                     unc = os.path.splitunc(path)
                 else:
                     unc = [False]
@@ -61,7 +61,7 @@ class commandline_Launcher:
                                 else:
                                     dirname_list.append( info[0] + "\\" )
                 else:
-                    if os.name=="nt":
+                    if ckit.platform()=="win":
                         infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
                     else:
                         infolist = []

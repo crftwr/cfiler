@@ -1,7 +1,7 @@
 ﻿from ckit import *
 
 import os
-if os.name=="nt":
+if ckit.platform()=="win":
     from pyauto import shellExecute
 del os
 

@@ -201,7 +201,7 @@ class item_Default(item_CommonPaint):
 
         if info==None:
             
-            if os.name=="nt":
+            if ckit.platform()=="win":
                 info_list = cfiler_native.findFile( os.path.join(self.location,self.name) )
             else:
                 # FIXME : 属性をちゃんとする
@@ -243,7 +243,7 @@ class item_Default(item_CommonPaint):
         return self._mtime
 
     def utime( self, time ):
-        if os.name=="nt":
+        if ckit.platform()=="win":
             cfiler_native.setFileTime( os.path.join(self.location,self.name), time )
         else:
             # FIXME : 実装
@@ -257,7 +257,7 @@ class item_Default(item_CommonPaint):
         return self._attr
 
     def uattr( self, attr ):
-        if os.name=="nt":
+        if ckit.platform()=="win":
             ckit.setFileAttribute( os.path.join( self.location, self.name ), attr )
             self._attr = attr
         else:
@@ -494,7 +494,7 @@ class lister_Default(lister_LocalFS):
         cfiler_misc.checkNetConnection(self.location)
 
 
-        if os.name=="nt":
+        if ckit.platform()=="win":
             fileinfo_list = cfiler_native.findFile( os.path.join(self.location,"*") )
         else:
             # FIXME : 属性をちゃんとする

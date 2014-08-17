@@ -1,11 +1,11 @@
 ﻿import os
 import sys
 
-if os.name=="nt":
-    import pyauto
-
 import ckit
 from ckit.ckit_const import *
+
+if ckit.platform()=="win":
+    import pyauto
 
 import cfiler_filelist
 import cfiler_listwindow

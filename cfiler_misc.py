@@ -45,7 +45,7 @@ class candidate_Filename():
                     filename_list.append( item[ len(directory_lower) : ] )
 
         path = ckit.joinPath( self.basedir, directory )
-        if os.name=="nt":
+        if ckit.platform()=="win":
             unc = os.path.splitunc(path)
         else:
             unc = [False]
@@ -65,7 +65,7 @@ class candidate_Filename():
                         else:
                             dirname_list.append( info[0] + "\\" )
         else:
-            if os.name=="nt":
+            if ckit.platform()=="win":
                 try:
                     infolist = cfiler_native.findFile( ckit.joinPath(path,'*'), use_cache=True )
                 except WindowsError:
@@ -122,7 +122,7 @@ def registerNetConnectionHandler(handler):
 def checkNetConnection(path):
 
     # FIXME : 実装
-    if os.name!="nt": return
+    if ckit.platform()!="win": return
 
     unc = os.path.splitunc(path)
     if unc[0]:

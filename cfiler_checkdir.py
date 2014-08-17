@@ -5,7 +5,7 @@ import threading
 import ckit
 
 # FIXME : 実装
-if os.name=="nt":
+if ckit.platform()=="win":
     import cfiler_native
 
 class CheckDirThread( threading.Thread ):
@@ -22,7 +22,7 @@ class CheckDirThread( threading.Thread ):
 
     def run(self):
         
-        if os.name!="nt":
+        if ckit.platform()!="win":
             return
 
         ckit.setBlockDetector()
