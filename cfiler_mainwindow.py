@@ -325,8 +325,9 @@ class MainWindow( ckit.TextWindow ):
         if ckit.platform()=="win":
             self.editor = "notepad.exe"
         else:
-            # FIXME : OS付属のエディタにする
-            self.editor = "/Applications/Sublime Text 2.app/Contents/MacOS/Sublime Text 2"
+            def editor( item, point, location ):
+                subprocess.Popen( [ "open", "-t", item.getFullpath() ], cwd=location )
+            self.editor = editor
 
         self.diff_editor = None
         self.commandline_list = []

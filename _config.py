@@ -75,13 +75,21 @@ def configure(window):
     # --------------------------------------------------------------------
     # テキストエディタを設定する
 
-    if 1: # プログラムのファイルパスを設定 (単純な使用方法)
-        window.editor = "notepad.exe"
+    if 0: # プログラムのファイルパスを設定 (単純な使用方法)
+        if platform()=="win":
+            window.editor = "notepad.exe"
+        else:
+            window.editor = "/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2"
 
-    if 0: # 呼び出し可能オブジェクトを設定 (高度な使用方法)
-        def editor( item, point, location ):
-            shellExecute( None, "lredit.exe", '--text "%s" %d:%d' % ( item.getFullpath(), point[0], point[1] ), location )
-        window.editor = editor
+    if 1: # 呼び出し可能オブジェクトを設定 (高度な使用方法)
+        if platform()=="win":
+            def editor( item, point, location ):
+                shellExecute( None, "lredit.exe", '--text "%s" %d:%d' % ( item.getFullpath(), point[0], point[1] ), location )
+            window.editor = editor
+        else:
+            def editor( item, point, location ):
+                subprocess.Popen( [ "open", "-a", r"/Applications/Sublime Text 2.app", item.getFullpath() ], cwd=location )
+            window.editor = editor
 
     # --------------------------------------------------------------------
     # テキスト差分エディタを設定する
@@ -102,9 +110,9 @@ def configure(window):
     # J キーで表示されるジャンプリスト
 
     window.jump_list += [
-        ( "OLS",       "c:\\ols" ),
-        ( "PROJECT",   "c:\\project" ),
-        ( "MUSIC",     "e:\\music" ),
+        ( "Root",      "/" ),
+        ( "Home",      "/Users/craftware" ),
+        ( "Project",   "/Users/craftware/project" ),
     ]
 
     # --------------------------------------------------------------------
