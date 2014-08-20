@@ -326,7 +326,7 @@ class MainWindow( ckit.TextWindow ):
             self.editor = "notepad.exe"
         else:
             def editor( item, point, location ):
-                subprocess.Popen( [ "open", "-t", item.getFullpath() ], cwd=location )
+                subprocess.Popen( [ "/usr/bin/open", "-t", item.getFullpath() ], cwd=location )
             self.editor = editor
 
         self.diff_editor = None
@@ -3200,7 +3200,7 @@ class MainWindow( ckit.TextWindow ):
             self.subThreadCall( pyauto.shellExecute, ( None, fullpath.replace('/','\\'), "", pane.file_list.getLocation().replace('/','\\') ) )
         else:
             # FIXME : サブスレッド化するべき？
-            subprocess.Popen( [ "open", fullpath ], cwd=pane.file_list.getLocation() )
+            subprocess.Popen( [ "/usr/bin/open", fullpath ], cwd=pane.file_list.getLocation() )
 
     ## ESCキー相当の処理を実行する
     #

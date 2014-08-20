@@ -88,7 +88,7 @@ def configure(window):
             window.editor = editor
         else:
             def editor( item, point, location ):
-                subprocess.Popen( [ "open", "-a", r"/Applications/Sublime Text 2.app", item.getFullpath() ], cwd=location )
+                subprocess.Popen( [ "/usr/bin/open", "-a", r"/Applications/Sublime Text 2.app", item.getFullpath() ], cwd=location )
             window.editor = editor
 
     # --------------------------------------------------------------------
