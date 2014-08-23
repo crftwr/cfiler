@@ -7,9 +7,11 @@ import threading
 import ckit
 from ckit.ckit_const import *
 
-import cfiler_native
 import cfiler_statusbar
 import cfiler_resultwindow
+
+if ckit.platform()=="win":
+    import cfiler_native
 
 #--------------------------------------------------------------------
 

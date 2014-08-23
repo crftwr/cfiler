@@ -1,10 +1,5 @@
 ﻿from ckit import *
 
-import os
-if ckit.platform()=="win":
-    from pyauto import shellExecute
-del os
-
 from cfiler_mainwindow import *
 from cfiler_filelist import *
 from cfiler_listwindow import *
@@ -14,7 +9,10 @@ from cfiler_filecmp import *
 from cfiler_archiver import *
 from cfiler_misc import *
 from cfiler_error import *
-from cfiler_native import *
+
+if ckit.platform()=="win":
+    from cfiler_native import *
+    from pyauto import shellExecute
 
 ## @mainpage User Manual
 #

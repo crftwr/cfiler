@@ -13,7 +13,6 @@ import unicodedata
 import ckit
 from ckit.ckit_const import *
 
-import cfiler_native
 import cfiler_misc
 import cfiler_fileoplock
 import cfiler_mainwindow
@@ -21,6 +20,9 @@ import cfiler_checkdir
 import cfiler_archiver
 import cfiler_error
 import cfiler_debug
+
+if ckit.platform()=="win":
+    import cfiler_native
 
 ## @addtogroup filelist
 ## @{

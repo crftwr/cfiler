@@ -4,7 +4,6 @@ import threading
 
 import ckit
 
-# FIXME : 実装
 if ckit.platform()=="win":
     import cfiler_native
 

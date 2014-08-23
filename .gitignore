@@ -8,3 +8,5 @@ config.py
 cfiler_native.xccheckout
 *.tmp
 cfiler.ini
+build
+dist

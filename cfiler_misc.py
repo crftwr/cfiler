@@ -8,9 +8,11 @@ import ctypes
 import ckit
 from ckit.ckit_const import *
 
-import cfiler_native
 import cfiler_resource
 import cfiler_debug
+
+if ckit.platform()=="win":
+    import cfiler_native
 
 ## @addtogroup misc
 ## @{

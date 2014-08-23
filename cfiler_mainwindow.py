@@ -39,10 +39,12 @@ import cfiler_commandline
 import cfiler_history
 import cfiler_misc
 import cfiler_filecmp
-import cfiler_native
 import cfiler_resource
 import cfiler_error
 import cfiler_debug
+
+if ckit.platform()=="win":
+    import cfiler_native
 
 MessageBox = cfiler_msgbox.MessageBox
 OverWriteWindow = cfiler_overwritewindow.OverWriteWindow
