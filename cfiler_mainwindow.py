@@ -2655,18 +2655,22 @@ class MainWindow( ckit.TextWindow ):
     #--------------------------------------------------------------------------
 
     def hotkey_Activate(self):
-        # もっとも手前のcfilerをアクティブ化する
-        desktop = pyauto.Window.getDesktop()
-        wnd = desktop.getFirstChild()
-        found = None
-        while wnd:
-            if wnd.getClassName()=="CfilerWindowClass":
-                found = wnd
-                break
-            wnd = wnd.getNext()
-        if found:
-            wnd = found.getLastActivePopup()
-            wnd.setForeground()
+        
+        if ckit.platform()=="win":
+            # もっとも手前のcfilerをアクティブ化する
+            desktop = pyauto.Window.getDesktop()
+            wnd = desktop.getFirstChild()
+            found = None
+            while wnd:
+                if wnd.getClassName()=="CfilerWindowClass":
+                    found = wnd
+                    break
+                wnd = wnd.getNext()
+            if found:
+                wnd = found.getLastActivePopup()
+                wnd.setForeground()
+        else:
+            self.foreground()
 
     def updateHotKey(self):
 
