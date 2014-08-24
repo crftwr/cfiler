@@ -16,7 +16,10 @@ from setuptools import setup
 
 APP = ['cfiler_main.py']
 DATA_FILES = []
-OPTIONS = {'argv_emulation': True}
+OPTIONS = {
+	'argv_emulation': True,
+	'iconfile': 'app.icns'
+}
 
 setup(
     app=APP,
