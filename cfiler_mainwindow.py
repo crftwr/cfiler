@@ -2510,7 +2510,7 @@ class MainWindow( ckit.TextWindow ):
         if not self.ini.has_option( "MISC", "drive_case" ):
             self.ini.set( "MISC", "drive_case", "nocare" )
         if not self.ini.has_option( "MISC", "app_name" ):
-            self.ini.set( "MISC", "app_name", "内骨格" )
+            self.ini.set( "MISC", "app_name", cfiler_resource.cfiler_appname )
         if not self.ini.has_option( "MISC", "delete_behavior" ):
             self.ini.set( "MISC", "delete_behavior", "builtin" )
         if not self.ini.has_option( "MISC", "ignore_1second" ):

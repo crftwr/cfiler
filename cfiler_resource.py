@@ -1,6 +1,6 @@
 ﻿
-cfiler_appname = "内骨格"
-cfiler_dirname = "CraftFiler"
+cfiler_appname = "CraftCommander"
+cfiler_dirname = "CraftCommander"
 cfiler_version = "2.43"
 
 _startup_string_fmt = """\
