@@ -17,11 +17,19 @@ from setuptools import setup
 APP = ['cfiler_main.py']
 DATA_FILES = []
 OPTIONS = {
-	'argv_emulation': True,
-	'iconfile': 'app.icns'
-}
+    'argv_emulation': True,
+    'iconfile': 'app.icns',
+    "includes": [
+        "cfiler",
+        ],
+    "resources": [
+        "theme",
+        "_config.py",
+        ],
+    }
 
 setup(
+    name = "CraftCommander",
     app=APP,
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
