@@ -223,20 +223,26 @@ def configure(window):
         else:
             keyword = ""
         url = "http://www.google.com/search?ie=utf8&q=%s" % keyword
-        shellExecute( None, url, "", "" )
+        if platform()=="win":
+            shellExecute( None, url, "", "" )
+        else:
+            subprocess.Popen( [ "/usr/bin/open", url ] )
 
     # --------------------------------------------------------------------
-    # "Eijiro" コマンド 
+    # "Eijiro" コマンド
     #   英辞郎 on the WEB で日本語/英語を相互に検索します
 
     def command_Eijiro(info):
-        if len(args)>=1:
+        if len(info.args)>=1:
             keyword = ' '.join(info.args)
             keyword = urllib.parse.quote_plus(keyword)
         else:
             keyword = ""
         url = "http://eow.alc.co.jp/%s/UTF-8/" % keyword
-        shellExecute( None, url, "", "" )
+        if platform()=="win":
+            shellExecute( None, url, "", "" )
+        else:
+            subprocess.Popen( [ "/usr/bin/open", url ] )
 
     # --------------------------------------------------------------------
     # "Subst" コマンド 
