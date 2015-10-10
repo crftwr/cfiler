@@ -146,12 +146,12 @@ class ImageViewer( ckit.TextWindow ):
                 pil_img = Image.open( item.open() )
                 info[0] = "%d x %d  :  %s  :  %s " % (pil_img.size[0], pil_img.size[1], pil_img.format, pil_img.mode )
                 pil_img = pil_img.convert( "RGBA" )
-                img[0] = ckit.Image.fromString( pil_img.size, pil_img.tostring(), None, True )
+                img[0] = ckit.Image.fromBytes( pil_img.size, pil_img.tobytes(), None, True )
             except Exception as e:
                 cfiler_debug.printErrorInfo()
                 print( "ERROR : 画像デコード失敗 : %s : %s" % ( e, item.getName() ) )
                 info[0] = None
-                img[0] = ckit.Image.fromString( (0,0), "" )
+                img[0] = ckit.Image.fromBytes( (0,0), "" )
 
         def jobDecodeFinished( job_item ):
             if job_item.isCanceled() : return
