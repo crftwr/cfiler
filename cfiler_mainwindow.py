@@ -2601,7 +2601,7 @@ class MainWindow( ckit.TextWindow ):
 
         # 左ペインの初期位置
         if left_location:
-            location = left_location
+            location = os.path.abspath(left_location)
         else:
             last_history = self.left_pane.history.findLastVisible()
             if last_history:
@@ -2616,7 +2616,7 @@ class MainWindow( ckit.TextWindow ):
 
         # 右ペインの初期位置
         if right_location:
-            location = right_location
+            location = os.path.abspath(right_location)
         else:
             last_history = self.right_pane.history.findLastVisible()
             if last_history:
