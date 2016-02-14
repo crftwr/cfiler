@@ -15,8 +15,6 @@ sys.path[0:0] = [
 
 import ckit
 
-ckit.setLocale( locale.getdefaultlocale()[0] )
-
 import cfiler_mainwindow
 import cfiler_misc
 import cfiler_debug
