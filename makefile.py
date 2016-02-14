@@ -15,7 +15,7 @@ DIST_DIR = "dist/cfiler"
 VERSION = cfiler_resource.cfiler_version.replace(".","").replace(" ","")
 INSTALLER_NAME = "cfiler_%s.exe" % VERSION
 
-PYTHON_DIR = "c:/Python34"
+PYTHON_DIR = "c:/Python35"
 PYTHON = PYTHON_DIR + "/python.exe"
 DOXYGEN_DIR = "c:/Program Files/doxygen"
 NSIS_DIR = "c:/Program Files (x86)/NSIS"
@@ -68,7 +68,7 @@ def printMd5( filename ):
 DIST_FILES = [
     "cfiler/cfiler.exe",
     "cfiler/lib",
-    "cfiler/python34.dll",
+    "cfiler/python35.dll",
     "cfiler/_config.py",
     "cfiler/readme.txt",
     "cfiler/theme/black",
