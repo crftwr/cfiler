@@ -1,4 +1,4 @@
-#ifndef __CFILER_NATIVE_H__
+﻿#ifndef __CFILER_NATIVE_H__
 #define __CFILER_NATIVE_H__
 
 

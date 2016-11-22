@@ -1,4 +1,4 @@
-#include "strutil.h"
+﻿#include "strutil.h"
 #include "pythonutil.h"
 
 bool PythonUtil::PyStringToString( const PyObject * pystr, std::string * str )

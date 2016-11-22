@@ -1,4 +1,4 @@
-#include "olednd_dataobject.h"
+ï»¿#include "olednd_dataobject.h"
 
 HRESULT __stdcall CDataObject::QueryInterface(const IID& iid, void** ppv)
 {
@@ -55,7 +55,7 @@ HRESULT __stdcall CDataObject::GetData(FORMATETC *pFormatetc, STGMEDIUM *pmedium
 	return DV_E_FORMATETC;
 }
 
-// GetData‚Æ“¯‚¶‚æ‚¤‚È‚à‚Ì‚ç‚µ‚¢‚ª‚æ‚­•ª‚©‚ç‚È‚¢
+// GetDataã¨åŒã˜ã‚ˆã†ãªã‚‚ã®ã‚‰ã—ã„ãŒã‚ˆãåˆ†ã‹ã‚‰ãªã„
 HRESULT __stdcall CDataObject::GetDataHere(FORMATETC *pFormatetc, STGMEDIUM *pmedium)
 {
 	return E_NOTIMPL;

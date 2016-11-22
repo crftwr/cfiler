@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 #include "strutil.h"
 
 std::wstring StringUtil::MultiByteToWideChar( const char * str, int len )

@@ -1,4 +1,4 @@
-#include "olednd_stgmedium.h"
+﻿#include "olednd_stgmedium.h"
 
 BOOL CSTGMEDIUM::Dup(STGMEDIUM *pdest, const FORMATETC* pFormatetc, const STGMEDIUM *pmedium)
 {
@@ -26,7 +26,7 @@ BOOL CSTGMEDIUM::Dup(STGMEDIUM *pdest, const FORMATETC* pFormatetc, const STGMED
 		pdest->lpszFileName = (LPOLESTR)hVoid;
 		break;
 	case TYMED_NULL:
-		hVoid = (HANDLE)1; //�G���[�ɂȂ�Ȃ��悤��
+		hVoid = (HANDLE)1; //エラーにならないように
 	case TYMED_ISTREAM:
 	case TYMED_ISTORAGE:
 	default:
