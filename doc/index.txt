@@ -4,9 +4,9 @@
 
 :著作者: craftware
 :連絡先: craftware@gmail.com
-:開発環境: Python + VisualC++2010
+:開発環境: Python + VisualC++2015
 :種別: フリーウェア
-:動作環境: Windows XP/Vista/7/8
+:動作環境: Windows Vista/7/8/10
 :Webサイト: http://sites.google.com/site/craftware/
 
 .. contents::
@@ -125,7 +125,7 @@
 
     内骨格の実行には以下の環境が必要です。
 
-    Windows XP/Vista/7/8
+    Windows Vista/7/8/10
 
 
 配布 / 保障について
