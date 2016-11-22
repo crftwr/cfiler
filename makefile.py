@@ -175,6 +175,8 @@ def target_copy():
     shutil.copy( "../pyauto/pyautocore.pyd", "lib/pyautocore.pyd" )
     shutil.copy( "cfiler_native.pyd", "lib/cfiler_native.pyd" )
     shutil.copy( "migemo.dll", "lib/migemo.dll" )
+    shutil.copy( "7-zip32.dll", "lib/7-zip32.dll" )
+    shutil.copy( "tar32.dll", "lib/tar32.dll" )
 
 
 def target_document():
