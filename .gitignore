@@ -10,3 +10,5 @@ doc/obj/
 lib/
 library.zip
 cfiler_native/cfiler_native.VC.opendb
+instfiles.nsh
+uninstfiles.nsh

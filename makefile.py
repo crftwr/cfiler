@@ -35,9 +35,12 @@ PYTHON = PYTHON_DIR + "/python.exe"
 
 DOXYGEN_DIR = "c:/Program Files/doxygen"
 
+NSIS_DIR = "c:/Program Files (x86)/NSIS"
+
 DIST_DIR = "dist/cfiler"
 VERSION = cfiler_resource.cfiler_version.replace(".","")
 ARCHIVE_NAME = "cfiler_%s.zip" % VERSION
+INSTALLER_NAME = "cfiler_%s.exe" % VERSION
 
 DIST_FILES = {
     "cfiler.exe" :          "cfiler/cfiler.exe",
@@ -109,6 +112,19 @@ def createZip( zip_filename, items ):
     z.close()
 
 
+def printMd5( filename ):
+
+    fd = open(filename,"rb")
+    m = hashlib.md5()
+    while 1:
+        data = fd.read( 1024 * 1024 )
+        if not data: break
+        m.update(data)
+    fd.close()
+    print( "" )
+    print( filename, ":", m.hexdigest() )
+
+
 #-------------------------------------------
 
 def target_all():
@@ -118,6 +134,7 @@ def target_all():
     target_document()
     target_dist()
     target_archive()
+    target_installer()
 
 
 def target_compile():
@@ -232,6 +249,52 @@ def target_archive():
     fd.close()
     print( "" )
     print( m.hexdigest() )
+
+
+def target_installer():
+
+    topdir = DIST_DIR
+
+    if 1:
+        fd_instfiles = open("instfiles.nsh", "w")
+
+        for location, dirs, files in os.walk(topdir):
+        
+            assert( location.startswith(topdir) )
+            location2 = location[ len(topdir) + 1 : ]
+        
+            fd_instfiles.write( "  SetOutPath $INSTDIR\\%s\n" % location2 )
+            fd_instfiles.write( "\n" )
+        
+            for f in files:
+                fd_instfiles.write( "    File %s\n" % os.path.join(location,f) )
+
+            fd_instfiles.write( "\n\n" )
+
+        fd_instfiles.close()
+
+    if 1:
+        fd_uninstfiles = open("uninstfiles.nsh", "w")
+
+        for location, dirs, files in os.walk(topdir,topdown=False):
+        
+            assert( location.startswith(topdir) )
+            location2 = location[ len(topdir) + 1 : ]
+        
+            for f in files:
+                fd_uninstfiles.write( "  Delete $INSTDIR\\%s\n" % os.path.join(location2,f) )
+
+            fd_uninstfiles.write( "  RMDir $INSTDIR\\%s\n" % location2 )
+            fd_uninstfiles.write( "\n" )
+
+        fd_uninstfiles.close()
+
+    subprocess.call( [ NSIS_DIR + "/makensis.exe", "installer.nsi" ] )
+
+    unlink( "dist/%s" % INSTALLER_NAME )
+    os.rename( "dist/cfiler_000.exe", "dist/%s" % INSTALLER_NAME )
+
+    printMd5( "dist/%s" % INSTALLER_NAME )
 
 
 def target_clean():
