@@ -3520,12 +3520,15 @@ class MainWindow( ckit.TextWindow ):
                         
                         # タイムスタンプと属性をコピー
                         dst_item = dst_lister.exists(dst_name)
+
+                        # WebDrive で Amazon Cloud にファイルをキャッシュ領域にコピーした直後(まだアップロード中)、
+                        # FindFirstFile が ERROR_FILE_NOT_FOUND を返すみたいなので、その時は属性の変更をスキップする
+                        if dst_item:
+                            if hasattr(dst_item,"utime"):
+                                dst_item.utime( src_item.time() )
                         
-                        if hasattr(dst_item,"utime"):
-                            dst_item.utime( src_item.time() )
-                        
-                        if hasattr(dst_item,"uattr"):
-                            dst_item.uattr( src_item.attr() )
+                            if hasattr(dst_item,"uattr"):
+                                dst_item.uattr( src_item.attr() )
 
                         if job_item.isCanceled():
                             dst_lister.unlink( dst_name )
