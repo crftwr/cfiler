@@ -383,14 +383,16 @@ class lister_LocalFS(lister_Base):
         return cfiler_fileoplock.locked(self.location)
 
     def exists( self, name ):
-        fullpath = os.path.join( self.location, name )
-        if os.path.exists( os.path.join( self.location, name ) ):
+
+        try:
             item = item_Default(
                 self.location,
                 name
                 )
             return item
-        return None
+
+        except IOError:
+            return None
 
     def mkdir( self, name, log_writer=None ):
 
