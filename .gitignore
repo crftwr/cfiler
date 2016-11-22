@@ -1,3 +1,11 @@
 cfiler_native/Release/
 cfiler_native/Debug/
 cfiler_native.pyd
+dist/
+doc/html/
+build/
+Release/
+Debug/
+doc/obj/
+lib/
+library.zip

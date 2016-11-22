@@ -1,7 +1,7 @@
 ﻿
 cfiler_appname = "内骨格"
 cfiler_dirname = "CraftFiler"
-cfiler_version = "2.43"
+cfiler_version = "2.45"
 
 _startup_string_fmt = """\
 %s version %s:

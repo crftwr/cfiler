@@ -5,13 +5,22 @@ import shutil
 import threading
 import locale
 
-os.environ["PATH"] = os.path.join( os.path.split(sys.argv[0])[0], 'lib' ) + ";" + os.environ["PATH"]
+import importlib.abc
+    
+class CustomPydFinder(importlib.abc.MetaPathFinder):
+    def find_module( self, fullname, path=None ):
+        exe_path = os.path.split(sys.argv[0])[0]
+        pyd_filename_body = fullname.split(".")[-1]
+        pyd_fullpath = os.path.join( exe_path, "lib", pyd_filename_body + ".pyd" )
+        if os.path.exists(pyd_fullpath):
+            for importer in sys.meta_path:
+                if isinstance(importer, self.__class__):
+                    continue
+                loader = importer.find_module( fullname, None)
+                if loader:
+                    return loader
 
-sys.path[0:0] = [
-    os.path.join( os.path.split(sys.argv[0])[0], '..' ),
-    os.path.join( os.path.split(sys.argv[0])[0], 'extension' ),
-    os.path.join( os.path.split(sys.argv[0])[0], 'lib' ),
-    ]
+sys.meta_path.append(CustomPydFinder())
 
 import ckit
 
@@ -36,66 +45,64 @@ for option in option_list:
     elif option[0]=="-R":
         right_location = option[1]
 
-if __name__ == "__main__":
+ckit.registerWindowClass( "Cfiler" )
+ckit.registerCommandInfoConstructor( ckit.CommandInfo )
 
-    ckit.registerWindowClass( "Cfiler" )
-    ckit.registerCommandInfoConstructor( ckit.CommandInfo )
-
-    sys.path[0:0] = [
-        os.path.join( ckit.getAppExePath(), 'extension' ),
-        ]
-        
-    # exeと同じ位置にある設定ファイルを優先する
-    if os.path.exists( os.path.join( ckit.getAppExePath(), 'config.py' ) ):
-        ckit.setDataPath( ckit.getAppExePath() )
-    else:    
-        ckit.setDataPath( os.path.join( ckit.getAppDataPath(), cfiler_resource.cfiler_dirname ) )
-        if not os.path.exists(ckit.dataPath()):
-            os.mkdir(ckit.dataPath())
-
-    default_config_filename = os.path.join( ckit.getAppExePath(), '_config.py' )
-    config_filename = os.path.join( ckit.dataPath(), 'config.py' )
-    ini_filename = os.path.join( ckit.dataPath(), 'cfiler.ini' )
-
-    # config.py がどこにもない場合は作成する
-    if not os.path.exists(config_filename) and os.path.exists(default_config_filename):
-        shutil.copy( default_config_filename, config_filename )
-
-    _main_window = cfiler_mainwindow.MainWindow(
-        config_filename = config_filename,
-        ini_filename = ini_filename,
-        debug = debug, 
-        profile = profile )
-
-    _main_window.registerStdio()
-
-    ckit.initTemp("cfiler_")
-
-    _main_window.configure()
-
-    _main_window.startup( left_location, right_location )
-
-    _main_window.topLevelMessageLoop()
+sys.path[0:0] = [
+    os.path.join( ckit.getAppExePath(), 'extension' ),
+    ]
     
-    _main_window.saveState()
+# exeと同じ位置にある設定ファイルを優先する
+if os.path.exists( os.path.join( ckit.getAppExePath(), 'config.py' ) ):
+    ckit.setDataPath( ckit.getAppExePath() )
+else:    
+    ckit.setDataPath( os.path.join( ckit.getAppDataPath(), cfiler_resource.cfiler_dirname ) )
+    if not os.path.exists(ckit.dataPath()):
+        os.mkdir(ckit.dataPath())
 
-    cfiler_debug.enableExitTimeout()
+default_config_filename = os.path.join( ckit.getAppExePath(), '_config.py' )
+config_filename = os.path.join( ckit.dataPath(), 'config.py' )
+ini_filename = os.path.join( ckit.dataPath(), 'cfiler.ini' )
 
-    _main_window.unregisterStdio()
+# config.py がどこにもない場合は作成する
+if not os.path.exists(config_filename) and os.path.exists(default_config_filename):
+    shutil.copy( default_config_filename, config_filename )
 
-    ckit.JobQueue.cancelAll()
-    ckit.JobQueue.joinAll()
+_main_window = cfiler_mainwindow.MainWindow(
+    config_filename = config_filename,
+    ini_filename = ini_filename,
+    debug = debug, 
+    profile = profile )
 
-    ckit.destroyTemp()
+_main_window.registerStdio()
 
-    _main_window.destroy()
+ckit.initTemp("cfiler_")
 
-    cfiler_debug.disableExitTimeout()
+_main_window.configure()
 
-    # スレッドが残っていても強制終了
-    if 0:
-        if not debug:
-            os._exit(0)
-    else:
+_main_window.startup( left_location, right_location )
+
+_main_window.topLevelMessageLoop()
+
+_main_window.saveState()
+
+cfiler_debug.enableExitTimeout()
+
+_main_window.unregisterStdio()
+
+ckit.JobQueue.cancelAll()
+ckit.JobQueue.joinAll()
+
+ckit.destroyTemp()
+
+_main_window.destroy()
+
+cfiler_debug.disableExitTimeout()
+
+# スレッドが残っていても強制終了
+if 0:
+    if not debug:
         os._exit(0)
+else:
+    os._exit(0)
 
