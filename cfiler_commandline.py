@@ -215,3 +215,6 @@ class commandline_Int32Hex:
 
     def onStatusString( self, text ):
         return None
+
+## @} commandline
+
