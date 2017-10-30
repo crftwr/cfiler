@@ -308,10 +308,10 @@ class item_Default(item_CommonPaint):
             else:
                 log_writer( '完了\n' )
 
-        def remove_dir( filename ):
+        def remove_dir( filename, check_empty=True ):
             log_writer( 'ディレクトリ削除 : %s …' % filename )
 
-            if len(os.listdir(filename))>0:
+            if check_empty and len(os.listdir(filename))>0:
                 log_writer( '空ではない\n' )
                 return
 
@@ -331,8 +331,14 @@ class item_Default(item_CommonPaint):
                 log_writer( '完了\n' )
 
         fullpath = ckit.joinPath( self.location, self.name )
+        
         if self.isdir():
-            if recursive:
+
+            # シンボリックリンクやジャンクションは、再帰で削除しない
+            if self._attr & ckit.FILE_ATTRIBUTE_REPARSE_POINT:
+                remove_dir( fullpath, check_empty=False )
+        
+            elif recursive:
                 for root, dirs, files in os.walk( fullpath, False ):
                     if schedule_handler(): return
                     root = ckit.replacePath(root)
@@ -420,7 +426,8 @@ class lister_LocalFS(lister_Base):
 
         try:
             dirname = os.path.split(fullpath)[0]
-            os.makedirs(dirname)
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
         except FileExistsError:
             pass
 
