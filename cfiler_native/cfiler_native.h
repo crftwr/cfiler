@@ -2,10 +2,10 @@
 #define __CFILER_NATIVE_H__
 
 
-extern PyTypeObject LockFile_Type;
-#define LockFile_Check(op) PyObject_TypeCheck(op, &LockFile_Type)
+extern PyTypeObject ProcessInternalLockFile_Type;
+#define ProcessInternalLockFile_Check(op) PyObject_TypeCheck(op, &ProcessInternalLockFile_Type)
 
-struct LockFile_Object
+struct ProcessInternalLockFile_Object
 {
     PyObject_HEAD
     HANDLE handle;

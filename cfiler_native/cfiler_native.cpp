@@ -57,7 +57,7 @@ static PyObject * Error;
 
 // ----------------------------------------------------------------------------
 
-static int LockFile_init( PyObject * self, PyObject * args, PyObject * kwds)
+static int ProcessInternalLockFile_init( PyObject * self, PyObject * args, PyObject * kwds)
 {
 	PyObject * pypath;
 
@@ -92,50 +92,50 @@ static int LockFile_init( PyObject * self, PyObject * args, PyObject * kwds)
 		return -1;
 	}
 	
-    ((LockFile_Object*)self)->handle = handle;
+    ((ProcessInternalLockFile_Object*)self)->handle = handle;
 	
 	return 0;
 }
 
-static void LockFile_dealloc(PyObject* self)
+static void ProcessInternalLockFile_dealloc(PyObject* self)
 {
 	FUNC_TRACE;
 
-	CloseHandle(((LockFile_Object*)self)->handle);
-	((LockFile_Object*)self)->handle = INVALID_HANDLE_VALUE;
+	CloseHandle(((ProcessInternalLockFile_Object*)self)->handle);
+	((ProcessInternalLockFile_Object*)self)->handle = INVALID_HANDLE_VALUE;
 
     self->ob_type->tp_free(self);
 }
 
-static PyObject * LockFile_unlock( PyObject * self, PyObject * args )
+static PyObject * ProcessInternalLockFile_unlock( PyObject * self, PyObject * args )
 {
 	if( ! PyArg_ParseTuple(args,"") )
 		return NULL;
 
-	BOOL result = CloseHandle( ((LockFile_Object*)self)->handle );
+	BOOL result = CloseHandle( ((ProcessInternalLockFile_Object*)self)->handle );
 	if(!result)
 	{
 		PyErr_SetFromWindowsErr(0);
 		return NULL;
 	}
 	
-	((LockFile_Object*)self)->handle = INVALID_HANDLE_VALUE;
+	((ProcessInternalLockFile_Object*)self)->handle = INVALID_HANDLE_VALUE;
 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
-static PyMethodDef LockFile_methods[] = {
-    { "unlock", LockFile_unlock, METH_VARARGS, "" },
+static PyMethodDef ProcessInternalLockFile_methods[] = {
+    { "unlock", ProcessInternalLockFile_unlock, METH_VARARGS, "" },
     {NULL,NULL}
 };
 
-PyTypeObject LockFile_Type = {
+PyTypeObject ProcessInternalLockFile_Type = {
     PyVarObject_HEAD_INIT(NULL,0)
-    "LockFile",		/* tp_name */
-    sizeof(LockFile_Object), /* tp_basicsize */
+    "ProcessInternalLockFile",		/* tp_name */
+    sizeof(ProcessInternalLockFile_Object), /* tp_basicsize */
     0,					/* tp_itemsize */
-    (destructor)LockFile_dealloc,/* tp_dealloc */
+    (destructor)ProcessInternalLockFile_dealloc,/* tp_dealloc */
     0,					/* tp_print */
     0,					/* tp_getattr */
     0,					/* tp_setattr */
@@ -158,7 +158,7 @@ PyTypeObject LockFile_Type = {
     0,					/* tp_weaklistoffset */
     0,					/* tp_iter */
     0,					/* tp_iternext */
-    LockFile_methods,	/* tp_methods */
+    ProcessInternalLockFile_methods,	/* tp_methods */
     0,					/* tp_members */
     0,					/* tp_getset */
     0,					/* tp_base */
@@ -166,7 +166,7 @@ PyTypeObject LockFile_Type = {
     0,					/* tp_descr_get */
     0,					/* tp_descr_set */
     0,					/* tp_dictoffset */
-    LockFile_init,		/* tp_init */
+    ProcessInternalLockFile_init,		/* tp_init */
     0,					/* tp_alloc */
     PyType_GenericNew,	/* tp_new */
     0,					/* tp_free */
@@ -1523,7 +1523,7 @@ extern "C" PyMODINIT_FUNC PyInit_cfiler_native(void)
 	CoInitialize(NULL);
 	OleInitialize(NULL);
 	
-    if( PyType_Ready(&LockFile_Type)<0 ) return NULL;
+    if( PyType_Ready(&ProcessInternalLockFile_Type)<0 ) return NULL;
     if( PyType_Ready(&CheckDir_Type)<0 ) return NULL;
 
     PyObject *m, *d;
@@ -1531,8 +1531,8 @@ extern "C" PyMODINIT_FUNC PyInit_cfiler_native(void)
     m = PyModule_Create(&cfiler_native_module);
     if(m == NULL) return NULL;
 
-    Py_INCREF(&LockFile_Type);
-    PyModule_AddObject( m, "LockFile", (PyObject*)&LockFile_Type );
+    Py_INCREF(&ProcessInternalLockFile_Type);
+    PyModule_AddObject( m, "ProcessInternalLockFile", (PyObject*)&ProcessInternalLockFile_Type );
 
     Py_INCREF(&CheckDir_Type);
     PyModule_AddObject( m, "CheckDir", (PyObject*)&CheckDir_Type );
