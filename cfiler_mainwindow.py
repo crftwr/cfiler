@@ -5614,7 +5614,10 @@ class MainWindow( ckit.TextWindow ):
                             if self.new[pos]=='\\' and pos+1<len(self.new):
                                 pos += 1
                                 if self.new[pos] in ( '0', '1', '2', '3', '4', '4', '5', '6', '7', '8', '9' ):
-                                    new_name += re_result.group( int(self.new[pos]) )
+                                    try:
+                                        new_name += re_result.group( int(self.new[pos]) )
+                                    except IndexError:
+                                        pass
                                 elif self.new[pos] == 'd':
                                     fmt = "%0" + ("%d"%self.keta) + "d"
                                     new_name += fmt % self.number
@@ -6278,7 +6281,7 @@ class MainWindow( ckit.TextWindow ):
         if len(items)==0:
             items.append( active_pane.file_list.getItem(active_pane.cursor) )
 
-        items = filter( lambda item : not item.isdir() and hasattr(item,"getFullpath"), items )
+        items = list(filter( lambda item : not item.isdir() and hasattr(item,"getFullpath"), items ))
 
         if len(items)==0:
             self.setStatusMessage( "分割可能なファイルが選択されていません", 3000, error=True )
