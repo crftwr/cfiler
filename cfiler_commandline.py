@@ -43,11 +43,14 @@ class commandline_Launcher:
 
             try:
                 path = ckit.joinPath( basedir, directory )
-                unc = os.path.splitunc(path)
-                if unc[0]:
+
+                drive, tail = os.path.splitdrive(path)
+                unc = ( drive.startswith("\\\\") or drive.startswith("//") )
+
+                if unc:
                     cfiler_misc.checkNetConnection(path)
-                if unc[0] and not unc[1]:
-                    servername = unc[0].replace('/','\\')
+                if unc and not tail:
+                    servername = drive.replace('/','\\')
                     infolist = cfiler_native.enumShare(servername)
                     for info in infolist:
                         if info[1]==0:

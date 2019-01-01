@@ -45,8 +45,6 @@ import cfiler_debug
 MessageBox = cfiler_msgbox.MessageBox
 OverWriteWindow = cfiler_overwritewindow.OverWriteWindow
 
-os.stat_float_times(False)
-
 ## @addtogroup mainwindow
 ## @{
 

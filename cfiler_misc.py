@@ -46,11 +46,14 @@ class candidate_Filename():
                     filename_list.append( item[ len(directory_lower) : ] )
 
         path = ckit.joinPath( self.basedir, directory )
-        unc = os.path.splitunc(path)
-        if unc[0]:
+        
+        drive, tail = os.path.splitdrive(path)
+        unc = ( drive.startswith("\\\\") or drive.startswith("//") )
+        
+        if unc:
             checkNetConnection(path)
-        if unc[0] and not unc[1]:
-            servername = unc[0].replace('/','\\')
+        if unc and not tail:
+            servername = drive.replace('/','\\')
             try:
                 infolist = cfiler_native.enumShare(servername)
             except WindowsError:
@@ -109,9 +112,12 @@ def registerNetConnectionHandler(handler):
     _net_connection_handler = handler
 
 def checkNetConnection(path):
-    unc = os.path.splitunc(path)
-    if unc[0]:
-        remote_resource_name = unc[0].replace('/','\\').rstrip('\\')
+    
+    drive, tail = os.path.splitdrive(path)
+    unc = ( drive.startswith("\\\\") or drive.startswith("//") )
+    
+    if unc:
+        remote_resource_name = drive.replace('/','\\').rstrip('\\')
         try:
             _net_connection_handler(remote_resource_name)
         except Exception as e:

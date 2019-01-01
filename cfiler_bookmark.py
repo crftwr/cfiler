@@ -74,16 +74,10 @@ class Bookmark:
             return
         
         def driveExistsButFileNotExists(path):
-
             drive, tmp = os.path.splitdrive(path)
-            unc = os.path.splitunc(path)
-
             if not os.path.exists(path):
                 if drive:
                     if os.path.exists(drive):
-                        return True
-                if unc[0]:
-                    if os.path.exists(unc[0]):
                         return True
             return False            
     

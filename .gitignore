@@ -12,8 +12,7 @@ library.zip
 cfiler_native/cfiler_native.VC.opendb
 instfiles.nsh
 uninstfiles.nsh
-python36.dll
-python35.dll
+python37.dll
 cfiler_native.pdb
 cfiler_native.lib
 cfiler_native.exp

@@ -3,7 +3,7 @@ Pythonスクリプトで拡張可能な2画面ファイラ [ 内骨格 ]
 著作者: craftware
 連絡先: craftware@gmail.com
 種別: フリーウェア
-動作環境: Windows XP/Vista/7/8
+動作環境: Windows 7/8/10
 Webサイト: http://sites.google.com/site/craftware/
 
 
