@@ -4417,9 +4417,20 @@ class MainWindow( ckit.TextWindow ):
 
                 if job_item.waitPaused():
                     self.setProgressValue(None)
+                
+                filtered_dirs = []
+                for name in dirs:
+                    if job_item.isCanceled(): break
+                    if isSearchSubject(root,name):
+                        filtered_dirs.append(name)
+                dirs[:] = filtered_dirs
 
-                dirs[:] = filter( lambda name : isSearchSubject(root,name), dirs )
-                files[:] = filter( lambda name : isSearchSubject(root,name), files )
+                filtered_files = []
+                for name in files:
+                    if job_item.isCanceled(): break
+                    if isSearchSubject(root,name):
+                        filtered_files.append(name)
+                files[:] = filtered_files
 
                 for name in files + dirs:
                     if job_item.isCanceled(): break
@@ -4567,8 +4578,19 @@ class MainWindow( ckit.TextWindow ):
 
                 if not recursive : del dirs[:]
 
-                dirs[:] = filter( lambda name : isGrepSubject(root,name), dirs )
-                files[:] = filter( lambda name : isGrepSubject(root,name), files )
+                filtered_dirs = []
+                for name in dirs:
+                    if job_item.isCanceled(): break
+                    if isGrepSubject(root,name):
+                        filtered_dirs.append(name)
+                dirs[:] = filtered_dirs
+
+                filtered_files = []
+                for name in files:
+                    if job_item.isCanceled(): break
+                    if isGrepSubject(root,name):
+                        filtered_files.append(name)
+                files[:] = filtered_files
 
                 for filename in files:
 
