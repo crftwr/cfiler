@@ -6505,7 +6505,7 @@ class MainWindow( ckit.TextWindow ):
         if len(items)==0:
             items.append( active_pane.file_list.getItem(active_pane.cursor) )
 
-        items = filter( lambda item : hasattr(item,"getFullpath"), items )
+        items = list(filter( lambda item : hasattr(item,"getFullpath"), items ))
 
         if len(items)==0: return
         
