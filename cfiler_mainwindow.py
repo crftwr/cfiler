@@ -5195,10 +5195,12 @@ class MainWindow( ckit.TextWindow ):
 
                     dump_compare( cmp.subdirs[subdirname], ckit.joinPath(dirname,subdirname) )
 
-            cmp = cfiler_filecmp.CompareDir( left_location, right_location, [], [] )
+            cmp = cfiler_filecmp.CompareDir( left_location, right_location, [], [], schedule_handler=job_item.isCanceled )
             
             try:
                 dump_compare( cmp, "" )
+            except cfiler_error.CanceledError:
+                job_item.cancel()
             except Exception as e:
                 cfiler_debug.printErrorInfo()
                 print( 'ERROR : ディレクトリ比較に失敗' )

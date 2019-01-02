@@ -115,7 +115,7 @@ class CompareDir:
      subdirs: a dictionary of CompareDir objects, keyed by names in common_dirs.
      """
 
-    def __init__(self, a, b, ignore=None, hide=None): # Initialize
+    def __init__(self, a, b, ignore=None, hide=None, schedule_handler=None): # Initialize
         self.left = a
         self.right = b
         if hide is None:
@@ -126,6 +126,7 @@ class CompareDir:
             self.ignore = ['RCS', 'CVS', 'tags'] # Names ignored in comparison
         else:
             self.ignore = ignore
+        self.schedule_handler = schedule_handler
 
     def phase0(self): # Compare everything except common subdirectories
         self.left_list = _filter(os.listdir(self.left),
@@ -178,7 +179,7 @@ class CompareDir:
                 self.common_funny.append(x)
 
     def phase3(self): # Find out differences between common files
-        xx = compareFileList(self.left, self.right, self.common_files)
+        xx = compareFileList(self.left, self.right, self.common_files, schedule_handler=self.schedule_handler)
         self.same_files, self.diff_files, self.funny_files = xx
 
     def phase4(self): # Find out differences between common subdirectories
@@ -245,7 +246,7 @@ class CompareDir:
         self.methodmap[attr](self)
         return getattr(self, attr)
 
-def compareFileList(a, b, common, shallow=True):
+def compareFileList(a, b, common, shallow=True, schedule_handler=None):
     """Compare common files in two directories.
 
     a, b -- directory names
@@ -262,7 +263,7 @@ def compareFileList(a, b, common, shallow=True):
     for x in common:
         ax = os.path.join(a, x)
         bx = os.path.join(b, x)
-        res[_cmp(ax, bx, shallow)].append(x)
+        res[_cmp(ax, bx, shallow, schedule_handler=schedule_handler)].append(x)
     return res
 
 
@@ -272,9 +273,9 @@ def compareFileList(a, b, common, shallow=True):
 #       1 for different
 #       2 for funny cases (can't stat, etc.)
 #
-def _cmp(a, b, sh, abs=abs, cmp=compareFile):
+def _cmp(a, b, sh, abs=abs, cmp=compareFile, schedule_handler=None):
     try:
-        return not abs(cmp(a, b, sh))
+        return not abs(cmp(a, b, sh, schedule_handler=schedule_handler))
     except os.error:
         return 2
 
