@@ -6418,6 +6418,7 @@ class MainWindow( ckit.TextWindow ):
                                 cfiler_debug.printErrorInfo()
                                 print( '失敗' )
                                 print( "  %s" % str(e) )
+                                job_item.cancel()
                             else:
                                 print( '完了' )
 
