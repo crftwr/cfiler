@@ -291,6 +291,7 @@ class ImageViewer( ckit.TextWindow ):
 
     ## メインウインドウで、閲覧中のファイルを選択する
     def command_Select( self, info ):
+        if self.job_queue.numItems()>0 : return
         if self.select_handler:
             self.select_handler(self.items[self.cursor])
 
