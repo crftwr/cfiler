@@ -50,6 +50,8 @@ class IncrementalSearch:
                 dict_path = os.path.join( ckit.getAppExePath(), 'dict' )
                 try:
                     migemo_object = ckit.Migemo(dict_path)
+                    if not migemo_object.isDictionaryReady():
+                        print( "ERROR : Migemo の辞書ファイルの読み込みに失敗しました" )
                 except ValueError:
                     return fnmatch.fnmatch( name, '*'+pattern+'*' )
 
