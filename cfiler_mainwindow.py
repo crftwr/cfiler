@@ -6752,6 +6752,7 @@ class MainWindow( ckit.TextWindow ):
 
             for commandline_function in self.commandline_list:
                 for candidate in commandline_function.onCandidate( update_info ):
+                    candidate = unicodedata.normalize( "NFC", candidate )
                     if not candidate in candidate_map:
                         candidate_list.append(candidate)
                         candidate_map[candidate] = None
