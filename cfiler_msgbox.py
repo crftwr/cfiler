@@ -1,4 +1,6 @@
-﻿import ckit
+﻿import unicodedata
+
+import ckit
 from ckit.ckit_const import *
 
 import cfiler_error
@@ -42,6 +44,8 @@ class MessageBox( ckit.TextWindow ):
             keydown_handler = self.onKeyDown,
             )
             
+        message = unicodedata.normalize( "NFC", message )
+
         lines = message.splitlines()
         
         self.message_width = 0

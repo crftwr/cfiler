@@ -153,10 +153,10 @@ class OverWriteWindow( ckit.TextWindow ):
         def strTime(t):
             return "%02d/%02d/%02d %02d:%02d:%02d" % ( t[0]%100, t[1], t[2], t[3], t[4], t[5] )
 
-        self.putString( 2, 9, 18, 1, attr, "Src : %s" % ( self.src_item.getName(), ) )
+        self.putString( 2, 9, 18, 1, attr, "Src : %s" % ( self.src_item.getNameNfc(), ) )
         self.putString( 20, 9, self.width()-20, 1, attr, "%6s %s" % ( cfiler_misc.getFileSizeString(self.src_item.size()), strTime(self.src_item.time()) ) )
 
-        self.putString( 2, 10, 18, 1, attr, "Dst : %s" % ( self.dst_item.getName(), ) )
+        self.putString( 2, 10, 18, 1, attr, "Dst : %s" % ( self.dst_item.getNameNfc(), ) )
         self.putString( 20, 10, self.width()-20, 1, attr, "%6s %s" % ( cfiler_misc.getFileSizeString(self.dst_item.size()), strTime(self.dst_item.time()) ) )
 
     def getResult(self):

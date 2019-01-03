@@ -54,7 +54,7 @@ class RenameWindow( ckit.TextWindow ):
         self.focus = RenameWindow.FOCUS_FILENAME
         self.result = RenameWindow.RESULT_CANCEL
 
-        basename = os.path.basename( item.getName() )
+        basename = os.path.basename( item.getNameNfc() )
 
         last_period_pos = basename.rfind(".")
         if last_period_pos>0 and last_period_pos>=len(basename)-5:

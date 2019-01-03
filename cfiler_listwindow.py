@@ -1,5 +1,6 @@
 ﻿import sys
 import os
+import unicodedata
 
 import ckit
 from ckit.ckit_const import *
@@ -344,6 +345,8 @@ class ListWindow( ckit.TextWindow ):
                 else:
                     name = item
                     mark = False
+
+                name = unicodedata.normalize( "NFC", name )
 
                 if self.select==index:
                     if mark:

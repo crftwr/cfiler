@@ -180,9 +180,9 @@ def configure(window):
         filename_width = width-len(str_size_time)
 
         if item.isdir():
-            body, ext = item.name, None
+            body, ext = item.getNameNfc(), None
         else:
-            body, ext = splitExt(item.name)
+            body, ext = splitExt(item.getNameNfc())
 
         if ext:
             body_width = min(width,filename_width-6)

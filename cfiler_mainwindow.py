@@ -12,6 +12,7 @@ import configparser
 import traceback
 import ctypes
 import msvcrt
+import unicodedata
 
 import pyauto
 
@@ -57,7 +58,10 @@ class Log:
         self.log = [""]
         self.last_line_terminated = False
 
-    def write(self,s):
+    def write( self, s ):
+
+        s = unicodedata.normalize( "NFC", s )
+
         self.lock.acquire()
         try:
             while True:
@@ -3395,7 +3399,7 @@ class MainWindow( ckit.TextWindow ):
 
             def onSameFilenameExist( self, src_item, dst_item ):
                 pos = self.main_window.centerOfWindowInPixel()
-                overwritewindow = OverWriteWindow( pos[0], pos[1], self.main_window, self.main_window.ini, src_item, dst_item, self.overwritewindow_default_result, dst_item.getName() )
+                overwritewindow = OverWriteWindow( pos[0], pos[1], self.main_window, self.main_window.ini, src_item, dst_item, self.overwritewindow_default_result, dst_item.getNameNfc() )
                 self.main_window.enable(False)
                 overwritewindow.messageLoop()
                 result = overwritewindow.getResult()

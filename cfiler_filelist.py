@@ -7,6 +7,7 @@ import time
 import io
 import threading
 import functools
+import unicodedata
 
 import ckit
 from ckit.ckit_const import *
@@ -78,6 +79,9 @@ class item_Base:
 
     def getName(self):
         return ""
+
+    def getNameNfc(self):
+        return unicodedata.normalize( "NFC", self.getName() )
 
     def time(self):
         return (0,0,0,0,0,0)
@@ -836,9 +840,9 @@ def itemformat_Name_Ext_Size_YYMMDD_HHMMSS( window, item, width, userdata ):
     filename_width = width-len(str_size_time)
 
     if item.isdir():
-        body, ext = item.name, None
+        body, ext = item.getNameNfc(), None
     else:
-        body, ext = ckit.splitExt(item.name)
+        body, ext = ckit.splitExt(item.getNameNfc())
 
     if ext:
         body_width = min(width,filename_width-6)
@@ -866,9 +870,9 @@ def itemformat_Name_Ext_Size_YYMMDD_HHMM( window, item, width, userdata ):
     filename_width = width-len(str_size_time)
 
     if item.isdir():
-        body, ext = item.name, None
+        body, ext = item.getNameNfc(), None
     else:
-        body, ext = ckit.splitExt(item.name)
+        body, ext = ckit.splitExt(item.getNameNfc())
 
     if ext:
         body_width = min(width,filename_width-6)
@@ -881,7 +885,7 @@ def itemformat_Name_Ext_Size_YYMMDD_HHMM( window, item, width, userdata ):
 
 ## ファイル名だけを表示するアイテムの表示形式
 def itemformat_NameExt( window, item, width, userdata ):
-    return ckit.adjustStringWidth(window,item.name,width,ckit.ALIGN_LEFT,ckit.ELLIPSIS_RIGHT)
+    return ckit.adjustStringWidth( window, item.getNameNfc(), width, ckit.ALIGN_LEFT, ckit.ELLIPSIS_RIGHT )
 
 
 #--------------------------------------------------------------------

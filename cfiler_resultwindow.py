@@ -1,5 +1,6 @@
 ﻿import os
 import sys
+import unicodedata
 
 import ckit
 from ckit.ckit_const import *
@@ -68,6 +69,8 @@ class ResultWindow( ckit.TextWindow ):
         return self.lines[lineno]
 
     def write( self, s, paint=True ):
+
+        s = unicodedata.normalize( "NFC", s )
 
         for line in s.splitlines(True):
             if self.last_line_terminated:
