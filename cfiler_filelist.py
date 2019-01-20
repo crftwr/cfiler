@@ -448,6 +448,18 @@ class lister_LocalFS(lister_Base):
         root = ckit.rootPath( self.location )
         return lister_Default(self.main_window,root)
 
+    def popupContextMenu( self, window, x, y, items=None ):
+        if items==None:
+            directory, name = ckit.splitPath(os.path.normpath(self.location))
+            if name:
+                return cfiler_native.popupContextMenu( window.getHWND(), x, y, directory, [name] )
+            else:
+                return cfiler_native.popupContextMenu( window.getHWND(), x, y, "", [directory] )
+        else:
+            filename_list = list(map( lambda item : os.path.normpath(item.getName()), items ))
+            return cfiler_native.popupContextMenu( window.getHWND(), x, y, os.path.normpath(self.location), filename_list )
+
+
 
 # 標準的なディレクトリのリストアップ機能
 class lister_Default(lister_LocalFS):
@@ -540,17 +552,6 @@ class lister_Default(lister_LocalFS):
     def rename( self, src_item, dst_name ):
         dst_fullpath = os.path.join( self.location, dst_name )
         os.rename( src_item.getFullpath(), dst_fullpath )
-
-    def popupContextMenu( self, window, x, y, items=None ):
-        if items==None:
-            directory, name = ckit.splitPath(os.path.normpath(self.location))
-            if name:
-                return cfiler_native.popupContextMenu( window.getHWND(), x, y, directory, [name] )
-            else:
-                return cfiler_native.popupContextMenu( window.getHWND(), x, y, "", [directory] )
-        else:
-            filename_list = list(map( lambda item : os.path.normpath(item.getName()), items ))
-            return cfiler_native.popupContextMenu( window.getHWND(), x, y, os.path.normpath(self.location), filename_list )
 
 
 # アーカイブファイルの中のファイルをツリー構造で管理するためのノード
