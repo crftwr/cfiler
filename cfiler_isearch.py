@@ -47,9 +47,10 @@ class IncrementalSearch:
 
             # 初めて migemo が必要になったときに遅延ロードする
             if migemo_object==None:
+                dll_path = os.path.join( ckit.getAppExePath(), 'lib' )
                 dict_path = os.path.join( ckit.getAppExePath(), 'dict' )
                 try:
-                    migemo_object = ckit.Migemo(dict_path)
+                    migemo_object = ckit.Migemo( dll_path, dict_path )
                     if not migemo_object.isDictionaryReady():
                         print( "ERROR : Migemo の辞書ファイルの読み込みに失敗しました" )
                 except ValueError:
