@@ -13,6 +13,9 @@ Name "cfiler"
 ; The file to write
 OutFile "dist\cfiler_000.exe"
 
+; Build Unicode installer
+Unicode True
+
 ; The default installation directory
 InstallDir $PROGRAMFILES\cfiler
 
