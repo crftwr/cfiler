@@ -238,6 +238,7 @@ class MainWindow( ckit.TextWindow ):
             close_handler = self._onClose,
             move_handler = self._onMove,
             size_handler = self._onSize,
+            dpi_handler = self._onDpi,
             keydown_handler = self._onKeyDown,
             keyup_handler = self._onKeyUp,
             char_handler = self._onChar,
@@ -834,6 +835,15 @@ class MainWindow( ckit.TextWindow ):
             self.wallpaper.adjust()
 
         self.paint()
+
+    def _onDpi( self, scale ):
+        
+        font_size = self.ini.getint( "FONT", "size" )
+        font_size = int( font_size * scale )
+
+        self.setFont( self.ini.get("FONT","name"), font_size )
+        window_rect = self.getWindowRect()
+        self.setPosSize( (window_rect[0] + window_rect[2]) // 2, window_rect[1], self.width(), self.height(), ORIGIN_X_CENTER | ORIGIN_Y_TOP )
 
     def _onKeyDown( self, vk, mod ):
 
