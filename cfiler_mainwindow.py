@@ -217,15 +217,23 @@ class MainWindow( ckit.TextWindow ):
         self.loadState()
 
         self.loadTheme()
+        
+        x = self.ini.getint( "GEOMETRY", "x" )
+        y = self.ini.getint( "GEOMETRY", "y" )
+        
+        # ウインドウの左上位置のDPIによってをフォントサイズ決定する
+        dpi_scale = ckit.TextWindow.getDisplayScalingFromPosition( x, y )
+        font_size = self.ini.getint( "FONT", "size" )
+        font_size = int( font_size * dpi_scale )
 
         ckit.TextWindow.__init__(
             self,
-            x=self.ini.getint( "GEOMETRY", "x" ),
-            y=self.ini.getint( "GEOMETRY", "y" ),
+            x=x,
+            y=y,
             width=self.ini.getint( "GEOMETRY", "width" ),
             height=self.ini.getint( "GEOMETRY", "height" ),
             font_name = self.ini.get( "FONT", "name" ),
-            font_size = self.ini.getint( "FONT", "size" ),
+            font_size = font_size,
             bg_color = ckit.getColor("bg"),
             cursor0_color = ckit.getColor("cursor0"),
             cursor1_color = ckit.getColor("cursor1"),
@@ -252,6 +260,11 @@ class MainWindow( ckit.TextWindow ):
             mousemove_handler = self._onMouseMoveOutside,
             mousewheel_handler= self._onMouseWheelOutside,
             )
+
+        # モニター境界付近でウインドウが作成された場合を考慮して、DPIを再確認する
+        dpi_scale2 = self.getDisplayScaling()
+        if dpi_scale2 != dpi_scale:
+            self.updateDpi(dpi_scale2)
 
         if self.ini.getint( "DEBUG", "detect_block" ):
             cfiler_debug.enableBlockDetector()
@@ -836,14 +849,17 @@ class MainWindow( ckit.TextWindow ):
 
         self.paint()
 
-    def _onDpi( self, scale ):
-        
+    def updateDpi( self, scale ):
+
         font_size = self.ini.getint( "FONT", "size" )
         font_size = int( font_size * scale )
 
         self.setFont( self.ini.get("FONT","name"), font_size )
         window_rect = self.getWindowRect()
         self.setPosSize( (window_rect[0] + window_rect[2]) // 2, window_rect[1], self.width(), self.height(), ORIGIN_X_CENTER | ORIGIN_Y_TOP )
+
+    def _onDpi( self, scale ):
+        self.updateDpi(scale)
 
     def _onKeyDown( self, vk, mod ):
 
