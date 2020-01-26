@@ -11,7 +11,7 @@ lib/
 library.zip
 instfiles.nsh
 uninstfiles.nsh
-python37.dll
+python38.dll
 *.pdb
 *.lib
 *.exp
