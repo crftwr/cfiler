@@ -264,7 +264,7 @@ class MainWindow( ckit.TextWindow ):
         # モニター境界付近でウインドウが作成された場合を考慮して、DPIを再確認する
         dpi_scale2 = self.getDisplayScaling()
         if dpi_scale2 != dpi_scale:
-            self.updateDpi(dpi_scale2)
+            self.updateFont()
 
         if self.ini.getint( "DEBUG", "detect_block" ):
             cfiler_debug.enableBlockDetector()
@@ -849,17 +849,24 @@ class MainWindow( ckit.TextWindow ):
 
         self.paint()
 
-    def updateDpi( self, scale ):
-
+    def updateFont(self):
+        
+        scale = self.getDisplayScaling()
+        
+        font_name = self.ini.get("FONT","name")
         font_size = self.ini.getint( "FONT", "size" )
         font_size = int( font_size * scale )
 
-        self.setFont( self.ini.get("FONT","name"), font_size )
+        self.setFont( font_name, font_size )
+
+        original_width = self.width()
+        original_height = self.height()
+
         window_rect = self.getWindowRect()
-        self.setPosSize( (window_rect[0] + window_rect[2]) // 2, window_rect[1], self.width(), self.height(), ORIGIN_X_CENTER | ORIGIN_Y_TOP )
+        self.setPosSize( (window_rect[0] + window_rect[2]) // 2, window_rect[1], original_width, original_height, ORIGIN_X_CENTER | ORIGIN_Y_TOP )
 
     def _onDpi( self, scale ):
-        self.updateDpi(scale)
+        self.updateFont()
 
     def _onKeyDown( self, vk, mod ):
 
