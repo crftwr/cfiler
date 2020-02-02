@@ -106,6 +106,9 @@ int AppMain()
 		LocalFree(argv);
 	}
 
+	// enable DPI handling
+	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
 	// Execute python side main script
 	{
 		PyObject * module = PyImport_ImportModule("cfiler_main");
