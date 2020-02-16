@@ -224,7 +224,7 @@ class MainWindow( ckit.TextWindow ):
         # ウインドウの左上位置のDPIによってをフォントサイズ決定する
         dpi_scale = ckit.TextWindow.getDisplayScalingFromPosition( x, y )
         font_size = self.ini.getint( "FONT", "size" )
-        font_size = int( font_size * dpi_scale )
+        font_size = round( font_size * dpi_scale )
 
         ckit.TextWindow.__init__(
             self,
@@ -855,7 +855,7 @@ class MainWindow( ckit.TextWindow ):
         
         font_name = self.ini.get("FONT","name")
         font_size = self.ini.getint( "FONT", "size" )
-        font_size = int( font_size * scale )
+        font_size = round( font_size * scale )
 
         self.setFont( font_name, font_size )
 
@@ -1312,6 +1312,7 @@ class MainWindow( ckit.TextWindow ):
             self.paint(PAINT_LOG)
 
     def _onMouseWheel( self, x, y, wheel, mod ):
+        
         #print( "_onMouseWheel", x, y, wheel )
 
         if self.mouse_event_mask : return
@@ -1319,32 +1320,30 @@ class MainWindow( ckit.TextWindow ):
         x, y = self.screenToClient( x, y )
         char_x, char_y, region, pane, pane_rect = self._mouseCommon( x, y, True )
 
+        wheel_per_line = 0.34
+
         if region!=None and region&PAINT_UPPER:
         
             self.mouse_click_info=None
-        
-            while wheel>0:
-                self.command.ScrollUp()
-                self.command.ScrollUp()
-                self.command.ScrollUp()
-                wheel-=1
-            while wheel<0:
-                self.command.ScrollDown()
-                self.command.ScrollDown()
-                self.command.ScrollDown()
-                wheel+=1
+            
+            if wheel>0:
+                while wheel>0:
+                    self.command.ScrollUp()
+                    wheel-=wheel_per_line
+            else:
+                while wheel<0:
+                    self.command.ScrollDown()
+                    wheel+=wheel_per_line
 
         elif region==PAINT_LOG:
-            while wheel>0:
-                self.command.LogUp()
-                self.command.LogUp()
-                self.command.LogUp()
-                wheel-=1
-            while wheel<0:
-                self.command.LogDown()
-                self.command.LogDown()
-                self.command.LogDown()
-                wheel+=1
+            if wheel>0:
+                while wheel>0:
+                    self.command.LogUp()
+                    wheel-=wheel_per_line
+            else:
+                while wheel<0:
+                    self.command.LogDown()
+                    wheel+=wheel_per_line
 
 
     def _onCheckNetConnection( self, remote_resource_name ):
