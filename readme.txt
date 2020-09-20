@@ -1,48 +1,47 @@
+ï»¿========================================================
+Pythonã‚¹ã‚¯ãƒªãƒ—ãƒˆã§æ‹¡å¼µå¯èƒ½ãª2ç”»é¢ãƒ•ã‚¡ã‚¤ãƒ© [ å†…éª¨æ ¼ ]
 ========================================================
-PythonƒXƒNƒŠƒvƒg‚ÅŠg’£‰Â”\‚È2‰æ–Êƒtƒ@ƒCƒ‰ [ “àœŠi ]
-========================================================
 
-:’˜ìÒ: craftware
-:˜A—æ: craftware@gmail.com
-:í•Ê: ƒtƒŠ[ƒEƒFƒA
-:“®ìŠÂ‹«: Windows 10
-:WebƒTƒCƒg: http://sites.google.com/site/craftware/
+:è‘—ä½œè€…: craftware
+:é€£çµ¡å…ˆ: craftware@gmail.com
+:ç¨®åˆ¥: ãƒ•ãƒªãƒ¼ã‚¦ã‚§ã‚¢
+:å‹•ä½œç’°å¢ƒ: Windows 10 64bit
+:Webã‚µã‚¤ãƒˆ: http://sites.google.com/site/craftware/
 
 
-g‚¢•û
+ä½¿ã„æ–¹
 =========================
 
-    g‚¢•û‚É‚Â‚¢‚Ä‚ÍAdoc/index.html ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+    ä½¿ã„æ–¹ã«ã¤ã„ã¦ã¯ã€doc/index.html ã‚’å‚ç…§ã—ã¦ãã ã•ã„ã€‚
 
 
-ƒrƒ‹ƒh•û–@
+ãƒ“ãƒ«ãƒ‰æ–¹æ³•
 =========================
 
-    •K—v‚ÈƒŒƒ|ƒWƒgƒŠ‚ğƒ`ƒFƒbƒNƒAƒEƒg
+    å¿…è¦ãªãƒ¬ãƒã‚¸ãƒˆãƒªã‚’ãƒã‚§ãƒƒã‚¯ã‚¢ã‚¦ãƒˆ
 
         cfiler
         ckit
         pyauto
 
-    Python (32bit”Å) ‚ğ c:/Python38 ‚ÉƒCƒ“ƒXƒg[ƒ‹
+    Python (64bitç‰ˆ) ã‚’ c:/Python38-64 ã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 
-    Pillow ‚ğƒCƒ“ƒXƒg[ƒ‹::
+    Pillow ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«::
 
         pip install pillow
 
-    VisualStudio 2018 ‚ÅANative ƒ‚ƒWƒ…[ƒ‹‚ğƒrƒ‹ƒh
+    VisualStudio 2019 ã§ã€Native ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ãƒ“ãƒ«ãƒ‰
 
         ckit/ckitcore/ckitcore.sln
         pyauto/pyauto.sln
         cfiler/cfiler_native/cfiler_native.sln
         cfiler/cfiler.sln
 
-    ƒfƒoƒbƒOÀs (cmd.exe ‚È‚Ç‚Å‰º‹L‚ğÀs)::
+    ãƒ‡ãƒãƒƒã‚°å®Ÿè¡Œ (cmd.exe ãªã©ã§ä¸‹è¨˜ã‚’å®Ÿè¡Œ)::
 
         cfiler_d.exe -d
 
-    ƒŠƒŠ[ƒXƒpƒbƒP[ƒWƒrƒ‹ƒh::
+    ãƒªãƒªãƒ¼ã‚¹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒ“ãƒ«ãƒ‰::
 
         python makefile.py
-
 

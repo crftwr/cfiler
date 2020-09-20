@@ -86,6 +86,8 @@ class Archiver:
         self._getCRC = getattr( dll, api_prefix + "GetCRC" )
         self._getAttribute = getattr( dll, api_prefix + "GetAttribute" )
         self._getOSType = getattr( dll, api_prefix + "GetOSType" )
+
+        self._openArchive.restype = ctypes.c_void_p
     
     def getVersion(self):
         return self._getVersion()
@@ -200,7 +202,7 @@ class Archiver:
                 
                 dirs = {}
                 
-                ret = self._findFirst( arc_self.harc, wildname, ctypes.byref(info) )
+                ret = self._findFirst( ctypes.c_void_p(arc_self.harc), wildname, ctypes.byref(info) )
                 while ret==0:
 
                     name = info.szFileName
@@ -247,10 +249,10 @@ class Archiver:
                         #print( "ret", name )
                         yield ( name, info.dwOriginalSize, mtime, attr )
 
-                    ret = self._findNext( arc_self.harc, ctypes.byref(info) )
+                    ret = self._findNext( ctypes.c_void_p(arc_self.harc), ctypes.byref(info) )
 
             def close(arc_self):
-                self._closeArchive(arc_self.harc)
+                self._closeArchive( ctypes.c_void_p(arc_self.harc) )
 
         if self.getRunning():
             print( "ERROR : ライブラリを並列に使用できません." )
@@ -452,7 +454,7 @@ class RarArchiver(Archiver):
 class SevenZipBaseArchiver(Archiver):
 
     def __init__( self, mode="7z" ):
-        Archiver.__init__( self, "7-zip32.dll", "SevenZip", False )
+        Archiver.__init__( self, "7-zip64.dll", "SevenZip", False )
         self.mode = mode
         
     def extract( self, hwnd, filename, dst_dirname, name ):
