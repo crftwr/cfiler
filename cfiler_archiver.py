@@ -334,7 +334,7 @@ class LhaArchiver(Archiver):
 class TarBaseArchiver(Archiver):
     
     def __init__( self, mode="z" ):
-        Archiver.__init__( self, "tar32.dll", "Tar", False )
+        Archiver.__init__( self, "tar64.dll", "Tar", False )
         self.mode = mode
 
     def extract( self, hwnd, filename, dst_dirname, name ):
