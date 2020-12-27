@@ -29,7 +29,7 @@ if len(args)>0:
 
 #-------------------------------------------
 
-PYTHON_DIR = "c:/Python38"
+PYTHON_DIR = "c:/Python38-64"
 
 PYTHON = PYTHON_DIR + "/python.exe"
 
@@ -140,7 +140,7 @@ def target_all():
 def target_compile():
 
     # compile python source files
-    compilePythonRecursively( "c:/Python38/Lib", "build/Lib", 
+    compilePythonRecursively( f"{PYTHON_DIR}/Lib", "build/Lib", 
         directory_black_list = [
             "site-packages",
             "test",
@@ -148,7 +148,7 @@ def target_compile():
             "idlelib",
             ]
         )
-    compilePythonRecursively( "c:/Python38/Lib/site-packages/PIL", "build/Lib/PIL" )
+    compilePythonRecursively( f"{PYTHON_DIR}/Lib/site-packages/PIL", "build/Lib/PIL" )
     compilePythonRecursively( "../ckit", "build/Lib/ckit" )
     compilePythonRecursively( "../pyauto", "build/Lib/pyauto" )
     compilePythonRecursively( ".", "build/Lib", 
@@ -169,9 +169,9 @@ def target_copy():
 
     rmtree("lib")
 
-    shutil.copy( "c:/Python38/python38.dll", "python38.dll" )
+    shutil.copy( f"{PYTHON_DIR}/python38.dll", "python38.dll" )
 
-    shutil.copytree( "c:/Python38/DLLs", "lib", 
+    shutil.copytree( f"{PYTHON_DIR}/DLLs", "lib", 
         ignore=shutil.ignore_patterns(
             "tcl*.*",
             "tk*.*",
@@ -186,14 +186,14 @@ def target_copy():
             )
         )
 
-    shutil.copy( "c:/Python38/Lib/site-packages/PIL/_imaging.cp38-win32.pyd", "lib/_imaging.pyd" )
+    shutil.copy( f"{PYTHON_DIR}/Lib/site-packages/PIL/_imaging.cp38-win_amd64.pyd", "lib/_imaging.pyd" )
 
     shutil.copy( "../ckit/ckitcore.pyd", "lib/ckitcore.pyd" )
     shutil.copy( "../pyauto/pyautocore.pyd", "lib/pyautocore.pyd" )
     shutil.copy( "cfiler_native.pyd", "lib/cfiler_native.pyd" )
     shutil.copy( "migemo.dll", "lib/migemo.dll" )
-    shutil.copy( "7-zip32.dll", "lib/7-zip32.dll" )
-    shutil.copy( "tar32.dll", "lib/tar32.dll" )
+    shutil.copy( "7-zip64.dll", "lib/7-zip64.dll" )
+    shutil.copy( "tar64.dll", "lib/tar64.dll" )
 
 
 def target_document():
