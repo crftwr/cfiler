@@ -25,3 +25,8 @@ cfiler_d.exe
 __pycache__/
 cfiler_native/.vs/
 .vs/
+/dict/han2zen.dat
+/dict/hira2kata.dat
+/dict/migemo-dict
+/dict/roma2hira.dat
+/dict/zen2han.dat
