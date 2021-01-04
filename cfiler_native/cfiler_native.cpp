@@ -492,6 +492,9 @@ static PyObject * _findFile(PyObject* self, PyObject* args, PyObject * kwds)
 
 		if(handle!=INVALID_HANDLE_VALUE)
 		{
+			TIME_ZONE_INFORMATION tz;
+			GetTimeZoneInformation(&tz);
+
 			while(true)
 			{
 				bool ignore = false;
@@ -507,9 +510,9 @@ static PyObject * _findFile(PyObject* self, PyObject* args, PyObject * kwds)
 					info.filesize = (((long long)data.nFileSizeHigh)<<32)+data.nFileSizeLow;
 					info.attributes = data.dwFileAttributes;
 
-					FILETIME local_file_time;
-					FileTimeToLocalFileTime( &data.ftLastWriteTime, &local_file_time );
-					FileTimeToSystemTime( &local_file_time, &info.system_time );
+					SYSTEMTIME system_time;
+					FileTimeToSystemTime(&data.ftLastWriteTime, &system_time);
+					SystemTimeToTzSpecificLocalTime( &tz, &system_time, &info.system_time);
 
 					new_info_list.push_back(info);
 				}
@@ -772,23 +775,26 @@ static PyObject * _setFileTime(PyObject* self, PyObject* args, PyObject * kwds)
 		return NULL;
 	}
 
-	SYSTEMTIME stFileTime;
-	memset( &stFileTime, 0, sizeof(stFileTime) );
-	stFileTime.wYear = year;
-	stFileTime.wMonth = month;
-	stFileTime.wDay = day;
-	stFileTime.wHour = hour;
-	stFileTime.wMinute = minute;
-	stFileTime.wSecond = second;
+	SYSTEMTIME system_time;
+	memset( &system_time, 0, sizeof(system_time) );
+	system_time.wYear = year;
+	system_time.wMonth = month;
+	system_time.wDay = day;
+	system_time.wHour = hour;
+	system_time.wMinute = minute;
+	system_time.wSecond = second;
 	
-	FILETIME ftFileTime;
-	SystemTimeToFileTime(&stFileTime, &ftFileTime);
+	TIME_ZONE_INFORMATION tz;
+	GetTimeZoneInformation(&tz);
 
-	FILETIME ftFileTimeUTC;
-	LocalFileTimeToFileTime( &ftFileTime, &ftFileTimeUTC );
+	SYSTEMTIME system_time_utc;
+	TzSpecificLocalTimeToSystemTime( &tz, &system_time, &system_time_utc );
+
+	FILETIME file_time_utc;
+	SystemTimeToFileTime( &system_time_utc, &file_time_utc);
 
 	Py_BEGIN_ALLOW_THREADS
-	SetFileTime( hFile, NULL, NULL, &ftFileTimeUTC );
+	SetFileTime( hFile, NULL, NULL, &file_time_utc);
 	Py_END_ALLOW_THREADS
 
 	Py_BEGIN_ALLOW_THREADS
