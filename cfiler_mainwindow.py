@@ -6949,7 +6949,7 @@ class MainWindow( ckit.TextWindow ):
                 fd_dst = open( installer_filename, "wb" )
                 md5 = hashlib.md5()
 
-                if url.startswith("http:"):
+                if url.startswith("http:") or url.startswith("https:"):
                     fd_src = urllib.request.urlopen(url)
                 else:
                     fd_src = open(url,"rb")
